@@ -1,6 +1,6 @@
 # Project Proposal
 
-## Basic Premise
+<!-- ## Basic Premise
 
 The main idea is to create an application that provides github users with chat rooms for repositories that they work with.
 
@@ -22,4 +22,4 @@ My goal with this app is to provide a simple chat room, where contributors can d
 - As a user, I can see chat messages appear quickly so I keep up with the conversation
 - As a user, I can share a chat so I can invite friends into the chat
 - As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
-- As a user, I can attach an issue or pull request to my message to reference
+- As a user, I can attach an issue or pull request to my message to reference -->
