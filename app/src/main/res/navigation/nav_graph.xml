@@ -57,7 +57,4 @@
             android:name="edu.quinnipiac.ser210.githubapp.ui.fragments.InfoFragment"
             android:label="fragment_info"
             tools:layout="@layout/fragment_info" />
-    <deepLink
-            android:id="@+id/deepLink"
-            app:uri="aowiejfawefj" />
 </navigation>

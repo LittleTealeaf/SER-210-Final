@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Github/SER-210-Final/app/src/main/res/layout/fragment_chat_info.xml" value="0.3625" />
         <entry key="..\:/Github/SER-210-Final/app/src/main/res/layout/fragment_home.xml" value="0.3625" />
         <entry key="..\:/Github/SER-210-Final/app/src/main/res/layout/fragment_info.xml" value="0.3625" />
         <entry key="..\:/Github/SER-210-Final/app/src/main/res/layout/fragment_login.xml" value="0.3625" />
+        <entry key="..\:/Github/SER-210-Final/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.208" />
       </map>
     </option>
   </component>
