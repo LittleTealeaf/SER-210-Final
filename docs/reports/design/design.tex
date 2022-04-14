@@ -7,6 +7,8 @@
 \title{SER-210 Final: Design Report}
 \author{Thomas Kwashnak}
 
+
+
 \begin{document}
 \maketitle
 
@@ -21,6 +23,7 @@ The app described in this report is an attempt at making an easy go-to chat app 
 \section{Report Purpose}
 The purpose of this report is to provide an outline of plans made for the creation of the app. This report contains the UI Design plans, System Design plans, as well as an overview on the production plan over 3 iterations.
 
+\newpage
 \section{User Stories}
 \textit{Last Modified: 4/13/2022}
 \begin{itemize}
@@ -32,7 +35,11 @@ The purpose of this report is to provide an outline of plans made for the creati
     \item As a user, I can see chat messages appear so I can keep up with the conversation
     \item As a user, I can share a chat so I can invite friends into the chat
     \item As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
-    \item As a user, I can type \# to reference a pull request or issue so they appear in chat as a clickable item
+    \item As a user, I can type \# to reference a pull request or issue so viewers can click and navigate to that pull request or issue
+    \item As a user, I can leave a chat room so I am not cluttered with chats I don't participate in
+    \item As a user, I can view the app info so I know the app version and other information regarding the app
+    \item As a user, I can log out of my account so I can log into another account
+    \item As a user, I can click a link to redirect to the repository page from the chat info
 \end{itemize}
 
 \chapter{UI Design}
@@ -45,12 +52,12 @@ The purpose of this report is to provide an outline of plans made for the creati
 
 \section{App Wireframes}
 
-\newpage
 \subsection{Login Page}
 
 \begin{center}
     \includegraphics[scale=0.6]{design-login}
 \end{center}
+This is the landing page for the app after it first opens. If the user is signed in, then this page is bypassed. Otherwise, the user must sign in using their Github account.
 
 \newpage
 \subsection{Home Screen}
@@ -59,24 +66,30 @@ The purpose of this report is to provide an outline of plans made for the creati
     \includegraphics[scale=0.6]{design-home}
 \end{center}
 
+This is the home page. A list of recent repositories shows recent activity. A floating action button allows the user to create a new chat room for a repo. The user can select a "star" icon in order to "favorite" a chat
+
 \newpage
 \subsection{Navigation Drawer}
 
 \begin{center}
     \includegraphics[scale=0.6]{design-nav-drawer}
 \end{center}
+The navigation drawer allows the user to access standard features such as adding repositories and opening settings
+
 
 \newpage
 \subsection{Options Screen}
 \begin{center}
     \includegraphics[scale=0.6]{design-options}
 \end{center}
+This screen displays the app information, and allows the user to log out of their account
 
 \newpage
 \subsection{Create Chat Screen}
 \begin{center}
     \includegraphics[scale=0.6]{design-create-chat}
 \end{center}
+This screen lists repositories the user owns, and the option to create a new chat room. The user can alternatively search up any repository to create a chat room for that repository.
 
 \newpage
 \subsection{Chat Screen}
@@ -84,11 +97,14 @@ The purpose of this report is to provide an outline of plans made for the creati
     \includegraphics[scale=0.6]{design-chat}
 \end{center}
 
+This screen shows the actual chat room. The user can type a message into the message box. By typing \#, the user can link an issue or pull request.
+
 \newpage
 \subsection{Chat Info Screen}
 \begin{center}
     \includegraphics[scale=0.6]{design-chat-info}
 \end{center}
+This screen shows common repository information, as well as a link the user can use to navigate to the repository. Additionally, the user can click the leave chat to remove the chat from their list.
 
 \newpage
 \section{User Story Coverage}
@@ -111,15 +127,21 @@ The purpose of this report is to provide an outline of plans made for the creati
         \end{itemize}\\
         \hline
         \textbf{Chat Screen}\begin{itemize}
-            \item As a user
+            \item As a user, I can type and send a message into the chat room to interact with the conversation
+            \item As a user, I can see chat messages appear so I can keep up with the conversation
+            \item As a user, I can type \# to reference a pull request or issue so viewers can click and navigate to that pull request or issue
+
         \end{itemize}\\
         \hline
         \textbf{Chat Info Screen}\begin{itemize}
-            \item As a user
+            \item As a user, I can share a chat room so my friends can join
+            \item As a user, I can click a link to redirect to the repository page from the chat info
         \end{itemize}\\
         \hline
         \textbf{Options Screen}\begin{itemize}
-            \item As a user
+            \item As a user, I can log out of my account so I can log into another account
+            \item As a user, I can view the app info so I know the app version and other information regarding the app
+
         \end{itemize}\\
         \hline
     \end{tabular}
@@ -127,7 +149,69 @@ The purpose of this report is to provide an outline of plans made for the creati
 
 \chapter{System Design}
 
+\section{Database Design}
+
+\subsubsection{Messages}
+\begin{tabular}{| l | l | l |}
+    \hline
+    \textbf{Name} & \textbf{Type} & \textbf{Key}\\
+    \hline
+    \hline
+    \_id & Integer & Primary Key \\
+    \hline
+    Message & String & Not Null\\
+    \hline
+    Repository & Integer & Foreign Key\\
+    \hline
+    isRead & Boolean & \\
+    \hline
+
+\end{tabular}
+\subsubsection{Repositories (Chat Rooms)}
+\begin{tabular}{| l | l | l |}
+    \hline
+    \textbf{Name} & \textbf{Type} & \textbf{Key}\\
+    \hline
+    \hline
+    \_id & Integer & Primary Key \\
+    \hline
+    name & String & Not Null\\
+    \hline
+    apiRepo & Integer & Foreign Key\\
+    \hline
+    apiPulls & Integer & Foreign Key\\
+    \hline
+    apiIssues & Integer & Foreign Key\\
+    \hline
+    isFavorite & Boolean & Not Null\\
+    \hline
+\end{tabular}
+
+\subsubsection{Github API Cache}
+\begin{tabular}{| l | l | l |}
+    \hline
+    \textbf{Name} & \textbf{Type} & \textbf{Key}\\
+    \hline
+    \hline
+    \_id & Integer & Primary Key \\
+    \hline
+    url & String & Not Null\\
+    \hline
+    content & String & Not Null\\
+    \hline
+    fetchTime & Integer & Not Null\\
+    \hline
+\end{tabular}
+
 \chapter{Iteration Planning}
+
+\section{Iteration 1}
+
+
+
+\section{Iteration 2}
+
+\section{Final Iteration}
 
 \appendix
 \chapter{Resources}
