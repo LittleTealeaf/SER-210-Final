@@ -159,9 +159,15 @@ This screen shows common repository information, as well as a link the user can 
     \hline
     \_id          & Integer       & Primary Key  \\
     \hline
-    Message       & String        & Not Null     \\
+    message       & String        & Not Null     \\
     \hline
-    Repository    & Integer       & Foreign Key  \\
+    time      & Integer       & Not Null     \\
+    \hline
+    sender        & String        & Not Null     \\
+    \hline
+    apiSender     & Integer       & Foreign Key  \\
+    \hline
+    repository    & Integer       & Foreign Key  \\
     \hline
     isRead        & Boolean       &              \\
     \hline
@@ -182,7 +188,7 @@ This screen shows common repository information, as well as a link the user can 
     \hline
     apiIssues     & Integer       & Foreign Key  \\
     \hline
-    isFavorite    & Boolean       & Not Null     \\
+    isFavorite    & Boolean       &              \\
     \hline
 \end{tabular}
 
@@ -224,28 +230,27 @@ User stories below are sorted from most to least prioritized
     \item As a user, I can share a chat so I can invite friends into the chat
 \end{enumerate}
 
-\section{Rough Task Plans}
-\subsection{Iteration 1}
-\begin{itemize}
-    \item Learn and Setup Firebase, integrate Github User Login
-    \item Chat Message Receiving / Sending. Consider alternative methods
-    \item Set up Navigation and basic UI
-\end{itemize}
+% \section{Rough Task Plans}
+% \subsection{Iteration 1}
+% \begin{itemize}
+%     \item Learn and Setup Firebase, integrate Github User Login
+%     \item Chat Message Receiving / Sending. Consider alternative methods
+%     \item Set up Navigation and basic UI
+% \end{itemize}
 
-\subsection{Iteration 2}
-\begin{itemize}
-    \item Github Rest API and Databases
-    \item Repository list
-    \item Chat Room Visuals
-    \item Chat Room Information
-\end{itemize}
+% \subsection{Iteration 2}
+% \begin{itemize}
+%     \item Github Rest API and Databases
+%     \item Repository list
+%     \item Chat Room Visuals
+%     \item Chat Room Information
+% \end{itemize}
 
-\subsection{Final Iteration}
-\begin{itemize}
-    \item Creating and Leaving chat rooms
-    \item Chat Issue/Pull Request links
-    \item Finalize Misc. Sections
-\end{itemize}
+% \subsection{Final Iteration}
+% \begin{itemize}
+%     \item Creating and Leaving chat rooms
+%     \item Chat Issue/Pull Request links
+% \end{itemize}
 
 \appendix
 \chapter{Resources}
