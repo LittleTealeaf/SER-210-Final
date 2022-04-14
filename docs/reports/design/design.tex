@@ -113,36 +113,36 @@ This screen shows common repository information, as well as a link the user can 
     \begin{tabular}{ | p{0.9\linewidth} |}
         \hline
         \textbf{Login Screen} \begin{itemize}
-            \item As a user, I can sign in with my GitHub account to sign into the app
-        \end{itemize}\\
+                                  \item As a user, I can sign in with my GitHub account to sign into the app
+                              \end{itemize}                                                        \\
         \hline
         \textbf{Home Screen} \begin{itemize}
-            \item As a user, I can view a list of recent chat rooms to quickly get back to what I was working on
-            \item As a user, I can tap a star on a chat room to pin it ot the top of the list so I can keep chat rooms I want to keep on top
-            \item As a user, I can select a chat room to open it up
-        \end{itemize}\\
+                                 \item As a user, I can view a list of recent chat rooms to quickly get back to what I was working on
+                                 \item As a user, I can tap a star on a chat room to pin it ot the top of the list so I can keep chat rooms I want to keep on top
+                                 \item As a user, I can select a chat room to open it up
+                             \end{itemize}   \\
         \hline
         \textbf{Create Chat Screen}\begin{itemize}
-            \item As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
-        \end{itemize}\\
+                                       \item As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
+                                   \end{itemize}        \\
         \hline
         \textbf{Chat Screen}\begin{itemize}
-            \item As a user, I can type and send a message into the chat room to interact with the conversation
-            \item As a user, I can see chat messages appear so I can keep up with the conversation
-            \item As a user, I can type \# to reference a pull request or issue so viewers can click and navigate to that pull request or issue
+                                \item As a user, I can type and send a message into the chat room to interact with the conversation
+                                \item As a user, I can see chat messages appear so I can keep up with the conversation
+                                \item As a user, I can type \# to reference a pull request or issue so viewers can click and navigate to that pull request or issue
 
-        \end{itemize}\\
+                            \end{itemize} \\
         \hline
         \textbf{Chat Info Screen}\begin{itemize}
-            \item As a user, I can share a chat room so my friends can join
-            \item As a user, I can click a link to redirect to the repository page from the chat info
-        \end{itemize}\\
+                                     \item As a user, I can share a chat room so my friends can join
+                                     \item As a user, I can click a link to redirect to the repository page from the chat info
+                                 \end{itemize}                                      \\
         \hline
         \textbf{Options Screen}\begin{itemize}
-            \item As a user, I can log out of my account so I can log into another account
-            \item As a user, I can view the app info so I know the app version and other information regarding the app
+                                   \item As a user, I can log out of my account so I can log into another account
+                                   \item As a user, I can view the app info so I know the app version and other information regarding the app
 
-        \end{itemize}\\
+                               \end{itemize}                       \\
         \hline
     \end{tabular}
 \end{center}
@@ -154,64 +154,98 @@ This screen shows common repository information, as well as a link the user can 
 \subsubsection{Messages}
 \begin{tabular}{| l | l | l |}
     \hline
-    \textbf{Name} & \textbf{Type} & \textbf{Key}\\
+    \textbf{Name} & \textbf{Type} & \textbf{Key} \\
     \hline
     \hline
-    \_id & Integer & Primary Key \\
+    \_id          & Integer       & Primary Key  \\
     \hline
-    Message & String & Not Null\\
+    Message       & String        & Not Null     \\
     \hline
-    Repository & Integer & Foreign Key\\
+    Repository    & Integer       & Foreign Key  \\
     \hline
-    isRead & Boolean & \\
+    isRead        & Boolean       &              \\
     \hline
-
 \end{tabular}
 \subsubsection{Repositories (Chat Rooms)}
 \begin{tabular}{| l | l | l |}
     \hline
-    \textbf{Name} & \textbf{Type} & \textbf{Key}\\
+    \textbf{Name} & \textbf{Type} & \textbf{Key} \\
     \hline
     \hline
-    \_id & Integer & Primary Key \\
+    \_id          & Integer       & Primary Key  \\
     \hline
-    name & String & Not Null\\
+    name          & String        & Not Null     \\
     \hline
-    apiRepo & Integer & Foreign Key\\
+    apiRepo       & Integer       & Foreign Key  \\
     \hline
-    apiPulls & Integer & Foreign Key\\
+    apiPulls      & Integer       & Foreign Key  \\
     \hline
-    apiIssues & Integer & Foreign Key\\
+    apiIssues     & Integer       & Foreign Key  \\
     \hline
-    isFavorite & Boolean & Not Null\\
+    isFavorite    & Boolean       & Not Null     \\
     \hline
 \end{tabular}
 
 \subsubsection{Github API Cache}
 \begin{tabular}{| l | l | l |}
     \hline
-    \textbf{Name} & \textbf{Type} & \textbf{Key}\\
+    \textbf{Name} & \textbf{Type} & \textbf{Key} \\
     \hline
     \hline
-    \_id & Integer & Primary Key \\
+    \_id          & Integer       & Primary Key  \\
     \hline
-    url & String & Not Null\\
+    url           & String        & Not Null     \\
     \hline
-    content & String & Not Null\\
+    content       & String        & Not Null     \\
     \hline
-    fetchTime & Integer & Not Null\\
+    fetchTime     & Integer       & Not Null     \\
     \hline
 \end{tabular}
 
 \chapter{Iteration Planning}
 
-\section{Iteration 1}
+\section{Prioritized User Stories}
 
+User stories below are sorted from most to least prioritized
 
+\begin{enumerate}
+    \item As a user, I can sign in with my GitHub account to sign into the app
+    \item As a user, I can type and send a message into the chat room to interact with the conversation
+    \item As a user, I can see chat messages appear so I can keep up with the conversation
+    \item As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
+    \item As a user, I can view a list of recent chat rooms to quickly get back to what I was working on
+    \item As a user, I can select a chat room to open it up
+    \item As a user, I can type \# to reference a pull request or issue so viewers can click and navigate to that pull request or issue
+    \item As a user, I can leave a chat room so I am not cluttered with chats I don't participate in
+    \item As a user, I can tap a star on a chat room to pin it to the top of the list so I have easy access to chat rooms I want
+    \item As a user, I can view the app info so I know the app version and other information regarding the app
+    \item As a user, I can click a link to redirect to the repository page from the chat info
+    \item As a user, I can log out of my account so I can log into another account
+    \item As a user, I can share a chat so I can invite friends into the chat
+\end{enumerate}
 
-\section{Iteration 2}
+\section{Rough Task Plans}
+\subsection{Iteration 1}
+\begin{itemize}
+    \item Learn and Setup Firebase, integrate Github User Login
+    \item Chat Message Receiving / Sending. Consider alternative methods
+    \item Set up Navigation and basic UI
+\end{itemize}
 
-\section{Final Iteration}
+\subsection{Iteration 2}
+\begin{itemize}
+    \item Github Rest API and Databases
+    \item Repository list
+    \item Chat Room Visuals
+    \item Chat Room Information
+\end{itemize}
+
+\subsection{Final Iteration}
+\begin{itemize}
+    \item Creating and Leaving chat rooms
+    \item Chat Issue/Pull Request links
+    \item Finalize Misc. Sections
+\end{itemize}
 
 \appendix
 \chapter{Resources}
