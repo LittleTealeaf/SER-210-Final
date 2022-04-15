@@ -2,6 +2,10 @@
 
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{nth}
+\usepackage{amsmath}
+\usepackage{longtable}
+\usepackage[margin=0.75in]{geometry}
 
 \graphicspath{{./assets/}}
 
@@ -222,49 +226,48 @@ The class diagram is my current understanding of how the classes will be set up.
 
 \begin{center}
     \begin{tabular}{ | p{0.9\linewidth} |}
-        \hline
-        \textbf{LoginFragment} \begin{itemize}
-                                   \item As a user, I can sign in with my GitHub account to sign into the app
-                               \end{itemize}                                                       \\
-        \hline
-        \textbf{ChatFragment} \begin{itemize}
-                                  \item I can view a list of recent chat rooms to quickly get back to what I was working on
-                                  \item As a user, I can type and send a message into the chat room to interact with the conversation
-                                  \item As a user, I can see chat messages appear so I can keep up with the conversation
-                                  \item I can tap a star on a chat room to pin it to the top of the list so I have easy access to chat rooms I want
-                                  \item As a user, I can share a chat so I can invite friends into the chat
-                              \end{itemize}                 \\
-        \hline
-        \textbf{ChatInfoFragment} \begin{itemize}
-                                      \item As a user, I can click a link to redirect to the repository page from the chat info
-                                      \item As a user, I can leave a chat room so I am not cluttered with chats I don't participate in
-                                  \end{itemize}                                     \\
-        \hline
-        \textbf{AppInfoFragment} \begin{itemize}
-                                     \item As a user, I can view the app info so I know the app version and other information regarding the app
-                                 \end{itemize}                     \\
-        \hline
-        \textbf{Repository} \begin{itemize}
-                                \item As a user, I can type \# to reference a pull request or issue so viewers can click and navigate to that pull request or issue
-                            \end{itemize} \\
-        \hline
-        \textbf{CreateChatFragment} \begin{itemize}
-                                        \item As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
-                                    \end{itemize}       \\
-        \hline
-        \textbf{HomeFragment} \begin{itemize}
-                                  \item As a user, I can view a list of recent chat rooms to quickly get back to what I was working on
-                                  \item As a user, I can select a chat room to open it up
-                              \end{itemize}                              \\
-        \hline
-        \textbf{AppInfoFragment} \begin{itemize}
-                \item As a user, I can log out of my account so I can log into another account
-        \end{itemize} \\
-        \hline
+    \hline
+    \textbf{LoginFragment} \begin{itemize}
+                               \item As a user, I can sign in with my GitHub account to sign into the app
+                           \end{itemize}                                                       \\
+    \hline
+    \textbf{ChatFragment} \begin{itemize}
+                              \item I can view a list of recent chat rooms to quickly get back to what I was working on
+                              \item As a user, I can type and send a message into the chat room to interact with the conversation
+                              \item As a user, I can see chat messages appear so I can keep up with the conversation
+                              \item I can tap a star on a chat room to pin it to the top of the list so I have easy access to chat rooms I want
+                              \item As a user, I can share a chat so I can invite friends into the chat
+                          \end{itemize}                 \\
+    \hline
+    \textbf{ChatInfoFragment} \begin{itemize}
+                                  \item As a user, I can click a link to redirect to the repository page from the chat info
+                                  \item As a user, I can leave a chat room so I am not cluttered with chats I don't participate in
+                              \end{itemize}                                     \\
+    \hline
+    \textbf{AppInfoFragment} \begin{itemize}
+                                 \item As a user, I can view the app info so I know the app version and other information regarding the app
+                             \end{itemize}                     \\
+    \hline
+    \textbf{Repository} \begin{itemize}
+                            \item As a user, I can type \# to reference a pull request or issue so viewers can click and navigate to that pull request or issue
+                        \end{itemize} \\
+    \hline
+    \textbf{CreateChatFragment} \begin{itemize}
+                                    \item As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
+                                \end{itemize}       \\
+    \hline
+    \textbf{HomeFragment} \begin{itemize}
+                              \item As a user, I can view a list of recent chat rooms to quickly get back to what I was working on
+                              \item As a user, I can select a chat room to open it up
+                          \end{itemize}                              \\
+    \hline
+    \textbf{AppInfoFragment} \begin{itemize}
+            \item As a user, I can log out of my account so I can log into another account
+    \end{itemize} \\
+    \hline
     \end{tabular}
 \end{center}
-
-
+\newpage
 
 \chapter{Iteration Planning}
 
