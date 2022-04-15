@@ -1,6 +1,7 @@
 \documentclass{report}
 
 \usepackage{graphicx}
+\usepackage{hyperref}
 
 \graphicspath{{./assets/}}
 
@@ -211,8 +212,11 @@ This screen shows common repository information, as well as a link the user can 
 \section{Class Diagram}
 
 \begin{center}
-    \includegraphics[scale=0.5]{uml-diagram}
+    \includegraphics[scale=0.4]{uml-diagram}
 \end{center}
+You can view the full diagram at \href{https://github.com/LittleTealeaf/SER-210-Final/blob/main/docs/reports/design/assets/uml-diagram.png}{https://github.com/LittleTealeaf/SER-210-Final/blob/main/docs/reports/design/assets/uml-diagram.png}\\
+
+The class diagram is my current understanding of how the classes will be set up. In terms of the back-end, the Repository, GithubCache, and Message repositories are all generated directly from the LocalDatabase (I'll probably come up with a better name by then). The local database supports adding and retrieving Repositories, Messages, and Github Caches. The local database also supports updating GithubCaches with fresh values, which uses an interface to support the async task.
 
 
 \chapter{Iteration Planning}
