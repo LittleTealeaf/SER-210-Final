@@ -162,7 +162,7 @@ This screen shows common repository information, as well as a link the user can 
     \hline
     message       & String        & Not Null     \\
     \hline
-    time      & Integer       & Not Null     \\
+    time          & Integer       & Not Null     \\
     \hline
     sender        & String        & Not Null     \\
     \hline
@@ -218,6 +218,53 @@ You can view the full diagram at \href{https://github.com/LittleTealeaf/SER-210-
 
 The class diagram is my current understanding of how the classes will be set up. In terms of the back-end, the Repository, GithubCache, and Message repositories are all generated directly from the LocalDatabase (I'll probably come up with a better name by then). The local database supports adding and retrieving Repositories, Messages, and Github Caches. The local database also supports updating GithubCaches with fresh values, which uses an interface to support the async task.
 
+\section{Class User Stories}
+
+\begin{center}
+    \begin{tabular}{ | p{0.9\linewidth} |}
+        \hline
+        \textbf{LoginFragment} \begin{itemize}
+                                   \item As a user, I can sign in with my GitHub account to sign into the app
+                               \end{itemize}                                                       \\
+        \hline
+        \textbf{ChatFragment} \begin{itemize}
+                                  \item I can view a list of recent chat rooms to quickly get back to what I was working on
+                                  \item As a user, I can type and send a message into the chat room to interact with the conversation
+                                  \item As a user, I can see chat messages appear so I can keep up with the conversation
+                                  \item I can tap a star on a chat room to pin it to the top of the list so I have easy access to chat rooms I want
+                                  \item As a user, I can share a chat so I can invite friends into the chat
+                              \end{itemize}                 \\
+        \hline
+        \textbf{ChatInfoFragment} \begin{itemize}
+                                      \item As a user, I can click a link to redirect to the repository page from the chat info
+                                      \item As a user, I can leave a chat room so I am not cluttered with chats I don't participate in
+                                  \end{itemize}                                     \\
+        \hline
+        \textbf{AppInfoFragment} \begin{itemize}
+                                     \item As a user, I can view the app info so I know the app version and other information regarding the app
+                                 \end{itemize}                     \\
+        \hline
+        \textbf{Repository} \begin{itemize}
+                                \item As a user, I can type \# to reference a pull request or issue so viewers can click and navigate to that pull request or issue
+                            \end{itemize} \\
+        \hline
+        \textbf{CreateChatFragment} \begin{itemize}
+                                        \item As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
+                                    \end{itemize}       \\
+        \hline
+        \textbf{HomeFragment} \begin{itemize}
+                                  \item As a user, I can view a list of recent chat rooms to quickly get back to what I was working on
+                                  \item As a user, I can select a chat room to open it up
+                              \end{itemize}                              \\
+        \hline
+        \textbf{AppInfoFragment} \begin{itemize}
+                \item As a user, I can log out of my account so I can log into another account
+        \end{itemize} \\
+        \hline
+    \end{tabular}
+\end{center}
+
+
 
 \chapter{Iteration Planning}
 
@@ -241,35 +288,5 @@ User stories below are sorted from most to least prioritized
     \item As a user, I can share a chat so I can invite friends into the chat
 \end{enumerate}
 
-% \section{Rough Task Plans}
-% \subsection{Iteration 1}
-% \begin{itemize}
-%     \item Learn and Setup Firebase, integrate Github User Login
-%     \item Chat Message Receiving / Sending. Consider alternative methods
-%     \item Set up Navigation and basic UI
-% \end{itemize}
-
-% \subsection{Iteration 2}
-% \begin{itemize}
-%     \item Github Rest API and Databases
-%     \item Repository list
-%     \item Chat Room Visuals
-%     \item Chat Room Information
-% \end{itemize}
-
-% \subsection{Final Iteration}
-% \begin{itemize}
-%     \item Creating and Leaving chat rooms
-%     \item Chat Issue/Pull Request links
-% \end{itemize}
-
-% \appendix
-% \chapter{Resources}
-
-% \begin{itemize}
-%     \item Microsoft Whiteboard
-%     \item Marvelapp.com
-%     \item \LaTeX
-% \end{itemize}
 
 \end{document}
