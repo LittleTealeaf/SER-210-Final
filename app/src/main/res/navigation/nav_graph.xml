@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nav_graph"
+        app:startDestination="@id/loginFragment">
+
+    <fragment
+            android:id="@+id/loginFragment"
+            android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.LoginFragment"
+            android:label="fragment_login"
+            tools:layout="@layout/fragment_login" >
+        <action
+                android:id="@+id/action_loginFragment_to_homeFragment"
+                app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/homeFragment"
+            android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.HomeFragment"
+            android:label="fragment_home"
+            tools:layout="@layout/fragment_home" >
+        <action
+                android:id="@+id/action_homeFragment_to_chatFragment"
+                app:destination="@id/chatFragment" />
+        <action
+                android:id="@+id/action_homeFragment_to_createChatFragment"
+                app:destination="@id/createChatFragment" />
+        <action
+                android:id="@+id/action_homeFragment_to_settingsFragment"
+                app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/chatFragment"
+            android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.ChatFragment"
+            android:label="fragment_chat"
+            tools:layout="@layout/fragment_chat" >
+        <action
+                android:id="@+id/action_chatFragment_to_chatInfoFragment"
+                app:destination="@id/chatInfoFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/createChatFragment"
+            android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.CreateChatFragment"
+            android:label="fragment_create_chat"
+            tools:layout="@layout/fragment_create_chat" >
+        <action
+                android:id="@+id/action_createChatFragment_to_chatFragment"
+                app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/chatInfoFragment"
+            android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.ChatInfoFragment"
+            android:label="fragment_chat_info"
+            tools:layout="@layout/fragment_chat_info" />
+    <fragment
+            android:id="@+id/settingsFragment"
+            android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.SettingsFragment"
+            android:label="fragment_settings"
+            tools:layout="@layout/fragment_settings" />
+</navigation>
