@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "12514811143",
+    "project_id": "github-chat-d5a1b",
+    "storage_bucket": "github-chat-d5a1b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12514811143:android:c8bca2b7d65267ab3e39a2",
+        "android_client_info": {
+          "package_name": "edu.quinnipiac.ser210"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12514811143-po05m8ng0l9vukb8obgotbi0qlh7qd0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC58iMJEsfaMe59Y5HMlAuCWeLBcEjQSIA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12514811143-po05m8ng0l9vukb8obgotbi0qlh7qd0t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
