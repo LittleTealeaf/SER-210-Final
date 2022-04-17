@@ -6,7 +6,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "edu.quinnipiac.ser210.githubapp"
+        applicationId "edu.quinnipiac.ser210.githubchat"
         minSdk 26
         targetSdk 32
         versionCode 1

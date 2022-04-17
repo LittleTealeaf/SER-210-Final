@@ -1,4 +1,4 @@
-package edu.quinnipiac.ser210.githubapp;
+package edu.quinnipiac.ser210.githubchat;
 
 import org.junit.Test;
 

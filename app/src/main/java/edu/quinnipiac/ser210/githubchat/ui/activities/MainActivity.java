@@ -1,10 +1,10 @@
-package edu.quinnipiac.ser210.githubapp.ui.activities;
+package edu.quinnipiac.ser210.githubchat.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import edu.quinnipiac.ser210.githubapp.R;
+import edu.quinnipiac.ser210.githubchat.R;
 
 public class MainActivity extends AppCompatActivity {
 

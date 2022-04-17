@@ -1,4 +1,4 @@
-package edu.quinnipiac.ser210.githubapp;
+package edu.quinnipiac.ser210.githubchat;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("edu.quinnipiac.ser210.githubapp", appContext.getPackageName());
+        assertEquals("edu.quinnipiac.ser210.githubchat", appContext.getPackageName());
     }
 }
