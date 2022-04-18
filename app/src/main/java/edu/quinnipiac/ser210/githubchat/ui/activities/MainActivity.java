@@ -35,6 +35,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     @Override
     public void onLogin() {
-
+        navController.navigate(R.id.action_loginFragment_to_homeFragment);
     }
 }
