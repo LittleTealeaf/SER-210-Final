@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        FirebaseAuth.getInstance().useEmulator("10.0.2.2",9099);
         FirebaseAuth.getInstance().useAppLanguage();
-        FirebaseAuth.getInstance().useEmulator("10.0.2.2",9099);
+//        FirebaseAuth.getInstance().useEmulator("10.0.2.2",9099);
 
 
 //        mAuth.useEmulator("10.0.2.2",9099);
