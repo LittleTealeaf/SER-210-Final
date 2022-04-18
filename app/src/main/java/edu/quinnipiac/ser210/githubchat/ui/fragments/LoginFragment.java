@@ -1,6 +1,7 @@
 package edu.quinnipiac.ser210.githubchat.ui.fragments;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.OAuthCredential;
 import com.google.firebase.auth.OAuthProvider;
 
+import java.util.Objects;
+
 import edu.quinnipiac.ser210.githubchat.R;
+import edu.quinnipiac.ser210.githubchat.firebase.LoginWrapper;
+import edu.quinnipiac.ser210.githubchat.helpers.PreferencesHelper;
 
 public class LoginFragment extends Fragment implements OnSuccessListener<AuthResult>, OnFailureListener, View.OnClickListener {
 
@@ -38,6 +43,8 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
 
         builder = OAuthProvider.newBuilder("github.com");
 
@@ -62,8 +69,19 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
 
     @Override
     public void onSuccess(AuthResult authResult) {
-//        This line returns the access token
-//        System.out.println(((OAuthCredential) authResult.getCredential()).getAccessToken());
+
+        Activity activity = requireActivity();
+
+        SharedPreferences preferences = activity.getSharedPreferences(PreferencesHelper.PREFERENCES_NAME, 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PreferencesHelper.KEY_API,((OAuthCredential) Objects.requireNonNull(authResult.getCredential())).getAccessToken());
+        editor.apply();
+
+
+
+        if(activity instanceof LoginFragmentListener) {
+            ((LoginFragmentListener) activity).onLogin();
+        }
     }
 
     @Override
@@ -72,5 +90,9 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
         pendingResultTask = auth.startActivityForSignInWithProvider(getActivity(), builder.build());
         pendingResultTask.addOnSuccessListener(this);
         pendingResultTask.addOnFailureListener(this);
+    }
+
+    public interface LoginFragmentListener {
+        void onLogin();
     }
 }

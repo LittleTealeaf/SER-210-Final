@@ -13,7 +13,7 @@ import com.google.firebase.auth.OAuthProvider;
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.ui.fragments.LoginFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentListener {
 
     /*
     https://firebase.google.com/docs/auth/android/github-auth
@@ -29,11 +29,12 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this,R.id.nav_host_fragment);
 
 
-//        FirebaseAuth.getInstance().useEmulator("10.0.2.2",9099);
-        FirebaseAuth.getInstance().useAppLanguage();
-//        FirebaseAuth.getInstance().useEmulator("10.0.2.2",9099);
-
 
 //        mAuth.useEmulator("10.0.2.2",9099);
+    }
+
+    @Override
+    public void onLogin() {
+
     }
 }
