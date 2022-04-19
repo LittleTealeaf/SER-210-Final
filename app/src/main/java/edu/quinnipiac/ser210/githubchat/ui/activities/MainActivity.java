@@ -13,6 +13,8 @@ import com.google.firebase.auth.OAuthCredential;
 import java.util.Objects;
 
 import edu.quinnipiac.ser210.githubchat.R;
+import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
+import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
 import edu.quinnipiac.ser210.githubchat.helpers.Keys;
 import edu.quinnipiac.ser210.githubchat.interfaces.GithubTokenHolder;
 import edu.quinnipiac.ser210.githubchat.ui.fragments.LoginFragment;
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     private String githubToken;
 
+    DatabaseHelper helper;
+
     /*
     https://firebase.google.com/docs/auth/android/github-auth
      */
@@ -49,6 +53,14 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         }
 
         navController = Navigation.findNavController(this,R.id.nav_host_fragment);
+
+        helper = new DatabaseHelper(this);
+        GithubCache cache = new GithubCache();
+        cache.setUrl("https://www.google.com");
+        cache.setContent("I AM A BIRD");
+        cache.setFetchTime(1000024);
+        helper.addGithubCache(cache);
+        System.out.println(helper.getGithubCache("https://www.google.com").getContent());
     }
 
     @Override

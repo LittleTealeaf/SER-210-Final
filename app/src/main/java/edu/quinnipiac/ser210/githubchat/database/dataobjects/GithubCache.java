@@ -1,21 +1,14 @@
 package edu.quinnipiac.ser210.githubchat.database.dataobjects;
 
+import android.content.ContentValues;
+
 public class GithubCache {
-    private int id;
     private String url;
     private String content;
     private long fetchTime;
 
     public GithubCache() {
 
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUrl() {
