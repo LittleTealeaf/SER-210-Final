@@ -71,12 +71,14 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        helper.close();
         outState.putString(Keys.GITHUB_API_TOKEN,githubToken);
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        helper.close();
+
     }
 }
