@@ -17,6 +17,18 @@ import edu.quinnipiac.ser210.githubchat.helpers.Keys;
 import edu.quinnipiac.ser210.githubchat.interfaces.GithubTokenHolder;
 import edu.quinnipiac.ser210.githubchat.ui.fragments.LoginFragment;
 
+/*
+Current plan of action:
+
+- The github token is stored in an object. Upon creation / recreation, it will use the Github Cache / api to pull data
+- (Async task to get this data should be awaited at all parts of the journey, either that or like listeners and stuff)
+- The user's github username is appended to each message. Then, when pulling data, each "visible" chat message has async tasks that fetches that
+data to load (ex: getUserAvatar, getUserName...)
+- So first we gotta make the database and everything
+
+
+ */
+
 public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentListener, GithubTokenHolder {
 
     private String githubToken;

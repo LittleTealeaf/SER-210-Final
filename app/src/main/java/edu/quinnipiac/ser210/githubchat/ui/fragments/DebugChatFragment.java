@@ -19,8 +19,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+
 import edu.quinnipiac.ser210.githubchat.R;
-import edu.quinnipiac.ser210.githubchat.database.classes.ChatMessage;
+import edu.quinnipiac.ser210.githubchat.firebase.dao.FirebaseChatMessage;
 
 public class DebugChatFragment extends Fragment implements ValueEventListener, View.OnClickListener {
 
@@ -49,8 +51,8 @@ public class DebugChatFragment extends Fragment implements ValueEventListener, V
     public void onDataChange(@NonNull DataSnapshot snapshot) {
         String text = "";
         for(DataSnapshot child : snapshot.getChildren()) {
-            ChatMessage message = child.getValue(ChatMessage.class);
-            text += message.getName() + ": " + message.getMessage() + "\n";
+            FirebaseChatMessage message = child.getValue(FirebaseChatMessage.class);
+            text += message.getSenderUID() + ": " + message.getMessage() + "\n";
         }
         ((TextView) getView().findViewById(R.id.debug_chat_text)).setText(text);
     }
@@ -71,9 +73,11 @@ public class DebugChatFragment extends Fragment implements ValueEventListener, V
         if(view.getId() == R.id.debug_chat_button_send) {
             String text = ((TextView) getView().findViewById(R.id.debug_chat_enter_text)).getText().toString();
             ((TextView) getView().findViewById(R.id.debug_chat_enter_text)).setText("");
-            ChatMessage message = new ChatMessage();
+            FirebaseChatMessage message = new FirebaseChatMessage();
             message.setMessage(text);
-            message.setName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+            message.setSenderUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            message.setTime(Calendar.getInstance().getTimeInMillis());
+
             databaseReference.push().setValue(message);
         }
     }
