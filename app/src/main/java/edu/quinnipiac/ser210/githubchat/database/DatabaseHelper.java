@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String TABLE_GITHUB_CACHE = "GITHUBCACHE";
+    private static final String TABLE_GITHUB_CACHE = "GITHUB_CACHE";
     private static final String KEY_ID = "_id";
     private static final String KEY_URL = "URL";
     private static final String KEY_CONTENT = "CONTENT";
