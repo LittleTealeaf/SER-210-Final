@@ -69,18 +69,9 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
 
     @Override
     public void onSuccess(AuthResult authResult) {
-
         Activity activity = requireActivity();
-
-        SharedPreferences preferences = activity.getSharedPreferences(PreferencesHelper.PREFERENCES_NAME, 0);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(PreferencesHelper.KEY_API,((OAuthCredential) Objects.requireNonNull(authResult.getCredential())).getAccessToken());
-        editor.apply();
-
-
-
         if(activity instanceof LoginFragmentListener) {
-            ((LoginFragmentListener) activity).onLogin();
+            ((LoginFragmentListener) activity).onLogin(authResult);
         }
     }
 
@@ -93,6 +84,6 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
     }
 
     public interface LoginFragmentListener {
-        void onLogin();
+        void onLogin(AuthResult authResult);
     }
 }

@@ -39,7 +39,7 @@ public class DebugChatFragment extends Fragment implements ValueEventListener, V
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        databaseReference = FirebaseDatabase.getInstance().getReference("message");
+        databaseReference = FirebaseDatabase.getInstance().getReference("debug");
         databaseReference.addValueEventListener(this);
 
         view.findViewById(R.id.debug_chat_button_send).setOnClickListener(this);
