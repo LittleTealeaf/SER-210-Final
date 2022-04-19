@@ -14,7 +14,6 @@ import java.util.Objects;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
-import edu.quinnipiac.ser210.githubchat.github.GithubTokenHolder;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.helpers.Keys;
 import edu.quinnipiac.ser210.githubchat.ui.fragments.LoginFragment;
@@ -31,10 +30,9 @@ data to load (ex: getUserAvatar, getUserName...)
 
  */
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.Listener, GithubTokenHolder, DatabaseHelper.Getter, GithubWrapper.Getter {
+public class MainActivity extends AppCompatActivity implements LoginFragment.Listener, DatabaseHelper.Getter, GithubWrapper.Getter {
 
     private DatabaseHelper databaseHelper;
-    private String githubToken;
     private GithubWrapper githubWrapper;
 
     /*
@@ -49,32 +47,26 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Lis
         databaseHelper = new DatabaseHelper(this);
 
         if (savedInstanceState != null) {
-            githubToken = savedInstanceState.getString(Keys.GITHUB_API_TOKEN);
+            githubWrapper = new GithubWrapper(savedInstanceState.getString(Keys.GITHUB_API_TOKEN));
+        } else {
+            githubWrapper = new GithubWrapper();
         }
 
         setContentView(R.layout.activity_main);
 
-
-
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
     }
 
     @Override
     public void onLogin(AuthResult authResult) {
-        githubToken = ((OAuthCredential) Objects.requireNonNull(authResult.getCredential())).getAccessToken();
+        githubWrapper.setGithubToken(((OAuthCredential) Objects.requireNonNull(authResult.getCredential())).getAccessToken());
         navController.navigate(R.id.action_loginFragment_to_debugChatFragment);
-    }
-
-    @Override
-    public String getGithubToken() {
-        return githubToken;
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(Keys.GITHUB_API_TOKEN, githubToken);
+        outState.putString(Keys.GITHUB_API_TOKEN, githubWrapper.getGithubToken());
         databaseHelper.close();
     }
 
