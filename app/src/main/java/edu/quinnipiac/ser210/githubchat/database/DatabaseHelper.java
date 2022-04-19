@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_CONTENT = "CONTENT";
     private static final String KEY_FETCH_TIME = "FETCH_TIME";
 
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     private final SQLiteDatabase database;
 
@@ -39,50 +39,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                                   KEY_ID, KEY_URL, KEY_FETCH_TIME, KEY_CONTENT
                                  ));
         }
+        if(oldVersion < 2) {
+            sqLiteDatabase.execSQL("DROP TABLE " + TABLE_GITHUB_CACHE + ";");
+            sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_GITHUB_CACHE + " (" + KEY_URL + " TEXT PRIMARY KEY, " + KEY_FETCH_TIME + " LONG, " + KEY_CONTENT + " TEXT);");
+        }
     }
 
-    public long addGithubCache(GithubCache cache) throws SQLiteException {
-
+    public void insertGithubCache(GithubCache cache) {
         ContentValues values = new ContentValues();
-        values.put(KEY_URL, cache.getUrl());
-        values.put(KEY_CONTENT, cache.getContent());
-        values.put(KEY_FETCH_TIME, cache.getFetchTime());
+        values.put(KEY_URL,cache.getUrl());
+        values.put(KEY_FETCH_TIME,cache.getFetchTime());
+        values.put(KEY_CONTENT,cache.getContent());
 
-        long id = database.insert(TABLE_GITHUB_CACHE, null, values);
+        int rowsAffected = database.update(TABLE_GITHUB_CACHE,values,KEY_URL + " = ?",new String[] {cache.getUrl()});
 
-
-        return id;
+        if(rowsAffected == 0) {
+            database.insert(TABLE_GITHUB_CACHE,null,values);
+        }
     }
 
     public GithubCache getGithubCache(String url) {
-        String[] columns = {KEY_URL, KEY_CONTENT, KEY_FETCH_TIME};
-        Cursor cursor = database.query(TABLE_GITHUB_CACHE, columns, KEY_URL + " = ?", new String[]{url}, null, null, null);
+        String[] columns = {KEY_URL,KEY_FETCH_TIME,KEY_CONTENT};
 
         GithubCache cache = null;
 
-        if (cursor.getCount() > 0) {
-            cursor.moveToNext();
+        Cursor cursor = database.query(TABLE_GITHUB_CACHE,columns,KEY_URL + " = ?",new String[] {url},null,null,null);
 
+        if(cursor.getCount() > 0) {
+            cursor.moveToNext();
             cache = new GithubCache();
             cache.setUrl(cursor.getString(0));
-            cache.setContent(cursor.getString(1));
-            cache.setFetchTime(cursor.getLong(2));
-
-            cursor.close();
+            cache.setFetchTime(cursor.getLong(1));
+            cache.setContent(cursor.getString(2));
         }
+
+        cursor.close();
         return cache;
-    }
-
-    public void updateGithubCache(GithubCache cache) throws SQLiteException {
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_CONTENT, cache.getContent());
-        values.put(KEY_URL, cache.getUrl());
-        values.put(KEY_FETCH_TIME, cache.getFetchTime());
-
-        database.update(TABLE_GITHUB_CACHE, values, KEY_URL + " = ?", new String[]{cache.getUrl()});
 
     }
+
 
     @Override
     public synchronized void close() {
