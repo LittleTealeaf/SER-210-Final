@@ -61,6 +61,12 @@ public class DebugChatFragment extends Fragment implements ValueEventListener, V
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        databaseReference.removeEventListener(this);
+    }
+
+    @Override
     public void onClick(View view) {
         if(view.getId() == R.id.debug_chat_button_send) {
             String text = ((TextView) getView().findViewById(R.id.debug_chat_enter_text)).getText().toString();
