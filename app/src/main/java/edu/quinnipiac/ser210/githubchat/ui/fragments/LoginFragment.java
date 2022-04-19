@@ -27,7 +27,7 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
     private OAuthProvider.Builder builder;
     private Task<AuthResult> pendingResultTask;
 
-    private LoginFragmentListener listener;
+    private Listener listener;
 
     /*
     https://firebase.google.com/docs/auth/android/github-auth
@@ -58,8 +58,8 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
         view.findViewById(R.id.button_login_github).setOnClickListener(this);
 
         Activity activity = requireActivity();
-        if(activity instanceof LoginFragmentListener) {
-            listener = (LoginFragmentListener) activity;
+        if(activity instanceof Listener) {
+            listener = (Listener) activity;
         }
     }
 
@@ -83,7 +83,7 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
         pendingResultTask.addOnFailureListener(this);
     }
 
-    public interface LoginFragmentListener {
+    public interface Listener {
 
         void onLogin(AuthResult authResult);
     }

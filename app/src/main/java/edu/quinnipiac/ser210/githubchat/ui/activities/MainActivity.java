@@ -1,11 +1,11 @@
 package edu.quinnipiac.ser210.githubchat.ui.activities;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
-import android.os.Bundle;
 
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.OAuthCredential;
@@ -14,9 +14,9 @@ import java.util.Objects;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
-import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
+import edu.quinnipiac.ser210.githubchat.github.GithubTokenHolder;
+import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.helpers.Keys;
-import edu.quinnipiac.ser210.githubchat.interfaces.GithubTokenHolder;
 import edu.quinnipiac.ser210.githubchat.ui.fragments.LoginFragment;
 
 /*
@@ -31,30 +31,33 @@ data to load (ex: getUserAvatar, getUserName...)
 
  */
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentListener, GithubTokenHolder {
+public class MainActivity extends AppCompatActivity implements LoginFragment.Listener, GithubTokenHolder, DatabaseHelper.Getter, GithubWrapper.Getter {
 
+    private DatabaseHelper databaseHelper;
     private String githubToken;
-
-    DatabaseHelper helper;
+    private GithubWrapper githubWrapper;
 
     /*
     https://firebase.google.com/docs/auth/android/github-auth
      */
-
     private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        if(savedInstanceState != null) {
+        databaseHelper = new DatabaseHelper(this);
+
+        if (savedInstanceState != null) {
             githubToken = savedInstanceState.getString(Keys.GITHUB_API_TOKEN);
         }
 
-        navController = Navigation.findNavController(this,R.id.nav_host_fragment);
+        setContentView(R.layout.activity_main);
 
-        helper = new DatabaseHelper(this);
+
+
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
     }
 
     @Override
@@ -71,14 +74,17 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        helper.close();
-        outState.putString(Keys.GITHUB_API_TOKEN,githubToken);
-
+        outState.putString(Keys.GITHUB_API_TOKEN, githubToken);
+        databaseHelper.close();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    public DatabaseHelper getDatabaseHelper() {
+        return databaseHelper;
+    }
 
+    @Override
+    public GithubWrapper getGithubWrapper() {
+        return null;
     }
 }

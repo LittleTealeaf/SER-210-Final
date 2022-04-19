@@ -1,5 +1,6 @@
 package edu.quinnipiac.ser210.githubchat.ui.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,18 +23,25 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
 import edu.quinnipiac.ser210.githubchat.R;
+import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.firebase.dataobjects.FirebaseChatMessage;
 
 public class DebugChatFragment extends Fragment implements ValueEventListener, View.OnClickListener {
 
     private static String TAG = "DEBUG CHAT";
 
-    DatabaseReference databaseReference;
+    private DatabaseReference databaseReference;
+
+    private DatabaseHelper.Getter databaseHelperGetter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        Activity activity = requireActivity();
+        if(activity instanceof DatabaseHelper.Getter) {
+            databaseHelperGetter = (DatabaseHelper.Getter) activity;
+        }
 
         return inflater.inflate(R.layout.fragment_debug_chat,container,false);
     }
