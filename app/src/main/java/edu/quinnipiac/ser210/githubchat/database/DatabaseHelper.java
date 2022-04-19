@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        onUpgrade(sqLiteDatabase, 0, VERSION);
+
     }
 
     @Override
