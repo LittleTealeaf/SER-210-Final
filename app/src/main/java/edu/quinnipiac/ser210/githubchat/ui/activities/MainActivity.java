@@ -1,5 +1,6 @@
 package edu.quinnipiac.ser210.githubchat.ui.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -12,7 +13,8 @@ import com.google.firebase.auth.OAuthCredential;
 import java.util.Objects;
 
 import edu.quinnipiac.ser210.githubchat.R;
-import edu.quinnipiac.ser210.githubchat.helpers.interfaces.GithubTokenHolder;
+import edu.quinnipiac.ser210.githubchat.helpers.Keys;
+import edu.quinnipiac.ser210.githubchat.interfaces.GithubTokenHolder;
 import edu.quinnipiac.ser210.githubchat.ui.fragments.LoginFragment;
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.LoginFragmentListener, GithubTokenHolder {
@@ -30,6 +32,10 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(savedInstanceState != null) {
+            githubToken = savedInstanceState.getString(Keys.GITHUB_API_TOKEN);
+        }
+
         navController = Navigation.findNavController(this,R.id.nav_host_fragment);
     }
 
@@ -42,5 +48,11 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     @Override
     public String getGithubToken() {
         return githubToken;
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(Keys.GITHUB_API_TOKEN,githubToken);
     }
 }

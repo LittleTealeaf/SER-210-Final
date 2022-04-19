@@ -1,8 +1,8 @@
 package edu.quinnipiac.ser210.githubchat.ui.fragments;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +14,20 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.OAuthCredential;
 import com.google.firebase.auth.OAuthProvider;
 
-import java.util.Objects;
-
 import edu.quinnipiac.ser210.githubchat.R;
-import edu.quinnipiac.ser210.githubchat.firebase.LoginWrapper;
-import edu.quinnipiac.ser210.githubchat.helpers.PreferencesHelper;
 
 public class LoginFragment extends Fragment implements OnSuccessListener<AuthResult>, OnFailureListener, View.OnClickListener {
 
+    public static String TAG = "LoginFragment";
+
     private OAuthProvider.Builder builder;
     private Task<AuthResult> pendingResultTask;
+
+    private LoginFragmentListener listener;
 
     /*
     https://firebase.google.com/docs/auth/android/github-auth
@@ -43,8 +41,6 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
 
         builder = OAuthProvider.newBuilder("github.com");
 
@@ -60,18 +56,22 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.button_login_github).setOnClickListener(this);
+
+        Activity activity = requireActivity();
+        if(activity instanceof LoginFragmentListener) {
+            listener = (LoginFragmentListener) activity;
+        }
     }
 
     @Override
     public void onFailure(@NonNull Exception e) {
-
+        Log.e(TAG,e.getMessage());
     }
 
     @Override
     public void onSuccess(AuthResult authResult) {
-        Activity activity = requireActivity();
-        if(activity instanceof LoginFragmentListener) {
-            ((LoginFragmentListener) activity).onLogin(authResult);
+        if(listener != null) {
+            listener.onLogin(authResult);
         }
     }
 
@@ -84,6 +84,7 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
     }
 
     public interface LoginFragmentListener {
+
         void onLogin(AuthResult authResult);
     }
 }
