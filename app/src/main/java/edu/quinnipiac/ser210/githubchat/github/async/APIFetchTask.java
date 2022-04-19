@@ -9,7 +9,7 @@ public class APIFetchTask extends AsyncTask<String,Void,String> {
 
     private final OnAPIFetched listener;
 
-    public APIFetchTask(GithubWrapper.Getter githubWrapperGetter, OnAPIFetched listener) {
+    public APIFetchTask(OnAPIFetched listener) {
         this.listener = listener;
     }
 
