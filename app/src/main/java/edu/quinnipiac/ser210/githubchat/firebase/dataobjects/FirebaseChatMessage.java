@@ -1,4 +1,4 @@
-package edu.quinnipiac.ser210.githubchat.firebase.dao;
+package edu.quinnipiac.ser210.githubchat.firebase.dataobjects;
 
 /**
  *

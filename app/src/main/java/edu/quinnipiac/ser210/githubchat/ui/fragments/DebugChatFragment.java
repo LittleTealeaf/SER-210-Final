@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
 import edu.quinnipiac.ser210.githubchat.R;
-import edu.quinnipiac.ser210.githubchat.firebase.dao.FirebaseChatMessage;
+import edu.quinnipiac.ser210.githubchat.firebase.dataobjects.FirebaseChatMessage;
 
 public class DebugChatFragment extends Fragment implements ValueEventListener, View.OnClickListener {
 

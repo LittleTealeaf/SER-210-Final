@@ -1,4 +1,4 @@
-package edu.quinnipiac.ser210.githubchat.database.dao;
+package edu.quinnipiac.ser210.githubchat.database.dataobjects;
 
 public class GithubCache {
     private int id;

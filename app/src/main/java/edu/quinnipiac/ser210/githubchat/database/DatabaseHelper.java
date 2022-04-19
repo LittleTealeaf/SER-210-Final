@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import edu.quinnipiac.ser210.githubchat.database.dao.GithubCache;
-
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_GITHUB_CACHE = "GITHUB_CACHE";
