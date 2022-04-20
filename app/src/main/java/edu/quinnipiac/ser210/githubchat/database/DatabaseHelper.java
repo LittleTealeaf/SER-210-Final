@@ -85,7 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super.close();
     }
 
-    public interface Getter {
+    public interface Holder {
         DatabaseHelper getDatabaseHelper();
     }
 }

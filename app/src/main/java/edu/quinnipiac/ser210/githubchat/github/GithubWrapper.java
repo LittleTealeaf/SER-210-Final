@@ -21,7 +21,7 @@ public class GithubWrapper {
     }
 
 
-    public interface Getter {
+    public interface Holder {
         GithubWrapper getGithubWrapper();
     }
 }

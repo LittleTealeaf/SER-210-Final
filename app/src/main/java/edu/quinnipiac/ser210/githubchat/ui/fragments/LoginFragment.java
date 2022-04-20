@@ -10,15 +10,21 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.OAuthCredential;
 import com.google.firebase.auth.OAuthProvider;
 
+import java.util.Objects;
+
 import edu.quinnipiac.ser210.githubchat.R;
+import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 
 public class LoginFragment extends Fragment implements OnSuccessListener<AuthResult>, OnFailureListener, View.OnClickListener {
 
@@ -27,7 +33,9 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
     private OAuthProvider.Builder builder;
     private Task<AuthResult> pendingResultTask;
 
-    private Listener listener;
+    private NavController navController;
+
+    private GithubWrapper githubWrapper;
 
     /*
     https://firebase.google.com/docs/auth/android/github-auth
@@ -49,6 +57,9 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
             pendingResultTask.addOnFailureListener(this).addOnSuccessListener(this);
         }
 
+        Activity activity = requireActivity();
+        githubWrapper = ((GithubWrapper.Holder) activity).getGithubWrapper();
+
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
@@ -56,11 +67,10 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.button_login_github).setOnClickListener(this);
+        navController = Navigation.findNavController(view);
 
-        Activity activity = requireActivity();
-        if(activity instanceof Listener) {
-            listener = (Listener) activity;
-        }
+
+
     }
 
     @Override
@@ -70,9 +80,8 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
 
     @Override
     public void onSuccess(AuthResult authResult) {
-        if(listener != null) {
-            listener.onLogin(authResult);
-        }
+        githubWrapper.setGithubToken(((OAuthCredential) Objects.requireNonNull(authResult.getCredential())).getAccessToken());
+        navController.navigate(R.id.action_loginFragment_to_debugChatFragment);
     }
 
     @Override
@@ -81,10 +90,5 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
         pendingResultTask = auth.startActivityForSignInWithProvider(getActivity(), builder.build());
         pendingResultTask.addOnSuccessListener(this);
         pendingResultTask.addOnFailureListener(this);
-    }
-
-    public interface Listener {
-
-        void onLogin(AuthResult authResult);
     }
 }

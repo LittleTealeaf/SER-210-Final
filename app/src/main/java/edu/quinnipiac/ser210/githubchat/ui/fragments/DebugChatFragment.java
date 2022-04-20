@@ -32,15 +32,15 @@ public class DebugChatFragment extends Fragment implements ValueEventListener, V
 
     private DatabaseReference databaseReference;
 
-    private DatabaseHelper.Getter databaseHelperGetter;
+    private DatabaseHelper.Holder databaseHelperHolder;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         Activity activity = requireActivity();
-        if(activity instanceof DatabaseHelper.Getter) {
-            databaseHelperGetter = (DatabaseHelper.Getter) activity;
+        if(activity instanceof DatabaseHelper.Holder) {
+            databaseHelperHolder = (DatabaseHelper.Holder) activity;
         }
 
         return inflater.inflate(R.layout.fragment_debug_chat,container,false);
@@ -83,7 +83,7 @@ public class DebugChatFragment extends Fragment implements ValueEventListener, V
             ((TextView) getView().findViewById(R.id.debug_chat_enter_text)).setText("");
             FirebaseChatMessage message = new FirebaseChatMessage();
             message.setMessage(text);
-            message.setSenderUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            message.setSenderUID(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
             message.setTime(Calendar.getInstance().getTimeInMillis());
 
             databaseReference.push().setValue(message);

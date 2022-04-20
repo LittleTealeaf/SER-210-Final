@@ -7,16 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.OAuthCredential;
-
-import java.util.Objects;
-
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.helpers.Keys;
-import edu.quinnipiac.ser210.githubchat.ui.fragments.LoginFragment;
 
 /*
 Current plan of action:
@@ -30,7 +24,7 @@ data to load (ex: getUserAvatar, getUserName...)
 
  */
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.Listener, DatabaseHelper.Getter, GithubWrapper.Getter {
+public class MainActivity extends AppCompatActivity implements DatabaseHelper.Holder, GithubWrapper.Holder {
 
     private DatabaseHelper databaseHelper;
     private GithubWrapper githubWrapper;
@@ -57,11 +51,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Lis
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
     }
 
-    @Override
-    public void onLogin(AuthResult authResult) {
-        githubWrapper.setGithubToken(((OAuthCredential) Objects.requireNonNull(authResult.getCredential())).getAccessToken());
-        navController.navigate(R.id.action_loginFragment_to_debugChatFragment);
-    }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -77,6 +66,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Lis
 
     @Override
     public GithubWrapper getGithubWrapper() {
-        return null;
+        return githubWrapper;
     }
 }
