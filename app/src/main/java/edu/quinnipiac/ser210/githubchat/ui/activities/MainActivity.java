@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
+import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubUserTask;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 import edu.quinnipiac.ser210.githubchat.helpers.Keys;
 
 /*
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
         setContentView(R.layout.activity_main);
 
         databaseHelper = new DatabaseHelper(this);
-        githubWrapper = new GithubWrapper(savedInstanceState == null ? null : savedInstanceState.getString(GithubWrapper.TOKEN));
+        githubWrapper = new GithubWrapper(databaseHelper, savedInstanceState == null ? null : savedInstanceState.getString(GithubWrapper.TOKEN));
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
@@ -85,6 +87,17 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         if(firebaseAuth.getCurrentUser() == null) {
             loginLauncher.launch(new Intent(this,LoginActivity.class));
+        } else {
+            System.out.println("SENDING STUFF");
+            /*
+            TODO: what needs to happen is that we need to store the "github key" inside the settings file
+             */
+            githubWrapper.fetchGithubUser("LittleTealeaf", new FetchGithubUserTask.Listener() {
+                @Override
+                public void onFetchGithubUser(GithubUser user) {
+
+                }
+            });
         }
     }
 }

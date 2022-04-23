@@ -8,8 +8,9 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
+import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubTask;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper implements FetchGithubTask.Listener {
 
     private static final String TABLE_GITHUB_CACHE = "GITHUB_CACHE";
     private static final String KEY_ID = "_id";
@@ -83,6 +84,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public synchronized void close() {
         database.close();
         super.close();
+    }
+
+    @Override
+    public void onFetchAPI(String url, String api) {
+
     }
 
     public interface Holder {
