@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 
@@ -12,8 +13,8 @@ public class FetchGithubUserTask extends FetchGithubTask {
 
     private Listener listener;
 
-    public FetchGithubUserTask(GithubWrapper githubWrapper, Listener listener) {
-        super(githubWrapper);
+    public FetchGithubUserTask(GithubWrapper githubWrapper, DatabaseHelper databaseHelper, Listener listener) {
+        super(githubWrapper,databaseHelper);
         this.listener = listener;
 
     }

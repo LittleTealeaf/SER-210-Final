@@ -10,14 +10,18 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 
 public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
 
-    private GithubWrapper githubWrapper;
+    protected GithubWrapper githubWrapper;
+    protected DatabaseHelper databaseHelper;
 
-    public FetchGithubTask(GithubWrapper githubWrapper) {
+    public FetchGithubTask(GithubWrapper githubWrapper, DatabaseHelper databaseHelper) {
         this.githubWrapper = githubWrapper;
+        this.databaseHelper = databaseHelper;
+
     }
 
     protected abstract String createURL(String[] strings);
@@ -32,7 +36,6 @@ public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
         BufferedReader reader = null;
         StringBuffer jsonString = new StringBuffer();
 
-        while(githubWrapper.getGithubToken() == null);
         System.out.println("TOKEN ALIVE");
 
         try {
@@ -40,7 +43,7 @@ public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
             urlConnection = (HttpsURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.addRequestProperty("Accept","application/vnd.github.v3+json");
-            urlConnection.addRequestProperty("Authorization","token " + githubWrapper.getGithubToken());
+//            urlConnection.addRequestProperty("Authorization","token " + githubWrapper.getGithubToken());
             addHeaders(urlConnection);
             InputStream stream = urlConnection.getInputStream();
 
@@ -56,7 +59,7 @@ public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
             reader.close();
 
 
-            githubWrapper.getFetchAPIListener().onFetchAPI(url.toString(),jsonString.toString());
+//            githubWrapper.getFetchAPIListener().onFetchAPI(url.toString(),jsonString.toString());
 
         } catch(Exception e) {
             e.printStackTrace();
@@ -66,7 +69,4 @@ public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
         return jsonString.toString();
     }
 
-    public interface Listener {
-        void onFetchAPI(String url, String api);
-    }
 }

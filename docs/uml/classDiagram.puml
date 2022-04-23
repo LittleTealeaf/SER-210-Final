@@ -232,6 +232,7 @@ FirebaseChatMessage --* MessageCard
 LoginFragment --> GithubWrapper
 
 ChatInfoFragment --> GithubWrapper
+ChatInfoFragment ..|> FetchRepoListener
 
 
 FetchGithubTask --|> AsyncTask

@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
 import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubTask;
 
-public class DatabaseHelper extends SQLiteOpenHelper implements FetchGithubTask.Listener {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_GITHUB_CACHE = "GITHUB_CACHE";
     private static final String KEY_ID = "_id";
@@ -86,7 +86,6 @@ public class DatabaseHelper extends SQLiteOpenHelper implements FetchGithubTask.
         super.close();
     }
 
-    @Override
     public void onFetchAPI(String url, String api) {
 
     }

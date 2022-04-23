@@ -26,12 +26,9 @@ public class GithubWrapper {
     }
 
     public void fetchGithubUser(String username, FetchGithubUserTask.Listener listener) {
-        new FetchGithubUserTask(this,listener).execute(username);
+        new FetchGithubUserTask(this,databaseHelper,listener).execute(username);
     }
 
-    public FetchGithubTask.Listener getFetchAPIListener() {
-        return databaseHelper;
-    }
 
 
 
