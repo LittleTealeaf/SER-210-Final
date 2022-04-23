@@ -2,6 +2,8 @@ package edu.quinnipiac.ser210.githubchat.github;
 
 public class GithubWrapper {
 
+    public static String TOKEN = "githubToken";
+
     private String githubToken;
 
     public GithubWrapper() {

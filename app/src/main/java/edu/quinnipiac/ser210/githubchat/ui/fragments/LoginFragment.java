@@ -81,7 +81,7 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
     @Override
     public void onSuccess(AuthResult authResult) {
         githubWrapper.setGithubToken(((OAuthCredential) Objects.requireNonNull(authResult.getCredential())).getAccessToken());
-        navController.navigate(R.id.action_loginFragment_to_debugChatFragment);
+//        navController.navigate(R.id.action_loginFragment_to_homeFragment);
     }
 
     @Override

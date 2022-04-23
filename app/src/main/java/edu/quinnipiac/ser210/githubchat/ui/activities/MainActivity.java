@@ -1,11 +1,17 @@
 package edu.quinnipiac.ser210.githubchat.ui.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
@@ -24,10 +30,13 @@ data to load (ex: getUserAvatar, getUserName...)
 
  */
 
-public class MainActivity extends AppCompatActivity implements DatabaseHelper.Holder, GithubWrapper.Holder {
+public class MainActivity extends AppCompatActivity implements DatabaseHelper.Holder, GithubWrapper.Holder, FirebaseAuth.AuthStateListener {
 
     private DatabaseHelper databaseHelper;
     private GithubWrapper githubWrapper;
+
+
+    private ActivityResultLauncher<Intent> loginLauncher;
 
     /*
     https://firebase.google.com/docs/auth/android/github-auth
@@ -37,25 +46,28 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        databaseHelper = new DatabaseHelper(this);
-
-        if (savedInstanceState != null) {
-            githubWrapper = new GithubWrapper(savedInstanceState.getString(Keys.GITHUB_API_TOKEN));
-        } else {
-            githubWrapper = new GithubWrapper();
-        }
-
         setContentView(R.layout.activity_main);
 
+        databaseHelper = new DatabaseHelper(this);
+        githubWrapper = new GithubWrapper(savedInstanceState == null ? null : savedInstanceState.getString(GithubWrapper.TOKEN));
+
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        loginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode() == Activity.RESULT_OK) {
+                assert result.getData() != null;
+                githubWrapper.setGithubToken(result.getData().getStringExtra(GithubWrapper.TOKEN));
+            }
+        });
+
+        FirebaseAuth.getInstance().addAuthStateListener(this);
     }
 
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(Keys.GITHUB_API_TOKEN, githubWrapper.getGithubToken());
+        outState.putString(GithubWrapper.TOKEN, githubWrapper.getGithubToken());
         databaseHelper.close();
     }
 
@@ -67,5 +79,12 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
     @Override
     public GithubWrapper getGithubWrapper() {
         return githubWrapper;
+    }
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        if(firebaseAuth.getCurrentUser() == null) {
+            loginLauncher.launch(new Intent(this,LoginActivity.class));
+        }
     }
 }
