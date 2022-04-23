@@ -19,6 +19,9 @@
         <action
                 android:id="@+id/action_homeFragment_to_settingsFragment"
                 app:destination="@id/settingsFragment" />
+        <action
+                android:id="@+id/action_homeFragment_to_loginFragment"
+                app:destination="@id/loginFragment" />
     </fragment>
     <fragment
             android:id="@+id/chatFragment"
@@ -48,4 +51,9 @@
             android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.SettingsFragment"
             android:label="fragment_settings"
             tools:layout="@layout/fragment_settings" />
+    <fragment
+            android:id="@+id/loginFragment"
+            android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.LoginFragment"
+            android:label="fragment_login"
+            tools:layout="@layout/fragment_login" />
 </navigation>

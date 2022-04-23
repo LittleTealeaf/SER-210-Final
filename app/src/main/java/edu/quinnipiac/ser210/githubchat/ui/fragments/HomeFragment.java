@@ -27,7 +27,5 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        view.findViewById(R.id.debug_button_logout).setOnClickListener((v) -> FirebaseAuth.getInstance().signOut());
     }
 }
