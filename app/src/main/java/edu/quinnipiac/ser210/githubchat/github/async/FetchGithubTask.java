@@ -42,7 +42,9 @@ public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
             urlConnection.setRequestMethod("GET");
             urlConnection.addRequestProperty("Accept","application/vnd.github.v3+json");
             addHeaders(urlConnection);
-            urlConnection.addRequestProperty("Authorization","token " + githubWrapper.getGithubToken());
+            if(githubWrapper.getGithubToken() != null) {
+                urlConnection.addRequestProperty("Authorization","token " + githubWrapper.getGithubToken());
+            }
             InputStream stream = urlConnection.getInputStream();
 
             if(stream == null) {
