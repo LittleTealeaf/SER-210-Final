@@ -30,8 +30,6 @@ public class PreferencesWrapper implements SharedPreferences {
         } finally {
             sharedPreferences = prefs;
         }
-
-        System.out.println(prefs.getString(GithubWrapper.TOKEN,"NO TOKEN"));
     }
 
     @Override

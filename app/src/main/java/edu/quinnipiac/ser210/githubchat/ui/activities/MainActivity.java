@@ -2,7 +2,6 @@ package edu.quinnipiac.ser210.githubchat.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -20,7 +19,6 @@ import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubUserTask;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
-import edu.quinnipiac.ser210.githubchat.helpers.Keys;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesWrapper;
 
 /*
@@ -35,15 +33,13 @@ data to load (ex: getUserAvatar, getUserName...)
 
  */
 
-public class MainActivity extends AppCompatActivity implements DatabaseHelper.Holder, GithubWrapper.Holder,
-                                                               PreferencesWrapper.Holder, FirebaseAuth.AuthStateListener {
+public class MainActivity extends AppCompatActivity
+        implements DatabaseHelper.Holder, GithubWrapper.Holder, PreferencesWrapper.Holder, FirebaseAuth.AuthStateListener {
 
-    private static final String PREFERENCES = "GithubChatAppPreferences";
 
     private DatabaseHelper databaseHelper;
     private GithubWrapper githubWrapper;
     private PreferencesWrapper preferencesWrapper;
-
 
     private ActivityResultLauncher<Intent> loginLauncher;
 
@@ -61,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
 
         databaseHelper = new DatabaseHelper(this);
 
-        githubWrapper = new GithubWrapper(databaseHelper, preferencesWrapper.getString(GithubWrapper.TOKEN,null));
+        githubWrapper = new GithubWrapper(databaseHelper, preferencesWrapper.getString(GithubWrapper.TOKEN, null));
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
@@ -71,13 +67,12 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
     }
 
     private void onLoginActivityResult(ActivityResult result) {
-        if(result.getResultCode() == Activity.RESULT_OK) {
+        if (result.getResultCode() == Activity.RESULT_OK) {
             assert result.getData() != null;
             githubWrapper.setGithubToken(result.getData().getStringExtra(GithubWrapper.TOKEN));
-            preferencesWrapper.setString(GithubWrapper.TOKEN,githubWrapper.getGithubToken());
+            preferencesWrapper.setString(GithubWrapper.TOKEN, githubWrapper.getGithubToken());
         }
     }
-
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -97,9 +92,9 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
 
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        if(firebaseAuth.getCurrentUser() == null) {
+        if (firebaseAuth.getCurrentUser() == null) {
             preferencesWrapper.edit().remove(GithubWrapper.TOKEN).apply();
-            loginLauncher.launch(new Intent(this,LoginActivity.class));
+            loginLauncher.launch(new Intent(this, LoginActivity.class));
         } else {
             System.out.println("SENDING STUFF");
             /*
