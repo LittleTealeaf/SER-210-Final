@@ -1,0 +1,221 @@
+@startuml Class Diagram
+
+skinparam class {
+    BackgroundColor LightGrey
+    BorderColor Black
+    ArrowColor Black
+}
+
+class database.dataobjects.GithubCache {
+
+}
+
+class database.dataobjects.Repository {
+
+}
+
+class database.DatabaseHelper {
+
+}
+
+interface database.DatabaseHelperHolder {
+
+}
+
+class firebase.dataobjects.FirebaseChatMessage {
+
+}
+
+class github.async.FetchGithubLinkablesTask {
+
+}
+
+interface github.async.FetchGithubLinkablesListener {
+
+}
+
+class github.async.FetchGithubRepoListTask {
+
+}
+
+interface github.async.FetchGithubRepoListListener {
+
+}
+
+class github.async.FetchGithubRepoTask {
+
+}
+
+interface github.async.FetchGithubRepoListener {
+
+}
+
+class github.dataobjects.GithubRepo {
+
+}
+
+class github.dataobjects.GithubUser {
+
+}
+
+class github.dataobjects.Issue {
+
+}
+
+class github.dataobjects.PullRequest {
+
+}
+
+interface github.dataobjects.Linkable {
+
+}
+
+class github.async.FetchGithubUserTask {
+
+}
+
+interface github.async.FetchGithubUserListener {
+
+}
+
+
+class github.GithubWrapper {
+
+}
+
+interface github.GithubWrapperHolder {
+
+}
+
+abstract github.async.FetchGithubTask {
+
+}
+
+
+class ui.activities.LoginActivity {
+
+}
+
+class ui.activities.MainActivity {
+
+}
+
+class ui.async.FetchImageTask {
+
+}
+
+interface ui.async.FetchImageListener {
+
+}
+
+class ui.fragments.ChatFragment {
+
+}
+
+class ui.fragments.ChatInfoFragment {
+
+}
+
+class ui.fragments.CreateChatFragment {
+
+}
+
+class ui.fragments.HomeFragment {
+
+}
+
+class ui.fragments.SettingsFragment {
+
+}
+
+' Now the connections
+ui.activities.MainActivity --> ui.fragments.HomeFragment
+ui.activities.MainActivity --> ui.fragments.ChatFragment
+ui.activities.MainActivity --> ui.fragments.SettingsFragment
+ui.activities.MainActivity --> ui.fragments.ChatInfoFragment
+ui.activities.MainActivity --> ui.fragments.CreateChatFragment
+ui.activities.MainActivity --> ui.activities.LoginActivity
+ui.activities.MainActivity ..|> ui.async.FetchImageListener
+ui.activities.MainActivity ..|> github.GithubWrapperHolder
+ui.activities.MainActivity ..|> database.DatabaseHelperHolder
+
+
+ui.async.FetchImageListener --* ui.async.FetchImageTask
+
+database.DatabaseHelper --* ui.activities.MainActivity
+
+github.GithubWrapper --* ui.activities.MainActivity
+github.GithubWrapper --> database.DatabaseHelper
+github.GithubWrapper ..> github.async.FetchGithubUserTask
+github.GithubWrapper ..> github.async.FetchGithubRepoTask
+github.GithubWrapper ..> FetchGithubLinkablesTask
+github.GithubWrapper ..> FetchGithubRepoListTask
+
+
+database.dataobjects.GithubCache --o DatabaseHelper
+
+database.dataobjects.Repository --o DatabaseHelper
+
+Issue ..|> Linkable
+
+Linkable --* LinkableList
+
+LinkableList --* ChatFragment
+
+PullRequest ..|> Linkable
+
+GithubRepo --* ChatInfoFragment
+GithubRepo --* GithubRepoList
+
+GithubUser --* MainActivity
+
+GithubUser --* FirebaseChatMessage
+
+GithubRepoList --* CreateChatFragment
+
+ChatFragment --> GithubWrapper
+ChatFragment ..|> FetchLinkablesListener
+
+FirebaseChatMessage --* MessageCard
+
+ChatInfoFragment --> GithubWrapper
+ChatInfoFragment ..|> FetchRepoListener
+
+
+FetchGithubTask --|> AsyncTask
+FetchGithubTask --> DatabaseHelper
+
+
+CreateChatFragment --> GithubWrapper
+CreateChatFragment --> DatabaseHelper
+CreateChatFragment ..|> FetchRepoListListener
+
+FetchGithubUserTask --|> FetchGithubTask
+
+FetchGithubRepoTask --|> FetchGithubTask
+
+FetchGithubLinkablesTask --|> FetchGithubTask
+
+FetchRepoListener --* FetchGithubRepoTask
+
+FetchUserListener --* FetchGithubUserTask
+
+FetchRepoListListener --* FetchGithubRepoListTask
+
+FetchLinkablesListener --* FetchGithubLinkablesTask
+
+FetchGithubAPIListener --* FetchGithubTask
+
+MessageCard --* ChatFragment
+MessageCard --> ChatFragment
+MessageCard ..|> FetchImageListener
+MessageCard ..|> FetchUserListener
+MessageCard ..|> FetchLinkablesListener
+
+HomeFragment --> DatabaseHelper
+
+FetchImageTask --|> AsyncTask
+
+
+
+@enduml
