@@ -1,6 +1,7 @@
 package edu.quinnipiac.ser210.githubchat.github.async;
 
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -15,8 +16,8 @@ import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 
 public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
 
-    protected GithubWrapper githubWrapper;
-    protected DatabaseHelper databaseHelper;
+    protected final GithubWrapper githubWrapper;
+    protected final DatabaseHelper databaseHelper;
 
     public FetchGithubTask(GithubWrapper githubWrapper, DatabaseHelper databaseHelper) {
         this.githubWrapper = githubWrapper;
@@ -68,5 +69,4 @@ public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
 
         return jsonString.toString();
     }
-
 }

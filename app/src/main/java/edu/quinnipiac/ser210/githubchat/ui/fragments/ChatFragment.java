@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import edu.quinnipiac.ser210.githubchat.R;
-import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubLinkablesTask;
-import edu.quinnipiac.ser210.githubchat.github.dataobjects.Linkable;
+import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubRepoItemTask;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.RepoItem;
 
-public class ChatFragment extends Fragment implements FetchGithubLinkablesTask.Listener {
+public class ChatFragment extends Fragment implements FetchGithubRepoItemTask.Listener {
 
 
     @Override
@@ -23,7 +23,7 @@ public class ChatFragment extends Fragment implements FetchGithubLinkablesTask.L
     }
 
     @Override
-    public void onFetchLinkables(List<Linkable> linkables) {
+    public void onFetchRepoItems(List<RepoItem> repoItems) {
 
     }
 }

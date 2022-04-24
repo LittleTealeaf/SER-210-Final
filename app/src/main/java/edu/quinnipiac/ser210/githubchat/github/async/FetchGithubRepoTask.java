@@ -1,3 +1,36 @@
 package edu.quinnipiac.ser210.githubchat.github.async;
 
-public class FetchGithubRepoTask {}
+import org.json.JSONObject;
+
+import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
+import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
+
+public class FetchGithubRepoTask extends FetchGithubTask {
+
+    private final Listener listener;
+
+    public FetchGithubRepoTask(GithubWrapper githubWrapper, DatabaseHelper databaseHelper, Listener listener) {
+        super(githubWrapper, databaseHelper);
+        this.listener = listener;
+    }
+
+    @Override
+    protected String createURL(String[] strings) {
+        return "https://api.github.com/repos/" + strings[0];
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        try {
+            listener.onFetchGithubRepo(new GithubRepo(new JSONObject(s)));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public interface Listener {
+        void onFetchGithubRepo(GithubRepo repo);
+    }
+}

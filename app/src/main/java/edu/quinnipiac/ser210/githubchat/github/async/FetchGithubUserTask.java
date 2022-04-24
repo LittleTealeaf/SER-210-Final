@@ -1,11 +1,6 @@
 package edu.quinnipiac.ser210.githubchat.github.async;
 
-
 import org.json.JSONObject;
-
-import java.net.HttpURLConnection;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
@@ -16,12 +11,9 @@ public class FetchGithubUserTask extends FetchGithubTask {
     private Listener listener;
 
     public FetchGithubUserTask(GithubWrapper githubWrapper, DatabaseHelper databaseHelper, Listener listener) {
-        super(githubWrapper,databaseHelper);
+        super(githubWrapper, databaseHelper);
         this.listener = listener;
-
     }
-
-
 
     @Override
     protected String createURL(String[] strings) {
@@ -33,12 +25,13 @@ public class FetchGithubUserTask extends FetchGithubTask {
         super.onPostExecute(s);
         try {
             listener.onFetchGithubUser(new GithubUser(new JSONObject(s)));
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public interface Listener {
+
         void onFetchGithubUser(GithubUser user);
     }
 }

@@ -5,8 +5,8 @@ import org.json.JSONObject;
 
 public class GithubUser {
 
-    private String login;
-    private String avatar_url;
+    private final String login;
+    private final String avatar_url;
 
     public GithubUser(JSONObject object) throws JSONException {
         login = object.getString("login");
