@@ -34,7 +34,7 @@ public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
     protected String doInBackground(String... strings) {
         HttpsURLConnection urlConnection = null;
         BufferedReader reader = null;
-        StringBuffer jsonString = new StringBuffer();
+        StringBuilder jsonString = new StringBuilder();
 
         try {
             URL url = new URL(createURL(strings));
