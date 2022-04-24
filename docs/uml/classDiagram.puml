@@ -97,7 +97,11 @@ interface FetchGithubAPIListener {
     +onFetchGithubAPI(String): void
 }
 
-class AsyncTask<String,Void,String> {
+class android.os.AsyncTask<String,Void,String> {
+
+}
+
+class android.app.Activity {
 
 }
 
@@ -184,17 +188,43 @@ interface AuthStateListener {
     +onAuthStateChanged(FirebaseAuth): void
 }
 
+class PreferencesWrapper {
+
+}
+
+interface android.content.SharedPreferences {
+    +getAll(): Map<String, ?>
+    +getString(String,String): String
+    +getStringSet(String,Set<String>): Set<String>
+    +getInt(String,int): int
+    +getLong(String,long): long
+    +getFloat(String,float): float
+    +getBoolean(String,boolean): boolean
+    +contains(String): boolean
+    +edit(): SharedPreferences.Editor
+}
+
+interface PreferencesWrapperHolder {
+    +getPreferencesWrapper(): PreferencesWrapper
+}
+
 MainActivity --> ChatFragment
 MainActivity --> LoginActivity
 MainActivity --> CreateChatFragment
 MainActivity --> ChatInfoFragment
 MainActivity --> HomeFragment
 MainActivity --> SettingsFragment
+MainActivity --|> android.app.Activity
 MainActivity ..|> FetchImageListener
 MainActivity ..|> GithubWrapperHolder
 MainActivity ..|> DatabaseHelperHolder
 MainActivity ..|> AuthStateListener
+MainActivity ..|> PreferencesWrapperHolder
 
+LoginActivity --|> android.app.Activity
+
+PreferencesWrapper --* MainActivity
+PreferencesWrapper ..|> android.content.SharedPreferences
 
 FetchImageListener --* FetchImageTask
 
@@ -239,7 +269,7 @@ ChatInfoFragment --> GithubWrapper
 ChatInfoFragment ..|> FetchRepoListener
 
 
-FetchGithubTask --|> AsyncTask
+FetchGithubTask --|> android.os.AsyncTask
 FetchGithubTask --> DatabaseHelper
 
 
@@ -271,6 +301,6 @@ MessageCard ..|> FetchLinkablesListener
 
 HomeFragment --> DatabaseHelper
 
-FetchImageTask --|> AsyncTask
+FetchImageTask --|> android.os.AsyncTask
 
 @enduml

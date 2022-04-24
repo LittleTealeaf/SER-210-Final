@@ -45,10 +45,18 @@ public class PreferencesWrapper implements SharedPreferences {
         return sharedPreferences.getString(s,s1);
     }
 
+    public void setString(String key, String value) {
+        edit().putString(key,value).apply();
+    }
+
     @Nullable
     @Override
     public Set<String> getStringSet(String s, @Nullable Set<String> set) {
         return sharedPreferences.getStringSet(s,set);
+    }
+
+    public void setStringSet(String key, Set<String> set) {
+        edit().putStringSet(key,set).apply();
     }
 
     @Override
@@ -56,9 +64,17 @@ public class PreferencesWrapper implements SharedPreferences {
         return sharedPreferences.getInt(s,i);
     }
 
+    public void setInt(String key, int i) {
+        edit().putInt(key,i).apply();
+    }
+
     @Override
     public long getLong(String s, long l) {
         return sharedPreferences.getLong(s,l);
+    }
+
+    public void setLong(String s, long l) {
+        edit().putLong(s,l).apply();
     }
 
     @Override
@@ -66,9 +82,17 @@ public class PreferencesWrapper implements SharedPreferences {
         return sharedPreferences.getFloat(s,v);
     }
 
+    public void setFloat(String s, float f) {
+        edit().putFloat(s,f).apply();
+    }
+
     @Override
     public boolean getBoolean(String s, boolean b) {
         return sharedPreferences.getBoolean(s,b);
+    }
+
+    public void setBoolean(String s, boolean b) {
+        edit().putBoolean(s,b).apply();
     }
 
     @Override

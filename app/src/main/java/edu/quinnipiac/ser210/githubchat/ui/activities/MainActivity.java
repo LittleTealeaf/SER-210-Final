@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -64,24 +65,23 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-        loginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if(result.getResultCode() == Activity.RESULT_OK) {
-                assert result.getData() != null;
-                githubWrapper.setGithubToken(result.getData().getStringExtra(GithubWrapper.TOKEN));
-                SharedPreferences.Editor loginPrefsEditor = getSharedPreferences(PREFERENCES,0).edit();
-                loginPrefsEditor.putString(GithubWrapper.TOKEN,githubWrapper.getGithubToken());
-                loginPrefsEditor.apply();
-            }
-        });
+        loginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onLoginActivityResult);
 
         FirebaseAuth.getInstance().addAuthStateListener(this);
+    }
+
+    private void onLoginActivityResult(ActivityResult result) {
+        if(result.getResultCode() == Activity.RESULT_OK) {
+            assert result.getData() != null;
+            githubWrapper.setGithubToken(result.getData().getStringExtra(GithubWrapper.TOKEN));
+            preferencesWrapper.setString(GithubWrapper.TOKEN,githubWrapper.getGithubToken());
+        }
     }
 
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(GithubWrapper.TOKEN, githubWrapper.getGithubToken());
         databaseHelper.close();
     }
 
@@ -98,10 +98,7 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         if(firebaseAuth.getCurrentUser() == null) {
-            SharedPreferences preferences = getSharedPreferences(PREFERENCES,0);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.remove(GithubWrapper.TOKEN);
-            editor.apply();
+            preferencesWrapper.edit().remove(GithubWrapper.TOKEN).apply();
             loginLauncher.launch(new Intent(this,LoginActivity.class));
         } else {
             System.out.println("SENDING STUFF");
@@ -115,6 +112,12 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
                 }
             });
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseAuth.getInstance().removeAuthStateListener(this);
     }
 
     @Override
