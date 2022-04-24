@@ -36,14 +36,12 @@ public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
         BufferedReader reader = null;
         StringBuffer jsonString = new StringBuffer();
 
-        System.out.println("TOKEN ALIVE");
-
         try {
             URL url = new URL(createURL(strings));
             urlConnection = (HttpsURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.addRequestProperty("Accept","application/vnd.github.v3+json");
-//            urlConnection.addRequestProperty("Authorization","token " + githubWrapper.getGithubToken());
+            urlConnection.addRequestProperty("Authorization","token " + githubWrapper.getGithubToken());
             addHeaders(urlConnection);
             InputStream stream = urlConnection.getInputStream();
 

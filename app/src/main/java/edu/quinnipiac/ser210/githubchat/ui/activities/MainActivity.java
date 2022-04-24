@@ -2,6 +2,7 @@ package edu.quinnipiac.ser210.githubchat.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -19,6 +20,7 @@ import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubUserTask;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 import edu.quinnipiac.ser210.githubchat.helpers.Keys;
+import edu.quinnipiac.ser210.githubchat.preferences.PreferencesWrapper;
 
 /*
 Current plan of action:
@@ -32,10 +34,14 @@ data to load (ex: getUserAvatar, getUserName...)
 
  */
 
-public class MainActivity extends AppCompatActivity implements DatabaseHelper.Holder, GithubWrapper.Holder, FirebaseAuth.AuthStateListener {
+public class MainActivity extends AppCompatActivity implements DatabaseHelper.Holder, GithubWrapper.Holder,
+                                                               PreferencesWrapper.Holder, FirebaseAuth.AuthStateListener {
+
+    private static final String PREFERENCES = "GithubChatAppPreferences";
 
     private DatabaseHelper databaseHelper;
     private GithubWrapper githubWrapper;
+    private PreferencesWrapper preferencesWrapper;
 
 
     private ActivityResultLauncher<Intent> loginLauncher;
@@ -50,8 +56,11 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        preferencesWrapper = new PreferencesWrapper(this);
+
         databaseHelper = new DatabaseHelper(this);
-        githubWrapper = new GithubWrapper(databaseHelper, savedInstanceState == null ? null : savedInstanceState.getString(GithubWrapper.TOKEN));
+
+        githubWrapper = new GithubWrapper(databaseHelper, preferencesWrapper.getString(GithubWrapper.TOKEN,null));
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
@@ -59,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
             if(result.getResultCode() == Activity.RESULT_OK) {
                 assert result.getData() != null;
                 githubWrapper.setGithubToken(result.getData().getStringExtra(GithubWrapper.TOKEN));
+                SharedPreferences.Editor loginPrefsEditor = getSharedPreferences(PREFERENCES,0).edit();
+                loginPrefsEditor.putString(GithubWrapper.TOKEN,githubWrapper.getGithubToken());
+                loginPrefsEditor.apply();
             }
         });
 
@@ -86,6 +98,10 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         if(firebaseAuth.getCurrentUser() == null) {
+            SharedPreferences preferences = getSharedPreferences(PREFERENCES,0);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.remove(GithubWrapper.TOKEN);
+            editor.apply();
             loginLauncher.launch(new Intent(this,LoginActivity.class));
         } else {
             System.out.println("SENDING STUFF");
@@ -99,5 +115,10 @@ public class MainActivity extends AppCompatActivity implements DatabaseHelper.Ho
                 }
             });
         }
+    }
+
+    @Override
+    public PreferencesWrapper getPreferencesWrapper() {
+        return preferencesWrapper;
     }
 }
