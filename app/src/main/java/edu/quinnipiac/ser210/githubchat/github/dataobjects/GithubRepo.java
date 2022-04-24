@@ -1,3 +1,5 @@
 package edu.quinnipiac.ser210.githubchat.github.dataobjects;
 
-public class GithubRepo {}
+public class GithubRepo {
+
+}

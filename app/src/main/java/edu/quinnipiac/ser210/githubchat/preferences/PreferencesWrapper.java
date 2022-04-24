@@ -116,4 +116,12 @@ public class PreferencesWrapper implements SharedPreferences {
     public interface Holder {
         PreferencesWrapper getPreferencesWrapper();
     }
+
+    public static PreferencesWrapper fromObject(Object object) {
+        if(object instanceof Holder) {
+            return ((Holder) object).getPreferencesWrapper();
+        } else {
+            return null;
+        }
+    }
 }

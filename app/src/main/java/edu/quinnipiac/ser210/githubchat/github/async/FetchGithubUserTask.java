@@ -1,6 +1,8 @@
 package edu.quinnipiac.ser210.githubchat.github.async;
 
 
+import org.json.JSONObject;
+
 import java.net.HttpURLConnection;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -29,7 +31,11 @@ public class FetchGithubUserTask extends FetchGithubTask {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        System.out.println(s);
+        try {
+            listener.onFetchGithubUser(new GithubUser(new JSONObject(s)));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public interface Listener {

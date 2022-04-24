@@ -1,5 +1,7 @@
 package edu.quinnipiac.ser210.githubchat.github;
 
+import android.app.Activity;
+
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubTask;
 import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubUserTask;
@@ -29,7 +31,17 @@ public class GithubWrapper {
         new FetchGithubUserTask(this,databaseHelper,listener).execute(username);
     }
 
+    public static GithubWrapper fromActivity(Activity activity) {
+        return ((Holder) activity).getGithubWrapper();
+    }
 
+    public static GithubWrapper fromObject(Object object) {
+        if(object instanceof Holder) {
+            return ((Holder) object).getGithubWrapper();
+        } else {
+            return null;
+        }
+    }
 
 
     public interface Holder {

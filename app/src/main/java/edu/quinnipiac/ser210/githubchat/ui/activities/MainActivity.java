@@ -8,8 +8,10 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,8 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
-import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubUserTask;
-import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesWrapper;
 
 /*
@@ -36,7 +36,6 @@ data to load (ex: getUserAvatar, getUserName...)
 public class MainActivity extends AppCompatActivity
         implements DatabaseHelper.Holder, GithubWrapper.Holder, PreferencesWrapper.Holder, FirebaseAuth.AuthStateListener {
 
-
     private DatabaseHelper databaseHelper;
     private GithubWrapper githubWrapper;
     private PreferencesWrapper preferencesWrapper;
@@ -53,11 +52,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        preferencesWrapper = new PreferencesWrapper(this);
-
-        databaseHelper = new DatabaseHelper(this);
-
-        githubWrapper = new GithubWrapper(databaseHelper, preferencesWrapper.getString(GithubWrapper.TOKEN, null));
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
@@ -69,24 +63,32 @@ public class MainActivity extends AppCompatActivity
     private void onLoginActivityResult(ActivityResult result) {
         if (result.getResultCode() == Activity.RESULT_OK) {
             assert result.getData() != null;
-            githubWrapper.setGithubToken(result.getData().getStringExtra(GithubWrapper.TOKEN));
-            preferencesWrapper.setString(GithubWrapper.TOKEN, githubWrapper.getGithubToken());
+            getGithubWrapper().setGithubToken(result.getData().getStringExtra(GithubWrapper.TOKEN));
+            getPreferencesWrapper().setString(GithubWrapper.TOKEN, getGithubWrapper().getGithubToken());
         }
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        databaseHelper.close();
+        if(databaseHelper != null) {
+            databaseHelper.close();
+        }
     }
 
     @Override
     public DatabaseHelper getDatabaseHelper() {
+        if(databaseHelper == null) {
+            databaseHelper = new DatabaseHelper(this);
+        }
         return databaseHelper;
     }
 
     @Override
     public GithubWrapper getGithubWrapper() {
+        if (githubWrapper == null) {
+            githubWrapper = new GithubWrapper(getDatabaseHelper(), getPreferencesWrapper().getString(GithubWrapper.TOKEN, null));
+        }
         return githubWrapper;
     }
 
@@ -95,17 +97,6 @@ public class MainActivity extends AppCompatActivity
         if (firebaseAuth.getCurrentUser() == null) {
             preferencesWrapper.edit().remove(GithubWrapper.TOKEN).apply();
             loginLauncher.launch(new Intent(this, LoginActivity.class));
-        } else {
-            System.out.println("SENDING STUFF");
-            /*
-            TODO: what needs to happen is that we need to store the "github key" inside the settings file
-             */
-            githubWrapper.fetchGithubUser("LittleTealeaf", new FetchGithubUserTask.Listener() {
-                @Override
-                public void onFetchGithubUser(GithubUser user) {
-
-                }
-            });
         }
     }
 
@@ -117,6 +108,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public PreferencesWrapper getPreferencesWrapper() {
+        if(preferencesWrapper == null) {
+            preferencesWrapper = new PreferencesWrapper(this);
+        }
         return preferencesWrapper;
     }
+
+
 }

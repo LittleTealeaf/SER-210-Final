@@ -25,15 +25,16 @@ import java.util.Objects;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
+import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubUserTask;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 
+@Deprecated
 public class LoginFragment extends Fragment implements OnSuccessListener<AuthResult>, OnFailureListener, View.OnClickListener {
 
     public static String TAG = "LoginFragment";
 
     private OAuthProvider.Builder builder;
     private Task<AuthResult> pendingResultTask;
-
-    private NavController navController;
 
     private GithubWrapper githubWrapper;
 
@@ -67,10 +68,6 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.button_login_github).setOnClickListener(this);
-        navController = Navigation.findNavController(view);
-
-
-
     }
 
     @Override
@@ -81,14 +78,15 @@ public class LoginFragment extends Fragment implements OnSuccessListener<AuthRes
     @Override
     public void onSuccess(AuthResult authResult) {
         githubWrapper.setGithubToken(((OAuthCredential) Objects.requireNonNull(authResult.getCredential())).getAccessToken());
-//        navController.navigate(R.id.action_loginFragment_to_homeFragment);
     }
 
     @Override
     public void onClick(View view) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        pendingResultTask = auth.startActivityForSignInWithProvider(getActivity(), builder.build());
+        pendingResultTask = auth.startActivityForSignInWithProvider(requireActivity(), builder.build());
         pendingResultTask.addOnSuccessListener(this);
         pendingResultTask.addOnFailureListener(this);
     }
+
+
 }

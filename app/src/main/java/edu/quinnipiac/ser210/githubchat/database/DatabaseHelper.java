@@ -1,5 +1,6 @@
 package edu.quinnipiac.ser210.githubchat.database;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -77,6 +78,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return cache;
 
+    }
+
+//    public static DatabaseHelper fromActivity(Activity activity) {
+//        return ((Holder) activity).getDatabaseHelper();
+//    }
+
+    public static DatabaseHelper fromObject(Object object) {
+        if(object instanceof Holder) {
+            return ((Holder) object).getDatabaseHelper();
+        } else {
+            return null;
+        }
     }
 
 
