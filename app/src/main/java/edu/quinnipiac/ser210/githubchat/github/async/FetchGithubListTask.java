@@ -27,6 +27,11 @@ public abstract class FetchGithubListTask extends FetchGithubTask {
     }
 
     @Override
+    protected String getURLKey(String... strings) {
+        return super.getURLKey(strings) + " " + page;
+    }
+
+    @Override
     protected String doInBackground(String... strings) {
         JSONArray items = new JSONArray();
 
