@@ -46,6 +46,14 @@ public class GithubWrapper {
         new FetchGithubRepoItemTask(this,databaseHelper,listener).execute(fullName);
     }
 
+    public void fetchCurrentUser(FetchGithubUserTask.Listener listener) {
+        new FetchGithubUserTask(this,databaseHelper,listener).execute();
+    }
+
+    public void fetchCurrentUserRepos(FetchGithubRepoListTask.Listener listener) {
+        new FetchGithubRepoListTask(this,databaseHelper,listener).execute();
+    }
+
     public static GithubWrapper fromObject(Object object) {
         if(object instanceof Holder) {
             return ((Holder) object).getGithubWrapper();
