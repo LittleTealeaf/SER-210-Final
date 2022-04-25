@@ -3,7 +3,7 @@ package edu.quinnipiac.ser210.githubchat.github.dataobjects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Issue implements RepoItem {
+public class GithubPull implements RepoItem {
 
     private final int number;
     private final String title;
@@ -11,7 +11,7 @@ public class Issue implements RepoItem {
     private final boolean closed;
     private final GithubUser user;
 
-    public Issue(JSONObject jsonObject) throws JSONException {
+    public GithubPull(JSONObject jsonObject) throws JSONException {
         number = jsonObject.getInt("number");
         title = jsonObject.getString("title");
         url = jsonObject.getString("html_url");

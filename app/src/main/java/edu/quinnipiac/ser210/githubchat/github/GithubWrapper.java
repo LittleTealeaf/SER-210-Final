@@ -3,6 +3,9 @@ package edu.quinnipiac.ser210.githubchat.github;
 import android.app.Activity;
 
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
+import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubRepoItemTask;
+import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubRepoListTask;
+import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubRepoTask;
 import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubTask;
 import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubUserTask;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
@@ -31,8 +34,16 @@ public class GithubWrapper {
         new FetchGithubUserTask(this,databaseHelper,listener).execute(username);
     }
 
-    public static GithubWrapper fromActivity(Activity activity) {
-        return ((Holder) activity).getGithubWrapper();
+    public void fetchGithubRepo(String fullName, FetchGithubRepoTask.Listener listener) {
+        new FetchGithubRepoTask(this,databaseHelper,listener).execute(fullName);
+    }
+
+    public void fetchGithubRepoListTask(String username, FetchGithubRepoListTask.Listener listener) {
+        new FetchGithubRepoListTask(this,databaseHelper,listener).execute(username);
+    }
+
+    public void fetchGithubRepoItemsTask(String fullName, FetchGithubRepoItemTask.Listener listener) {
+        new FetchGithubRepoItemTask(this,databaseHelper,listener).execute(fullName);
     }
 
     public static GithubWrapper fromObject(Object object) {
