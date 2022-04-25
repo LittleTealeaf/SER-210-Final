@@ -8,10 +8,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Time;
+import java.time.Instant;
+import java.util.Date;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
+import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 
 public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
@@ -27,12 +31,22 @@ public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
 
     protected abstract String createURL(String[] strings);
 
+    protected String getURLKey(String... strings) {
+        return createURL(strings);
+    }
+
     protected void addHeaders(HttpsURLConnection connection) {
 
     }
 
     @Override
     protected String doInBackground(String... strings) {
+
+        GithubCache cache = databaseHelper.getGithubCache(getURLKey(strings));
+        if(cache != null && cache.getFetchTime() > Instant.now().getEpochSecond() - 24 * 60 * 60) {
+            return cache.getContent();
+        }
+
         HttpsURLConnection urlConnection = null;
         BufferedReader reader = null;
         StringBuilder jsonString = new StringBuilder();
@@ -65,6 +79,13 @@ public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
         } catch(Exception e) {
             e.printStackTrace();
         }
+
+        cache = new GithubCache();
+        cache.setUrl(getURLKey(strings));
+        cache.setContent(jsonString.toString());
+        cache.setFetchTime(Instant.now().getEpochSecond());
+
+        databaseHelper.insertGithubCache(cache);
 
 
         return jsonString.toString();
