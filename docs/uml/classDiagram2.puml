@@ -1,0 +1,89 @@
+@startuml Class Diagam
+
+skinparam class {
+    BackgroundColor LightGrey
+    BorderColor Black
+    ArrowColor Black
+}
+
+class DatabaseHelper {
+
+}
+
+interface DatabaseHelperHolder {
+
+}
+
+class GithubCache {
+
+}
+GithubCache --o DatabaseHelper
+
+class Repository {
+
+}
+Repository --o DatabaseHelper
+
+class FirebaseChatMessage {
+
+}
+
+abstract AsyncTask {
+
+}
+
+abstract FetchGithubTask {
+
+}
+FetchGithubTask --|> AsyncTask
+
+abstract FetchGithubListTask {
+
+}
+FetchGithubListTask --|> FetchGithubTask
+
+class FetchGithubIssuesTask {
+
+}
+FetchGithubIssuesTask --|> FetchGithubListTask
+FetchGithubIssuesTask --o FetchGithubRepoItemTask
+
+class FetchGithubPullsTask {
+
+}
+FetchGithubPullsTask --|> FetchGithubListTask
+FetchGithubPullsTask --o FetchGithubRepoItemTask
+
+class FetchGithubRepoItemTask {
+
+}
+FetchGithubRepoItemTask ..|> FetchGithubIssuesListener
+FetchGithubRepoItemTask ..|> FetchGithubPullsListener
+
+class FetchGithubRepoListTask {
+
+}
+FetchGithubRepoListTask --|> FetchGithubListTask
+
+class FetchGithubRepoTask {
+
+}
+FetchGithubRepoTask --|> FetchGithubTask
+
+class FetchGithubUserTask {
+
+}
+FetchGithubUserTask --|> FetchGithubTask
+
+interface FetchGithubIssuesListener {
+
+}
+FetchGithubIssuesListener --* FetchGithubIssuesTask
+
+interface FetchGithubPullsListener {
+
+}
+FetchGithubPullsListener --* FetchGithubPullsTask
+
+
+@enduml
