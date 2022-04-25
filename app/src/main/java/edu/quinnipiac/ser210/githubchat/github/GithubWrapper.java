@@ -38,11 +38,11 @@ public class GithubWrapper {
         new FetchGithubRepoTask(this,databaseHelper,listener).execute(fullName);
     }
 
-    public void fetchGithubRepoListTask(String username, FetchGithubRepoListTask.Listener listener) {
+    public void fetchGithubRepoList(String username, FetchGithubRepoListTask.Listener listener) {
         new FetchGithubRepoListTask(this,databaseHelper,listener).execute(username);
     }
 
-    public void fetchGithubRepoItemsTask(String fullName, FetchGithubRepoItemTask.Listener listener) {
+    public void fetchGithubRepoItems(String fullName, FetchGithubRepoItemTask.Listener listener) {
         new FetchGithubRepoItemTask(this,databaseHelper,listener).execute(fullName);
     }
 
