@@ -34,6 +34,7 @@ public class CreateChatFragment extends Fragment implements SearchView.OnQueryTe
         searchView.setOnQueryTextListener(this);
         searchView.setIconified(false);
         searchView.setSubmitButtonEnabled(true);
+        searchView.setQueryHint("Enter Repository");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.frag_create_repo_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
