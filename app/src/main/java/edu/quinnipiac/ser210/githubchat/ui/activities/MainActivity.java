@@ -33,6 +33,9 @@ data to load (ex: getUserAvatar, getUserName...)
 
  */
 
+/**
+ * @author THomas Kwashnak
+ */
 public class MainActivity extends AppCompatActivity
         implements DatabaseHelper.Holder, GithubWrapper.Holder, PreferencesWrapper.Holder, FirebaseAuth.AuthStateListener {
 

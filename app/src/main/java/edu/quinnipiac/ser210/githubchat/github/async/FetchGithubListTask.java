@@ -11,6 +11,10 @@ import javax.net.ssl.HttpsURLConnection;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 
+/**
+ * @author Thomas Kwashnak
+ * An abstract AsyncTask that handles fetching multiple pages from some endpoint
+ */
 public abstract class FetchGithubListTask extends FetchGithubTask {
 
     private int page = 1;

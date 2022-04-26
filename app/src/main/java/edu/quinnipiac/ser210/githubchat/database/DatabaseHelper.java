@@ -9,6 +9,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRepository;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
 
+/**
+ * Wraps methods used to interact with the SQLite Database
+ * @author Thomas Kwashnak
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String BUNDLE_ID = "ID";

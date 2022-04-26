@@ -3,6 +3,10 @@ package edu.quinnipiac.ser210.githubchat.github.dataobjects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * @author Thomas Kwashnak
+ * Represents a GithubIssue pulled from the Github REST API
+ */
 public class GithubIssue implements RepoItem {
 
     private final int number;

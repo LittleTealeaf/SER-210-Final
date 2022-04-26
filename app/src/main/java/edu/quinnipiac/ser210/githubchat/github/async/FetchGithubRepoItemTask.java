@@ -9,6 +9,10 @@ import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubIssue;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubPull;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.RepoItem;
 
+/**
+ * @author Thomas Kwashnak
+ * An AsyncTask-like that diverges and fetches both Pull Requests and Issues from a provided repository
+ */
 public class FetchGithubRepoItemTask implements FetchGithubPullsTask.Listener, FetchGithubIssuesTask.Listener {
 
     private final Listener listener;

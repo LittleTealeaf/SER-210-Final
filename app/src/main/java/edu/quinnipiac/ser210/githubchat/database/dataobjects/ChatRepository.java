@@ -1,5 +1,9 @@
 package edu.quinnipiac.ser210.githubchat.database.dataobjects;
 
+/**
+ * Represents a repository stored in the Database
+ * @author Thomas Kwashnak
+ */
 public class ChatRepository {
 
     private String fullName;

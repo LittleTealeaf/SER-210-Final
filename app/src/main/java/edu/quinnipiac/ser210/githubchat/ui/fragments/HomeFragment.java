@@ -18,6 +18,9 @@ import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubUserTask;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class HomeFragment extends Fragment implements FetchGithubUserTask.Listener, View.OnClickListener {
 
 

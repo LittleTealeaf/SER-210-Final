@@ -10,6 +10,9 @@ import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubTask;
 import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubUserTask;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class GithubWrapper {
 
     public static String TOKEN = "githubToken";

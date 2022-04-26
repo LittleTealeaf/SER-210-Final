@@ -12,6 +12,9 @@ import java.util.Set;
 
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class PreferencesWrapper implements SharedPreferences {
 
     private static final String PREFERENCES_NAME = "GithubChatPreferences";

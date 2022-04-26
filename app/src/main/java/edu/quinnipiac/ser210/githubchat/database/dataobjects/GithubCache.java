@@ -2,6 +2,10 @@ package edu.quinnipiac.ser210.githubchat.database.dataobjects;
 
 import android.content.ContentValues;
 
+/**
+ * Represents a Github Cache stored in the Database
+ * @author Thomas Kwashnak
+ */
 public class GithubCache {
     private String url;
     private String content;

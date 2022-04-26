@@ -1,7 +1,8 @@
 package edu.quinnipiac.ser210.githubchat.firebase.dataobjects;
 
 /**
- *
+ * @author Thomas Kwashnak
+ * Represents a Chat Message retrieved from the Firebase Realtime Database
  */
 public class FirebaseChatMessage {
 

@@ -9,6 +9,10 @@ import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubIssue;
 
+/**
+ * @author Thomas Kwashnak
+ * An Async Task that handles fetching all issues from a given repository
+ */
 public class FetchGithubIssuesTask extends FetchGithubListTask {
 
     private final Listener listener;

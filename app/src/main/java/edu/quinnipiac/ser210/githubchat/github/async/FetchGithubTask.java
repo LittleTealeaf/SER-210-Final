@@ -18,6 +18,10 @@ import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 
+/**
+ * @author Thomas Kwashnak
+ * An abstract AsyncTask that handles fetching data from the API endpoint, storing it into the database, and returning that value
+ */
 public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
 
     protected final GithubWrapper githubWrapper;
