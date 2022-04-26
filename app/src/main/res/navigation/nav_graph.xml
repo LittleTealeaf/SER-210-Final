@@ -15,7 +15,8 @@
                 app:destination="@id/chatFragment" />
         <action
                 android:id="@+id/action_homeFragment_to_createChatFragment"
-                app:destination="@id/createChatFragment" />
+                app:destination="@id/createChatFragment"
+                app:popUpToInclusive="false" />
         <action
                 android:id="@+id/action_homeFragment_to_settingsFragment"
                 app:destination="@id/settingsFragment" />
@@ -39,7 +40,9 @@
             tools:layout="@layout/fragment_create_chat" >
         <action
                 android:id="@+id/action_createChatFragment_to_chatFragment"
-                app:destination="@id/chatFragment" />
+                app:destination="@id/chatFragment"
+                app:popUpTo="@id/homeFragment"
+                app:popUpToInclusive="false" />
     </fragment>
     <fragment
             android:id="@+id/chatInfoFragment"
