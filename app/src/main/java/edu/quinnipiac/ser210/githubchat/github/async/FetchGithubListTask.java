@@ -3,8 +3,10 @@ package edu.quinnipiac.ser210.githubchat.github.async;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -17,6 +19,8 @@ import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
  */
 public abstract class FetchGithubListTask extends FetchGithubTask {
 
+    private static final int per_page = 100;
+
     private int page = 1;
 
     public FetchGithubListTask(GithubWrapper githubWrapper, DatabaseHelper databaseHelper) {
@@ -24,16 +28,13 @@ public abstract class FetchGithubListTask extends FetchGithubTask {
     }
 
     @Override
-    protected void addHeaders(HttpsURLConnection connection) {
-        super.addHeaders(connection);
-        connection.addRequestProperty("per_page","100");
-        connection.addRequestProperty("page",Integer.toString(page));
+    public Map<String, String> buildHeaders() {
+        return new HashMap<String,String>() {{
+           put("page",Integer.toString(page));
+           put("per_page",Integer.toString(per_page));
+        }};
     }
 
-    @Override
-    protected String getURLKey(String... strings) {
-        return super.getURLKey(strings) + " " + page;
-    }
 
     @Override
     protected String doInBackground(String... strings) {
@@ -46,7 +47,7 @@ public abstract class FetchGithubListTask extends FetchGithubTask {
                 for(int i = 0; i < fetch.length(); i++) {
                     items.put(fetch.getJSONObject(i));
                 }
-                if(fetch.length() < 100) {
+                if(fetch.length() < per_page) {
                     break;
                 }
             }

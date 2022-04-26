@@ -27,7 +27,7 @@ public class FetchGithubRepoListTask extends FetchGithubListTask {
     }
 
     @Override
-    protected String createURL(String[] strings) {
+    protected String getURL(String[] strings) {
         return strings.length == 0 ? "https://api.github.com/user/repos" : "https://api.github.com/users/" + strings[0] + "/repos";
     }
 
