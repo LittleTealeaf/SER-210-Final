@@ -42,7 +42,7 @@ public class LoadImageTask extends AsyncTask<String,Void,Bitmap> {
         }
     }
 
-    interface Listener {
+    public interface Listener {
         void onLoadImage(Bitmap bitmap);
     }
 }
