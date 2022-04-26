@@ -60,7 +60,7 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoViewHolder> implements
 
     public void filterList(String filterText) {
         displayRepos = filterText.equals("") ? repos : repos.stream().filter(
-                githubRepo -> githubRepo.getFullName().contains(filterText)).collect(Collectors.toList());
+                githubRepo -> githubRepo.getFullName().toLowerCase().contains(filterText.toLowerCase())).collect(Collectors.toList());
         notifyDataSetChanged();
 
     }
