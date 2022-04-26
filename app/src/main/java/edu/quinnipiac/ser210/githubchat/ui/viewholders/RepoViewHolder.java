@@ -11,6 +11,9 @@ import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.RepoAdapter;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class RepoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, RepoAdapter.OnRepoSelectedListener {
 
     private final RepoAdapter adapter;

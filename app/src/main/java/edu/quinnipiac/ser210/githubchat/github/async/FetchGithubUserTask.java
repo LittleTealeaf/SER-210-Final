@@ -6,6 +6,10 @@ import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 
+/**
+ * @author Thomas Kwashnak
+ * An AsyncTask that fetches a Github User
+ */
 public class FetchGithubUserTask extends FetchGithubTask {
 
     private Listener listener;

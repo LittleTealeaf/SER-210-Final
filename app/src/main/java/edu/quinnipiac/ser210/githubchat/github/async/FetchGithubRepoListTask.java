@@ -13,6 +13,10 @@ import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.RepoItem;
 
+/**
+ * @author Thomas Kwashnak
+ * An AsyncTask that fetches all repositories from a given user
+ */
 public class FetchGithubRepoListTask extends FetchGithubListTask {
 
     private final Listener listener;

@@ -5,6 +5,10 @@ import org.json.JSONObject;
 
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRepository;
 
+/**
+ * @author Thomas Kwashnak
+ * Represents a Github Repository fetched from the Github REST API
+ */
 public class GithubRepo {
 
     private final String name;

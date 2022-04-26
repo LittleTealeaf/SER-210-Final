@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 
 import edu.quinnipiac.ser210.githubchat.R;
 
-
+/**
+ * @author Thomas Kwashnak
+ */
 public class SettingsFragment extends Fragment {
 
 

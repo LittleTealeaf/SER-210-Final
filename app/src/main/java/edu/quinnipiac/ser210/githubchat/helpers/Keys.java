@@ -1,5 +1,9 @@
 package edu.quinnipiac.ser210.githubchat.helpers;
 
+/**
+ * @author Thomas Kwashnak
+ */
+@Deprecated
 public class Keys {
 
     public static final String GITHUB_API_TOKEN = "github_api_token";

@@ -9,6 +9,10 @@ import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubPull;
 
+/**
+ * @author Thomas Kwashnak
+ * An AsyncTask that handles fetching all pull requests from a given repository
+ */
 public class FetchGithubPullsTask extends FetchGithubListTask {
 
     private final Listener listener;

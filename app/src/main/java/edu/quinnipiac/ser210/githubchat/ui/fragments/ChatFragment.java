@@ -14,6 +14,9 @@ import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubRepoItemTask;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.RepoItem;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class ChatFragment extends Fragment implements FetchGithubRepoItemTask.Listener {
 
 

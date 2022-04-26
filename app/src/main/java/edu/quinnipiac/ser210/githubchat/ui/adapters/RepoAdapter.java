@@ -18,6 +18,9 @@ import edu.quinnipiac.ser210.githubchat.github.async.FetchGithubRepoListTask;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.ui.viewholders.RepoViewHolder;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class RepoAdapter extends RecyclerView.Adapter<RepoViewHolder> implements FetchGithubRepoListTask.Listener {
 
     private final List<GithubRepo> repos = new LinkedList<>();

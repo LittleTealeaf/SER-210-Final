@@ -26,6 +26,9 @@ import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.firebase.dataobjects.FirebaseChatMessage;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class DebugChatFragment extends Fragment implements ValueEventListener, View.OnClickListener {
 
     private static String TAG = "DEBUG CHAT";
