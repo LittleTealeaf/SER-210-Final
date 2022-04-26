@@ -12,14 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.RepoAdapter;
 
-public class CreateChatFragment extends Fragment implements SearchView.OnQueryTextListener {
+public class CreateChatFragment extends Fragment implements SearchView.OnQueryTextListener, View.OnClickListener, RepoAdapter.OnRepoSelectedListener {
 
     private RepoAdapter adapter;
+    private Button createManualButton;
+
+    private GithubRepo currentSelection;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,7 +44,11 @@ public class CreateChatFragment extends Fragment implements SearchView.OnQueryTe
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.frag_create_repo_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new RepoAdapter(getContext());
+        adapter.setOnRepoSelectedListener(this);
         recyclerView.setAdapter(adapter);
+
+        createManualButton = (Button) view.findViewById(R.id.frag_create_button_manual);
+        createManualButton.setOnClickListener(this);
 
 
         GithubWrapper.fromObject(requireActivity()).fetchCurrentUserRepos(adapter);
@@ -53,6 +62,17 @@ public class CreateChatFragment extends Fragment implements SearchView.OnQueryTe
     @Override
     public boolean onQueryTextChange(String newText) {
         adapter.filterList(newText);
+        createManualButton.setText(String.format("Manually Create: %s", newText));
         return false;
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    @Override
+    public void onRepoSelected(GithubRepo repo) {
+        currentSelection = repo;
     }
 }
