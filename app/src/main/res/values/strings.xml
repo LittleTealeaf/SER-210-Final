@@ -4,5 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_github">Login with Github</string>
     <string name="preference_file">GithubChatAppPreferences</string>
+    <string name="create_fragment">Create Fragment</string>
+    <string name="confirm_create_chat">Confirm Create</string>
 
 </resources>
