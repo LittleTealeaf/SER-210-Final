@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         if (firebaseAuth.getCurrentUser() == null) {
-            preferencesWrapper.edit().remove(GithubWrapper.TOKEN).apply();
+            getPreferencesWrapper().edit().remove(GithubWrapper.TOKEN).apply();
             loginLauncher.launch(new Intent(this, LoginActivity.class));
         }
     }

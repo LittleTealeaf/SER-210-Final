@@ -1,11 +1,14 @@
 package edu.quinnipiac.ser210.githubchat.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,7 +81,10 @@ public class CreateChatFragment extends Fragment implements SearchView.OnQueryTe
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.frag_create_fab_confirm) {
+            Bundle bundle = new Bundle();
+            bundle.putLong(DatabaseHelper.BUNDLE_ID,DatabaseHelper.fromObject(requireActivity()).addRepository(currentSelection.toChatRepository()));
 
+            Navigation.findNavController(requireView()).navigate(R.id.action_createChatFragment_to_chatFragment,bundle);
         }
     }
 
