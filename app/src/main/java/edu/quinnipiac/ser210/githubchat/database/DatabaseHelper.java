@@ -50,8 +50,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         if(oldVersion < 3) {
             sqLiteDatabase.execSQL(
-                    "CREATE TABLE " + TABLE_CHAT_REPOS + " (" + KEY_ID + " INT PRIMARY KEY AUTOINCREMENT, " + KEY_FULL_NAME + " TEXT NOT NULL, " + KEY_FAVORITE +
-                    " BOOL)");
+                    "CREATE TABLE " + TABLE_CHAT_REPOS + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_FULL_NAME + " TEXT NOT NULL, " + KEY_FAVORITE +
+                    " INTEGER)");
         }
     }
 
@@ -88,13 +88,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void addRepo(ChatRepository chatRepository) {
+    public ChatRepository getRepository(String fullName) {
+        String[] columns = {KEY_FULL_NAME,KEY_FAVORITE};
 
+        ChatRepository repository = null;
+
+        Cursor cursor = database.query(TABLE_CHAT_REPOS,columns,KEY_FULL_NAME + " = ?",new String[] {fullName},null,null,null);
+
+        if(cursor.getCount() > 0) {
+            cursor.moveToNext();
+            repository = new ChatRepository();
+            repository.setFullName(cursor.getString(0));
+            repository.setFavorite(cursor.getInt(0) == 1);
+        }
+
+        cursor.close();
+        return repository;
     }
 
-//    public static DatabaseHelper fromActivity(Activity activity) {
-//        return ((Holder) activity).getDatabaseHelper();
-//    }
+    public void addRepository(ChatRepository chatRepository) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_FULL_NAME,chatRepository.getFullName());
+        values.put(KEY_FAVORITE,chatRepository.isFavorite());
+
+
+    }
 
     public static DatabaseHelper fromObject(Object object) {
         if(object instanceof Holder) {
