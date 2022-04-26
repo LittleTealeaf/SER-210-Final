@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -59,8 +60,15 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoViewHolder> implements
     }
 
     public void filterList(String filterText) {
-        displayRepos = filterText.equals("") ? repos : repos.stream().filter(
-                githubRepo -> githubRepo.getFullName().toLowerCase().contains(filterText.toLowerCase())).collect(Collectors.toList());
+        String[] filters = filterText.split(" ");
+        displayRepos = filterText.equals("") ? repos : repos.stream().filter(githubRepo -> {
+            for(String filter : filters) {
+                if(!githubRepo.getFullName().toLowerCase().contains(filter.toLowerCase(Locale.ROOT))) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
         notifyDataSetChanged();
 
     }
