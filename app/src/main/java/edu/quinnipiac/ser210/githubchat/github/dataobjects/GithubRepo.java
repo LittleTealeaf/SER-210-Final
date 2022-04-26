@@ -3,6 +3,8 @@ package edu.quinnipiac.ser210.githubchat.github.dataobjects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRepository;
+
 public class GithubRepo {
 
     private final String name;
@@ -32,5 +34,12 @@ public class GithubRepo {
 
     public String getUrl() {
         return url;
+    }
+
+    public ChatRepository toChatRepository() {
+        ChatRepository repository = new ChatRepository();
+        repository.setFullName(fullName);
+        repository.setFavorite(false);
+        return repository;
     }
 }

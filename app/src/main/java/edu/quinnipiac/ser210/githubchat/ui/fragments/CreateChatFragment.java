@@ -78,7 +78,7 @@ public class CreateChatFragment extends Fragment implements SearchView.OnQueryTe
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.frag_create_fab_confirm) {
-
+            DatabaseHelper.fromObject(requireActivity()).addRepository(currentSelection.toChatRepository());
         }
     }
 
