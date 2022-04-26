@@ -29,6 +29,7 @@ import edu.quinnipiac.ser210.githubchat.firebase.dataobjects.FirebaseChatMessage
 /**
  * @author Thomas Kwashnak
  */
+@Deprecated
 public class DebugChatFragment extends Fragment implements ValueEventListener, View.OnClickListener {
 
     private static String TAG = "DEBUG CHAT";
