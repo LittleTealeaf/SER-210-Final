@@ -19,7 +19,7 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.RepoAdapter;
 
 public class CreateChatFragment extends Fragment implements SearchView.OnQueryTextListener {
 
-
+    private RepoAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,8 +38,9 @@ public class CreateChatFragment extends Fragment implements SearchView.OnQueryTe
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.frag_create_repo_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        RepoAdapter adapter = new RepoAdapter(getContext());
+        adapter = new RepoAdapter(getContext());
         recyclerView.setAdapter(adapter);
+
 
         GithubWrapper.fromObject(requireActivity()).fetchCurrentUserRepos(adapter);
     }
@@ -51,6 +52,7 @@ public class CreateChatFragment extends Fragment implements SearchView.OnQueryTe
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        adapter.filterList(newText);
         return false;
     }
 }
