@@ -23,7 +23,7 @@ public class FetchGithubPullsTask extends FetchGithubListTask {
     }
 
     @Override
-    protected String createURL(String[] strings) {
+    protected String getURL(String[] strings) {
         return "https://api.github.com/repos/" + strings[0] + "/pulls";
     }
 

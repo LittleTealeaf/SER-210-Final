@@ -1,16 +1,15 @@
 package edu.quinnipiac.ser210.githubchat.github.async;
 
 import android.os.AsyncTask;
-import android.widget.Toast;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Time;
 import java.time.Instant;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -22,7 +21,7 @@ import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
  * @author Thomas Kwashnak
  * An abstract AsyncTask that handles fetching data from the API endpoint, storing it into the database, and returning that value
  */
-public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
+public abstract class FetchGithubTask extends AsyncTask<String, Void, String> {
 
     protected final GithubWrapper githubWrapper;
     protected final DatabaseHelper databaseHelper;
@@ -30,24 +29,34 @@ public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
     public FetchGithubTask(GithubWrapper githubWrapper, DatabaseHelper databaseHelper) {
         this.githubWrapper = githubWrapper;
         this.databaseHelper = databaseHelper;
-
     }
 
-    protected abstract String createURL(String[] strings);
+    private final String compileHeaders(String url) {
+        Map<String, String> headers = buildHeaders();
+        if (headers.size() > 0) {
+            StringBuilder builder = new StringBuilder(url).append("?");
 
-    protected String getURLKey(String... strings) {
-        return createURL(strings);
+            for (String key : headers.keySet()) {
+                builder.append("&").append(key).append("=").append(headers.get(key));
+            }
+
+            return builder.toString().replace("?&", "?");
+        } else {
+            return url;
+        }
     }
 
-    protected void addHeaders(HttpsURLConnection connection) {
-
+    public Map<String, String> buildHeaders() {
+        return new HashMap<>();
     }
 
     @Override
     protected String doInBackground(String... strings) {
 
-        GithubCache cache = databaseHelper.getGithubCache(getURLKey(strings));
-        if(cache != null && cache.getFetchTime() > Instant.now().getEpochSecond() - 24 * 60 * 60) {
+        String address = compileHeaders(getURL(strings));
+
+        GithubCache cache = databaseHelper.getGithubCache(address);
+        if (cache != null && cache.getFetchTime() > Instant.now().getEpochSecond() - 24 * 60 * 60) {
             return cache.getContent();
         }
 
@@ -56,42 +65,52 @@ public abstract class FetchGithubTask extends AsyncTask<String,Void,String> {
         StringBuilder jsonString = new StringBuilder();
 
         try {
-            URL url = new URL(createURL(strings));
+            Log.i(FetchGithubTask.class.toString(),"Fetching url: " + address);
+            URL url = new URL(address);
             urlConnection = (HttpsURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
-            urlConnection.addRequestProperty("Accept","application/vnd.github.v3+json");
-            addHeaders(urlConnection);
-            if(githubWrapper.getGithubToken() != null) {
-                urlConnection.addRequestProperty("Authorization","token " + githubWrapper.getGithubToken());
+            urlConnection.addRequestProperty("Accept", "application/vnd.github.v3+json");
+            urlConnection.setUseCaches(true);
+
+            if (githubWrapper.getGithubToken() != null) {
+                urlConnection.addRequestProperty("Authorization", "token " + githubWrapper.getGithubToken());
             }
             InputStream stream = urlConnection.getInputStream();
 
-            if(stream == null) {
+            if (stream == null) {
                 return null;
             }
 
             reader = new BufferedReader(new InputStreamReader(stream));
 
-            for(String line = reader.readLine(); line != null; line = reader.readLine()) {
+            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
                 jsonString.append(line);
             }
             reader.close();
 
-
-//            githubWrapper.getFetchAPIListener().onFetchAPI(url.toString(),jsonString.toString());
-
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         cache = new GithubCache();
-        cache.setUrl(getURLKey(strings));
+        cache.setUrl(address);
         cache.setContent(jsonString.toString());
         cache.setFetchTime(Instant.now().getEpochSecond());
 
         databaseHelper.insertGithubCache(cache);
 
-
         return jsonString.toString();
+    }
+
+    @Deprecated
+    protected String getURLKey(String... strings) {
+        return getURL(strings);
+    }
+
+    protected abstract String getURL(String[] strings);
+
+    @Deprecated
+    protected void addHeaders(HttpsURLConnection connection) {
+
     }
 }
