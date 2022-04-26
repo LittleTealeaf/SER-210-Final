@@ -14,7 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import edu.quinnipiac.ser210.githubchat.R;
+import edu.quinnipiac.ser210.githubchat.database.DatabaseHelper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.RepoAdapter;
@@ -23,6 +26,8 @@ public class CreateChatFragment extends Fragment implements SearchView.OnQueryTe
 
     private RepoAdapter adapter;
     private Button createManualButton;
+
+    private FloatingActionButton confirmButton;
 
     private GithubRepo currentSelection;
 
@@ -50,6 +55,9 @@ public class CreateChatFragment extends Fragment implements SearchView.OnQueryTe
         createManualButton = (Button) view.findViewById(R.id.frag_create_button_manual);
         createManualButton.setOnClickListener(this);
 
+        confirmButton = view.findViewById(R.id.frag_create_fab_confirm);
+        confirmButton.setOnClickListener(this);
+
 
         GithubWrapper.fromObject(requireActivity()).fetchCurrentUserRepos(adapter);
     }
@@ -63,16 +71,20 @@ public class CreateChatFragment extends Fragment implements SearchView.OnQueryTe
     public boolean onQueryTextChange(String newText) {
         adapter.filterList(newText);
         createManualButton.setText(String.format("Manually Create: %s", newText));
+        createManualButton.setEnabled(!newText.equals(""));
         return false;
     }
 
     @Override
     public void onClick(View view) {
+        if(view.getId() == R.id.frag_create_fab_confirm) {
 
+        }
     }
 
     @Override
     public void onRepoSelected(GithubRepo repo) {
         currentSelection = repo;
+        confirmButton.setEnabled(repo != null);
     }
 }
