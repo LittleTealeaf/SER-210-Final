@@ -111,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_FULL_NAME,chatRepository.getFullName());
         values.put(KEY_FAVORITE,chatRepository.isFavorite());
 
-
+        database.insert(TABLE_CHAT_REPOS,null,values);
     }
 
     public static DatabaseHelper fromObject(Object object) {
