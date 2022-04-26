@@ -31,7 +31,7 @@ public abstract class FetchGithubTask extends AsyncTask<String, Void, String> {
         this.databaseHelper = databaseHelper;
     }
 
-    private final String compileHeaders(String url) {
+    private String compileHeaders(String url) {
         Map<String, String> headers = buildHeaders();
         if (headers.size() > 0) {
             StringBuilder builder = new StringBuilder(url).append("?");
@@ -102,15 +102,7 @@ public abstract class FetchGithubTask extends AsyncTask<String, Void, String> {
         return jsonString.toString();
     }
 
-    @Deprecated
-    protected String getURLKey(String... strings) {
-        return getURL(strings);
-    }
 
     protected abstract String getURL(String[] strings);
 
-    @Deprecated
-    protected void addHeaders(HttpsURLConnection connection) {
-
-    }
 }
