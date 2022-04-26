@@ -39,12 +39,12 @@ The purpose of this report is to provide an outline of plans made for the creati
     \item As a user, I can type and send a message into the chat room to interact with the conversation
     \item As a user, I can see chat messages appear so I can keep up with the conversation
     \item As a user, I can share a chat so I can invite friends into the chat
-    \item As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
+    \item As a user, I can create a new chat room for a chatRepository that I own so I can coordinate with other contributors
     \item As a user, I can type \# to reference a pull request or issue so viewers can click and navigate to that pull request or issue
     \item As a user, I can leave a chat room so I am not cluttered with chats I don't participate in
     \item As a user, I can view the app info so I know the app version and other information regarding the app
     \item As a user, I can log out of my account so I can log into another account
-    \item As a user, I can click a link to redirect to the repository page from the chat info
+    \item As a user, I can click a link to redirect to the chatRepository page from the chat info
 \end{itemize}
 
 \chapter{UI Design}
@@ -95,7 +95,7 @@ This screen displays the app information, and allows the user to log out of thei
 \begin{center}
     \includegraphics[scale=0.5]{design-create-chat}
 \end{center}
-This screen lists repositories the user owns, and the option to create a new chat room. The user can alternatively search up any repository to create a chat room for that repository.
+This screen lists repositories the user owns, and the option to create a new chat room. The user can alternatively search up any chatRepository to create a chat room for that chatRepository.
 
 \newpage
 \subsection{Chat Screen}
@@ -110,7 +110,7 @@ This screen shows the actual chat room. The user can type a message into the mes
 \begin{center}
     \includegraphics[scale=0.5]{design-chat-info}
 \end{center}
-This screen shows common repository information, as well as a link the user can use to navigate to the repository. Additionally, the user can click the leave chat to remove the chat from their list.
+This screen shows common chatRepository information, as well as a link the user can use to navigate to the chatRepository. Additionally, the user can click the leave chat to remove the chat from their list.
 
 \newpage
 \section{User Story Coverage}
@@ -129,7 +129,7 @@ This screen shows common repository information, as well as a link the user can 
                              \end{itemize}   \\
         \hline
         \textbf{Create Chat Screen}\begin{itemize}
-                                       \item As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
+                                       \item As a user, I can create a new chat room for a chatRepository that I own so I can coordinate with other contributors
                                    \end{itemize}        \\
         \hline
         \textbf{Chat Screen}\begin{itemize}
@@ -141,7 +141,7 @@ This screen shows common repository information, as well as a link the user can 
         \hline
         \textbf{Chat Info Screen}\begin{itemize}
                                      \item As a user, I can share a chat room so my friends can join
-                                     \item As a user, I can click a link to redirect to the repository page from the chat info
+                                     \item As a user, I can click a link to redirect to the chatRepository page from the chat info
                                  \end{itemize}                                      \\
         \hline
         \textbf{Options Screen}\begin{itemize}
@@ -173,7 +173,7 @@ This screen shows common repository information, as well as a link the user can 
     \hline
     apiSender     & Integer       & Foreign Key  \\
     \hline
-    repository    & Integer       & Foreign Key  \\
+    chatRepository    & Integer       & Foreign Key  \\
     \hline
     isRead        & Boolean       &              \\
     \hline
@@ -241,7 +241,7 @@ The class diagram is my current understanding of how the classes will be set up.
                           \end{itemize}                 \\
     \hline
     \textbf{ChatInfoFragment} \begin{itemize}
-                                  \item As a user, I can click a link to redirect to the repository page from the chat info
+                                  \item As a user, I can click a link to redirect to the chatRepository page from the chat info
                                   \item As a user, I can leave a chat room so I am not cluttered with chats I don't participate in
                               \end{itemize}                                     \\
     \hline
@@ -254,7 +254,7 @@ The class diagram is my current understanding of how the classes will be set up.
                         \end{itemize} \\
     \hline
     \textbf{CreateChatFragment} \begin{itemize}
-                                    \item As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
+                                    \item As a user, I can create a new chat room for a chatRepository that I own so I can coordinate with other contributors
                                 \end{itemize}       \\
     \hline
     \textbf{HomeFragment} \begin{itemize}
@@ -322,12 +322,12 @@ User stories below are sorted from most to least prioritized. Times are ballpark
         \item Figure out how Firebase works with pulling data (\textbf{1 hour})
         \item Get App to display chat messages quickly after they appear on Firebase (\textbf{1 hour})
     \end{itemize}
-    \item \textbf{Iteration 2}: As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
+    \item \textbf{Iteration 2}: As a user, I can create a new chat room for a chatRepository that I own so I can coordinate with other contributors
     \item[] \begin{itemize}
         \item Integrate fetching of user repositories (\textbf{1 hour})
         \item Create fragment to display user repositories (\textbf{2 hours})
-        \item Implement ability to add a repository to the database (\textbf{1 hour})
-        \item Implement ability to manually add a repository, as well as checking that the repository exists (\textbf{2 hours})
+        \item Implement ability to add a chatRepository to the database (\textbf{1 hour})
+        \item Implement ability to manually add a chatRepository, as well as checking that the chatRepository exists (\textbf{2 hours})
     \end{itemize}
 
     \item \textbf{Iteration 2}: As a user, I can view a list of recent chat rooms to quickly get back to what I was working on
@@ -348,7 +348,7 @@ User stories below are sorted from most to least prioritized. Times are ballpark
     \end{itemize}
     \item \textbf{Iteration 3}: As a user, I can leave a chat room so I am not cluttered with chats I don't participate in
     \item[] \begin{itemize}
-        \item Create script to remove all messages and information for a single repository (\textbf{1 hour})
+        \item Create script to remove all messages and information for a single chatRepository (\textbf{1 hour})
         \item Add button providing the ability to leave a chat room (\textbf{1 hour})
     \end{itemize}
     \item \textbf{Iteration 3}: As a user, I can tap a star on a chat room to pin it to the top of the list so I have easy access to chat rooms I want
@@ -361,7 +361,7 @@ User stories below are sorted from most to least prioritized. Times are ballpark
         \item Create app info fragment (\textbf{1 hour})
         \item Add app info to to the app info fragment (\textbf{1 hour})
     \end{itemize}
-    \item \textbf{Iteration 3}: As a user, I can click a link to redirect to the repository page from the chat info
+    \item \textbf{Iteration 3}: As a user, I can click a link to redirect to the chatRepository page from the chat info
     \item[] \begin{itemize}
         \item Create link that redirects from the chat info fragment to the repo link (\textbf{1 hour})
     \end{itemize}

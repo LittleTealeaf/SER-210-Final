@@ -9,5 +9,5 @@
 - As a user, I can type and send a message into the chat room to interact with the conversation
 - As a user, I can see chat messages appear quickly, so I keep up with the conversation
 - As a user, I can share a chat so I can invite friends into the chat
-- As a user, I can create a new chat room for a repository that I own so I can coordinate with other contributors
+- As a user, I can create a new chat room for a chatRepository that I own so I can coordinate with other contributors
 - As a user, I can attach an issue or pull request to my message to reference
