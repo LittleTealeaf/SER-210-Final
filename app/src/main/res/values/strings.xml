@@ -2,20 +2,22 @@
     <string name="app_name">GithubChat</string>
     <string name="activity_login_text_button_login">Login with Github</string>
     <string name="title_activity_main">Github Chat</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--    &lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
-<!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
-<!--    <string name="login_github">Login with Github</string>-->
-<!--    <string name="preference_file">GithubChatAppPreferences</string>-->
-<!--    <string name="create_fragment">Create Fragment</string>-->
-<!--    <string name="confirm_create_chat">Confirm Create</string>-->
-<!--    <string name="title_activity_main">MainActivity</string>-->
-<!--    &lt;!&ndash; Strings used for fragments for navigation &ndash;&gt;-->
-<!--    <string name="first_fragment_label">First Fragment</string>-->
-<!--    <string name="second_fragment_label">Second Fragment</string>-->
-<!--    <string name="next">Next</string>-->
-<!--    <string name="previous">Previous</string>-->
+    <!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
+    <!--    <string name="login_github">Login with Github</string>-->
+    <!--    <string name="preference_file">GithubChatAppPreferences</string>-->
+    <!--    <string name="create_fragment">Create Fragment</string>-->
+    <!--    <string name="confirm_create_chat">Confirm Create</string>-->
+    <!--    <string name="title_activity_main">MainActivity</string>-->
+    <!--    &lt;!&ndash; Strings used for fragments for navigation &ndash;&gt;-->
+    <!--    <string name="first_fragment_label">First Fragment</string>-->
+    <!--    <string name="second_fragment_label">Second Fragment</string>-->
+    <!--    <string name="next">Next</string>-->
+    <!--    <string name="previous">Previous</string>-->
 
-<!--    <string name="hello_first_fragment">Hello first fragment</string>-->
-<!--    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>-->
+    <!--    <string name="hello_first_fragment">Hello first fragment</string>-->
+    <!--    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>-->
 
 </resources>
