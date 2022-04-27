@@ -83,10 +83,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
             Cursor cursor = db.query(TABLE_GITHUB_CACHE,columns,COL_URL + " = ?",new String[] {url},null,null,null);
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
-                cache.set(new GithubCache());
-                cache.get().setUrl(url);
-                cache.get().setFetchTime(cursor.getLong(0));
-                cache.get().setContent(cursor.getString(1));
+                cache.set(new GithubCache(url,cursor.getLong(0),cursor.getString(1)));
             }
             cursor.close();
         });
