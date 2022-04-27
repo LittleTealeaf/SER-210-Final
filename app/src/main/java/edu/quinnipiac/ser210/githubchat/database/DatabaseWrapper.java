@@ -131,11 +131,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
             Cursor cursor = db.query(TABLE_CHAT_ROOM,columns,COL_ID + " = ?",new String[] {Integer.toString(id)},null,null,null);
             if(cursor.getCount() > 0) {
                 cursor.moveToFirst();
-                ChatRoom chatRoom = new ChatRoom();
-                chatRoom.setId(cursor.getInt(0));
-                chatRoom.setRepoName(cursor.getString(1));
-                chatRoom.setFavorite(cursor.getInt(2) == 1);
-                room.set(chatRoom);
+                room.set(new ChatRoom(cursor.getInt(0),cursor.getString(1),cursor.getInt(2) == 1));
             }
             cursor.close();
         });

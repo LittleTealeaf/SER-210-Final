@@ -1,9 +1,18 @@
 package edu.quinnipiac.ser210.githubchat.database.dataobjects;
 
 public class ChatRoom {
+
     private int id = -1;
     private String repoName;
     private boolean favorite;
+
+    public ChatRoom() {}
+
+    public ChatRoom(int id, String repoName, boolean favorite) {
+        this.id = id;
+        this.repoName = repoName;
+        this.favorite = favorite;
+    }
 
     public int getId() {
         return id;
