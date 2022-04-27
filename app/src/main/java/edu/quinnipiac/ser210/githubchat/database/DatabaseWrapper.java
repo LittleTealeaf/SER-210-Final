@@ -174,7 +174,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
             Cursor cursor = db.query(TABLE_CHAT_ROOM, columns, null, null, null, null, null);
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                chatRooms.add(new ChatRoom(cursor.getString(0), cursor.getInt(2) == 1));
+                chatRooms.add(new ChatRoom(cursor.getString(0), cursor.getInt(1) == 1));
                 cursor.moveToNext();
             }
             cursor.close();
