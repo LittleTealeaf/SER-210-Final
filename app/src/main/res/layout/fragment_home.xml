@@ -5,19 +5,13 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.HomeFragment">
 
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/frag_home_imageview_debug"
-        />
-
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
             android:id="@+id/frag_home_fab_create"
             android:layout_margin="16dp"
+            android:layout_gravity="end|bottom"
             android:src="@drawable/ic_baseline_add_24"
-            android:contentDescription="@string/create_fragment" />
+            android:contentDescription="@string/create_chat_room" />
+
 </FrameLayout>

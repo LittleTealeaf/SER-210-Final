@@ -1,18 +1,14 @@
 package edu.quinnipiac.ser210.githubchat.ui.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
 import edu.quinnipiac.ser210.githubchat.R;
 
-/**
- * @author Thomas Kwashnak
- */
 public class ChatInfoFragment extends Fragment {
 
     @Override

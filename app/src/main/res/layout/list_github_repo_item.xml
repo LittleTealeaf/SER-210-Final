@@ -16,7 +16,7 @@
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/list_repo_title" />
+                android:id="@+id/list_github_repo_title" />
     </FrameLayout>
 
 

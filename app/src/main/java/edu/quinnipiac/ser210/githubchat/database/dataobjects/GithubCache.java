@@ -1,18 +1,14 @@
 package edu.quinnipiac.ser210.githubchat.database.dataobjects;
 
-import android.content.ContentValues;
-
-/**
- * Represents a Github Cache stored in the Database
- * @author Thomas Kwashnak
- */
 public class GithubCache {
     private String url;
     private String content;
     private long fetchTime;
 
-    public GithubCache() {
-
+    public GithubCache(String url, long fetchTime, String content) {
+        this.url = url;
+        this.fetchTime = fetchTime;
+        this.content = content;
     }
 
     public String getUrl() {
