@@ -17,6 +17,13 @@ public class GithubRepo {
 
     }
 
+    public GithubRepo(String name, String fullName, GithubUser owner, String url) {
+        this.name = name;
+        this.fullName = fullName;
+        this.owner = owner;
+        this.url = url;
+    }
+
     public String getName() {
         return name;
     }
