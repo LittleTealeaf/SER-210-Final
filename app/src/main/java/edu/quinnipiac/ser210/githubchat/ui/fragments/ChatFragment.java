@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment;
 
 import edu.quinnipiac.ser210.githubchat.R;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class ChatFragment extends Fragment {
 
     @Override

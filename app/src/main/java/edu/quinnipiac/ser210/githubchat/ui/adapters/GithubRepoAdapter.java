@@ -19,6 +19,9 @@ import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepoList;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnGithubRepoSelected;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.GithubRepoViewHolder;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder> implements OnFetchGithubRepoList, OnGithubRepoSelected {
 
     private final int CHANNEL_FETCH = 1;

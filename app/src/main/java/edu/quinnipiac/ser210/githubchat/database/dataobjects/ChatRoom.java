@@ -1,5 +1,9 @@
 package edu.quinnipiac.ser210.githubchat.database.dataobjects;
 
+/**
+ * Represents a chat room
+ * @author Thomas Kwashnak
+ */
 public class ChatRoom {
 
     private String repoName;

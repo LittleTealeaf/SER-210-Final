@@ -35,6 +35,9 @@ import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepo;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepoList;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubUser;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public static final int CHANNEL_DEFAULT = -1;
