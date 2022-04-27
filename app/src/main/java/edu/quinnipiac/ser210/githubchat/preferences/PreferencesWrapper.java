@@ -10,6 +10,9 @@ import androidx.security.crypto.MasterKeys;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class PreferencesWrapper implements SharedPreferences, PreferencesHolder{
     private static final String PREFERENCES_NAME = "GithubChatPreferences";
     private static final String ENCRYPTED_PREFERENCES_NAME = "EncryptedGithubChatPreferences";

@@ -22,6 +22,9 @@ import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesHolder;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesWrapper;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener, PreferencesHolder, GithubHolder, DatabaseHolder {
 
     private FirebaseAuth firebaseAuth;

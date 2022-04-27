@@ -20,6 +20,9 @@ import java.util.Objects;
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class LoginActivity extends AppCompatActivity implements OnSuccessListener<AuthResult>, View.OnClickListener {
 
     @Override

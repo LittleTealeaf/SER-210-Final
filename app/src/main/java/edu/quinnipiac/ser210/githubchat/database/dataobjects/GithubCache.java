@@ -1,5 +1,9 @@
 package edu.quinnipiac.ser210.githubchat.database.dataobjects;
 
+/**
+ * Represents a Github Cache, or a cached API fetch
+ * @author Thomas Kwashnak
+ */
 public class GithubCache {
     private String url;
     private String content;

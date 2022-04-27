@@ -17,6 +17,9 @@ import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRooms;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnChatRoomSelected;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.ChatRoomViewHolder;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> implements OnFetchChatRooms {
 
 

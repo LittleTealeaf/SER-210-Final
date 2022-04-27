@@ -3,6 +3,9 @@ package edu.quinnipiac.ser210.githubchat.github.dataobjects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class GithubRepo {
     private final String name;
     private final String fullName;

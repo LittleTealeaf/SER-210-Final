@@ -21,6 +21,9 @@ import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoom;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRooms;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnSetChatRoom;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder {
 
     public static final int CHANNEL_DEFAULT = -1;
