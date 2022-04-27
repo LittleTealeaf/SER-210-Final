@@ -10,13 +10,7 @@ import androidx.security.crypto.MasterKeys;
 import java.util.Map;
 import java.util.Set;
 
-import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
-
-/**
- * @author Thomas Kwashnak
- */
-public class PreferencesWrapper implements SharedPreferences {
-
+public class PreferencesWrapper implements SharedPreferences, PreferencesHolder{
     private static final String PREFERENCES_NAME = "GithubChatPreferences";
     private static final String ENCRYPTED_PREFERENCES_NAME = "EncryptedGithubChatPreferences";
 
@@ -26,8 +20,8 @@ public class PreferencesWrapper implements SharedPreferences {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_NAME,0);
         try {
             prefs = EncryptedSharedPreferences.create(ENCRYPTED_PREFERENCES_NAME, MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC), context,
-                                                                       EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                                                                       EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+                                                      EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                                                      EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
         } catch(Exception e) {
             e.printStackTrace();
         } finally {
@@ -116,15 +110,16 @@ public class PreferencesWrapper implements SharedPreferences {
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
     }
 
-    public interface Holder {
-        PreferencesWrapper getPreferencesWrapper();
-    }
-
-    public static PreferencesWrapper fromObject(Object object) {
-        if(object instanceof Holder) {
-            return ((Holder) object).getPreferencesWrapper();
+    public static PreferencesWrapper from(Object object) {
+        if(object instanceof PreferencesHolder) {
+            return ((PreferencesHolder) object).getPreferencesWrapper();
         } else {
             return null;
         }
+    }
+
+    @Override
+    public PreferencesWrapper getPreferencesWrapper() {
+        return this;
     }
 }

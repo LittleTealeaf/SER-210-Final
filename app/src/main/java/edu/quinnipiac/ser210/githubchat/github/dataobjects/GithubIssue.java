@@ -3,24 +3,20 @@ package edu.quinnipiac.ser210.githubchat.github.dataobjects;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * @author Thomas Kwashnak
- * Represents a GithubIssue pulled from the Github REST API
- */
-public class GithubIssue implements RepoItem {
+public class GithubIssue implements GithubAttachable {
 
-    private final int number;
-    private final String title;
-    private final String url;
-    private final boolean closed;
-    private final GithubUser user;
+    private int number;
+    private String title;
+    private String url;
+    private boolean closed;
+    private GithubUser githubUser;
 
     public GithubIssue(JSONObject jsonObject) throws JSONException {
         number = jsonObject.getInt("number");
         title = jsonObject.getString("title");
         url = jsonObject.getString("html_url");
         closed = jsonObject.getString("state").equals("closed");
-        user = new GithubUser(jsonObject.getJSONObject("user"));
+        githubUser = new GithubUser(jsonObject.getJSONObject("user"));
     }
 
     @Override
@@ -44,7 +40,7 @@ public class GithubIssue implements RepoItem {
     }
 
     @Override
-    public GithubUser getUser() {
-        return user;
+    public GithubUser getGithubUser() {
+        return githubUser;
     }
 }
