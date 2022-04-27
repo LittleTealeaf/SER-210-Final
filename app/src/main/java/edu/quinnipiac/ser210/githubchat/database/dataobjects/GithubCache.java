@@ -5,6 +5,12 @@ public class GithubCache {
     private String content;
     private long fetchTime;
 
+    public GithubCache(String url, long fetchTime, String content) {
+        this.url = url;
+        this.fetchTime = fetchTime;
+        this.content = content;
+    }
+
     public String getUrl() {
         return url;
     }

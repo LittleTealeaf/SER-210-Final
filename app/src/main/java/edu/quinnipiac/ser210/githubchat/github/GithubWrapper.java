@@ -108,6 +108,9 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
             e.printStackTrace();
             return json.toString();
         }
+
+        databaseWrapper.startSetGithubCache(new GithubCache(url,Instant.now().getEpochSecond(),json.toString()));
+
         return json.toString();
     }
 
@@ -151,7 +154,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     protected final JSONArray fetchList(String baseURL) {
         JSONArray jsonArray = new JSONArray();
-        JSONArray tmp = null;
+         JSONArray tmp = null;
         int page = 1;
         try {
             do {
