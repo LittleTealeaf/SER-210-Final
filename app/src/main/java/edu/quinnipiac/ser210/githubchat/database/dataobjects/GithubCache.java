@@ -9,6 +9,10 @@ public class GithubCache {
     private String content;
     private long fetchTime;
 
+    public GithubCache() {
+
+    }
+
     public GithubCache(String url, long fetchTime, String content) {
         this.url = url;
         this.fetchTime = fetchTime;
