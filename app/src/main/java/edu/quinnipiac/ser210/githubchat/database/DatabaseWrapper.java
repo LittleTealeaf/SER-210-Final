@@ -45,6 +45,8 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Handler handler = new Handler(Looper.getMainLooper());
 
+    private SQLiteDatabase database;
+
     public DatabaseWrapper(Context context) {
         super(context, "GithubChatDatabase", null, VERSION);
     }
