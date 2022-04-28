@@ -30,6 +30,7 @@ public class DatabaseWrapperTest {
 
     @After
     public void tearDown() throws Exception {
+        getApplicationContext().deleteDatabase("GithubChatDatabase");
 
     }
 

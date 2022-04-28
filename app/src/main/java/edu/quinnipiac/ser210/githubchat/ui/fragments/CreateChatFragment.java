@@ -33,6 +33,8 @@ public class CreateChatFragment extends Fragment implements OnGithubRepoSelected
     private static final int CHANNEL_CREATE = 1;
     private GithubRepoAdapter adapter;
 
+    private SearchView searchView;
+
     private FloatingActionButton confirmButton;
 
     @Override
@@ -45,7 +47,7 @@ public class CreateChatFragment extends Fragment implements OnGithubRepoSelected
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SearchView searchView = view.findViewById(R.id.frag_create_search_filter);
+        searchView = view.findViewById(R.id.frag_create_search_filter);
         searchView.setOnQueryTextListener(this);
         searchView.setIconified(false);
         searchView.setSubmitButtonEnabled(false);
@@ -81,7 +83,7 @@ public class CreateChatFragment extends Fragment implements OnGithubRepoSelected
         if(view.getId() == R.id.frag_create_fab_confirm) {
             ChatRoom chatRoom = new ChatRoom();
             chatRoom.setFavorite(false);
-            chatRoom.setRepoName(adapter.getSelected().getFullName());
+            chatRoom.setRepoName(adapter.getSelected() != null ? adapter.getSelected().getFullName() : searchView.getQuery().toString());
             DatabaseWrapper.from(requireContext()).startSetChatRoom(chatRoom,this,CHANNEL_CREATE);
         }
     }
