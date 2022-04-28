@@ -38,9 +38,10 @@ import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubUser;
 /**
  * @author Thomas Kwashnak
  */
-public class GithubWrapper implements GithubHolder, DatabaseHolder {
+public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithubUser {
 
     public static final int CHANNEL_DEFAULT = -1;
+    private static final int CHANNEL_SET_USER = 10924;
     public static final String AUTH_TOKEN = "Github Token";
     private static final int PER_PAGE = 100;
 
@@ -49,6 +50,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     private final DatabaseWrapper databaseWrapper;
     private String token;
+    private GithubUser githubUser;
 
     public GithubWrapper(DatabaseHolder databaseHolder) {
         this.databaseWrapper = databaseHolder.getDatabaseWrapper();
@@ -64,6 +66,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public void setToken(String token) {
         this.token = token;
+        startFetchGithubUser(null,this,CHANNEL_SET_USER);
     }
 
     private void startThread(Runnable runnable) {
@@ -101,7 +104,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public GithubUser fetchGithubUser(String username) {
         try {
-            return new GithubUser(new JSONObject(Objects.requireNonNull(fetchURL("https://api.github.com/users/" + username))));
+            return new GithubUser(new JSONObject(Objects.requireNonNull(fetchURL(username == null ? "https://api.github.com/user" :"https://api.github.com/users/" + username))));
         } catch (Exception e) {
             return null;
         }
@@ -267,6 +270,17 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public void startFetchGithubAttachableList(String repoName, OnFetchAttachableList listener) {
         startFetchGithubAttachableList(repoName, listener, CHANNEL_DEFAULT);
+    }
+
+    @Override
+    public void onFetchGithubUser(GithubUser githubUser, int channel) {
+        if(channel == CHANNEL_SET_USER) {
+            this.githubUser = githubUser;
+        }
+    }
+
+    public GithubUser getGithubUser() {
+        return githubUser;
     }
 
     private interface Notifier<T> {
