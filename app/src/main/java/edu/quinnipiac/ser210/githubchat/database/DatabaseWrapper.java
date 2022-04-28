@@ -212,4 +212,8 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
 
         void notify(T item, int channel);
     }
+
+    interface DatabaseOperation {
+        void execute(SQLiteDatabase database);
+    }
 }
