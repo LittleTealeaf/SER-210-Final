@@ -39,13 +39,9 @@ import edu.quinnipiac.ser210.githubchat.threads.ThreadWrapper;
 /**
  * @author Thomas Kwashnak
  */
-public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithubUser {
+public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
-    @Deprecated
-    public static final int CHANNEL_DEFAULT = -1;
     public static final String AUTH_TOKEN = "Github Token";
-    @Deprecated
-    private static final int CHANNEL_SET_USER = 10924;
     private static final int PER_PAGE = 100;
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -140,42 +136,8 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         return databaseWrapper;
     }
 
-    @Deprecated
-    public void oldfetchgithubuser(String username, OnFetchGithubUser listener) {
-        oldfetchgithubuser(username, listener, CHANNEL_DEFAULT);
-    }
 
-    @Deprecated
-    public void oldfetchgithubuser(String username, OnFetchGithubUser listener, int channel) {
-        dstartthread(() -> fetchGithubUser(username), listener::onFetchGithubUser, channel);
-    }
 
-    @Deprecated
-    private <T> void dstartthread(Callable<T> callable, Notifier<T> notifier, int channel) {
-        dstartthread(() -> {
-            try {
-                T item = callable.call();
-                handler.post(() -> notifier.notify(item, channel));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    @Deprecated
-    private void dstartthread(Runnable runnable) {
-        executorService.execute(runnable);
-    }
-
-    @Deprecated
-    public void oldfetchgithubrepo(String fullName, OnFetchGithubRepo listener) {
-        oldfetchgithubrepo(fullName, listener, CHANNEL_DEFAULT);
-    }
-
-    @Deprecated
-    public void oldfetchgithubrepo(String fullName, OnFetchGithubRepo listener, int channel) {
-        dstartthread(() -> fetchGithubRepo(fullName), listener::onFetchGithubRepo, channel);
-    }
 
     public GithubRepo fetchGithubRepo(String fullName) {
         try {
@@ -185,15 +147,6 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         }
     }
 
-    @Deprecated
-    public void oldfetchgithubrepolist(String username, OnFetchGithubRepoList listener) {
-        oldfetchgithubrepolist(username, listener, CHANNEL_DEFAULT);
-    }
-
-    @Deprecated
-    public void oldfetchgithubrepolist(String username, OnFetchGithubRepoList listener, int channel) {
-        dstartthread(() -> fetchGithubRepoList(username), listener::onFetchGithubRepoList, channel);
-    }
 
     public List<GithubRepo> fetchGithubRepoList(String username) {
         JSONArray array = fetchList(username == null ? "https://api.github.com/user/repos" : "https://api.github.com/users/" + username + "/repos");
@@ -230,15 +183,6 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         return jsonArray;
     }
 
-    @Deprecated
-    public void oldfetchgithubpulls(String repoName, OnFetchGithubPulls listener) {
-        oldfetchgithubpulls(repoName, listener, CHANNEL_DEFAULT);
-    }
-
-    @Deprecated
-    public void oldfetchgithubpulls(String repoName, OnFetchGithubPulls listener, int channel) {
-        dstartthread(() -> fetchGithubPulls(repoName), listener::onFetchGithubPulls, channel);
-    }
 
     public List<GithubPull> fetchGithubPulls(String repoName) {
         JSONArray array = fetchList("https://api.github.com/repos/" + repoName + "/pulls");
@@ -254,15 +198,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         return pulls;
     }
 
-    @Deprecated
-    public void oldfetchgithubissues(String repoName, OnFetchGithubIssues listener) {
-        oldfetchgithubissues(repoName, listener, CHANNEL_DEFAULT);
-    }
 
-    @Deprecated
-    public void oldfetchgithubissues(String repoName, OnFetchGithubIssues listener, int channel) {
-        dstartthread(() -> fetchGithubIssues(repoName), listener::onFetchGithubIssues, channel);
-    }
 
     public List<GithubIssue> fetchGithubIssues(String repoName) {
         JSONArray array = fetchList("https://api.github.com/repos/" + repoName + "/issues");
@@ -284,23 +220,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         return attachableList;
     }
 
-    @Deprecated
-    public void oldfetchgithubattachables(String repoName, OnFetchGithubAttachbleList listener, int channel) {
-        dstartthread(() -> fetchGithubAttachableList(repoName), listener::onFetchMessageAttachableList, channel);
-    }
 
-    @Deprecated
-    public void oldfetchgithubattachables(String repoName, OnFetchGithubAttachbleList listener) {
-        oldfetchgithubattachables(repoName, listener, CHANNEL_DEFAULT);
-    }
-
-    @Deprecated
-    @Override
-    public void onFetchGithubUser(GithubUser githubUser, int channel) {
-        if (channel == CHANNEL_SET_USER) {
-            this.githubUser = githubUser;
-        }
-    }
 
     public GithubUser getGithubUser() {
         return githubUser;
@@ -342,9 +262,4 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         return ThreadWrapper.startThread(() -> fetchGithubAttachableList(repoName), listener::onFetchMessageAttachableList, channel);
     }
 
-    @Deprecated
-    private interface Notifier<T> {
-
-        void notify(T item, int channel);
-    }
 }
