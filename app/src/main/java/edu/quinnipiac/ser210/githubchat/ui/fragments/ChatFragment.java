@@ -34,7 +34,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
     private EditText inputText;
 
-
     private GithubWrapper githubWrapper;
 
     @Override
@@ -46,8 +45,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        databaseReference = FirebaseDatabase.getInstance().getReference(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME));
+        String ref = requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME);
+        for (char c : ".#$[]".toCharArray()) {
+            ref = ref.replace(c, '_');
+        }
 
+        databaseReference = FirebaseDatabase.getInstance().getReference(ref);
 
         return inflater.inflate(R.layout.fragment_chat, container, false);
     }
@@ -83,7 +86,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.frag_chat_fab_send) {
+        if (view.getId() == R.id.frag_chat_fab_send) {
 
             Message message = new Message();
 
