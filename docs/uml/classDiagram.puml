@@ -1,306 +1,230 @@
 @startuml Class Diagram
-
 skinparam class {
     BackgroundColor LightGrey
     BorderColor Black
     ArrowColor Black
 }
 
-' database
+class ChatRoom {
+    -repoName: String
+    -favorite: Boolean
+}
+
 class GithubCache {
     -url: String
     -content: String
     -fetchTime: long
 }
 
-class Repository {
-    -name: String
-    -isFavorite: String
+interface OnFetchChatRoom {
+    +onFetchChatRoom(ChatRoom): void
 }
 
-class DatabaseHelper {
-    +setGithubCache(GithubCache): void
-    +getGithubCache(String): GithubCache
-    +getRepository(long): Repository
-    +addRepository(Repository): long
-    +removeRepository(Repository): void
-    +findRepository(String): Repository
+interface OnFetchChatRooms {
+    +onFetchChatRoom(List<ChatRoom>): void
 }
 
-interface DatabaseHelperHolder {
-    +getDatabaseHelper(): DatabaseHelper
+interface OnSetChatRoom {
+    +onSetChatRoom(): void
 }
 
-' firebase
-class FirebaseChatMessage {
+interface DatabaseHolder {
+    +getDatabaseWrapper(): DatabaseWrapper
+}
+
+class DatabaseWrapper {
+
+}
+DatabaseWrapper ..|> DatabaseHolder
+DatabaseWrapper --> OnFetchChatRoom
+DatabaseWrapper --> OnSetChatRoom
+DatabaseWrapper --> OnFetchChatRooms
+DatabaseWrapper --* MainActivity
+
+class Message {
     -message: String
-    -time: long
     -sender: String
 }
 
-' github
-class GithubWrapper {
-    -githubToken: String
-    +setGithubToken(String): void
-    +getGitubToken(): String
-    +fetchIssues(String,FetchIssuesListener): void
-    +fetchPullRequests(String,FetchIssuesListener): void
-    +fetchUser(String,FetchUserListener): void
-    +fetchRepo(String,FetchRepoListener): void
-    +fetchRepoList(String,FetchRepoListListener): void
-}
-
-interface GithubWrapperHolder {
-    +getGithubWrapper(): GithubWrapper
-}
-
-class GithubRepo {
-    -name: String
-    -full_name: String
-    -url: String
-    -homepage: String
-    +getName(): String
-    +getFullName(): String
-    +getURL(): String
-    +getHomepage(): String
-}
-
-interface FetchRepoListener {
-    +onFetchRepo(GithubRepo): void
-}
-
-interface FetchRepoListListener {
-    +onFetchRepoList(List<GithubRepo>): void
-}
-
-abstract FetchGithubTask {
-    +doInBackground(String...): String
-}
-
-class FetchGithubRepoTask {
-    +onPostExecute(String): void
-}
-
-class FetchGithubRepoListTask {
-    +onPostExecute(String): void
-}
-
-class FetchGithubLinkablesTask {
-    +onPostExecute(String): void
-}
-
-class FetchGithubUserTask {
-    +onPostExecute(String): void
-}
-
-interface FetchGithubAPIListener {
-    +onFetchGithubAPI(String): void
-}
-
-class android.os.AsyncTask<String,Void,String> {
-
-}
-
-class android.app.Activity {
-
-}
-
-
-class GithubUser {
-    -imageURL: String
-    -login: String
-    +getImageURL(): String
-    +getLogin(): String
-}
-
-interface FetchUserListener {
-    +onFetchUser(GithubUser): void
-}
-
-interface Linkable {
+interface GithubAttachable {
     +getNumber(): int
     +getTitle(): String
     +getURL(): String
-    +isClosed(): bool
+    +isClosed(): boolean
+    +getGithubUser(): GithubUser
 }
 
-class Issue {
+class GithubIssue {
 
 }
+GithubIssue ..|> GithubAttachable
 
-class PullRequest {
+class GithubPull {
 
 }
+GithubPull ..|> GithubAttachable
 
-interface FetchLinkablesListener {
-    +onFetchLinkables(List<Linkable>): void
-}
-
-
-'Helpers
-
-class FetchImageTask {
-    +doInBackground(String...): Bitmap
-    +onPostExecute(Bitmap): void
-}
-
-interface FetchImageListener {
-    +onFetchImage(Bitmap): void
-}
-
-
-
-'UI
-
-class MainActivity {
+class GithubRepo {
 
 }
 
-class HomeFragment {
+class GithubUser {
 
 }
+GithubUser --* GithubRepo
+GithubUser --* GithubPull
+GithubUser --* GithubIssue
 
-class ChatFragment {
-
+interface OnFetchAttachableList {
+    +onFetchAttachableList(List<GithubAttachable>): void
 }
 
-class ChatInfoFragment {
-
+interface OnFetchGithubIssues {
+    +onFetchGithubIssues(List<GithubIssue>): void
 }
 
-class CreateChatFragment {
-
+interface OnFetchGithubPulls {
+    +onFetchGithubPulls(List<GithubIssue>): void
 }
 
-class SettingsFragment {
-
+interface OnFetchGithubRepo {
+    +onFetchGithubRepo(GithubRepo): void
 }
 
-class MessageCard {
-
+interface OnFetchGithubRepoList {
+    +onFetchGithubRepoList(List<GithubRepo>): void
 }
 
-class LoginActivity {
-
+interface OnFetchGithubUser {
+    +onFetchGithubUser(GithubUser): void
 }
 
-interface AuthStateListener {
-    +onAuthStateChanged(FirebaseAuth): void
+interface GithubHolder {
+    +getGithubWrapper(): GithubWrapper
+}
+
+class GithubWrapper {
+
+}
+GithubWrapper ..|> GithubHolder
+GithubWrapper --> OnFetchGithubUser
+GithubWrapper --> OnFetchGithubRepoList
+GithubWrapper --> OnFetchGithubRepo
+GithubWrapper --> OnFetchGithubPulls
+GithubWrapper --> OnFetchGithubIssues
+GithubWrapper --> OnFetchAttachableList
+GithubWrapper --> GithubCache
+GithubWrapper --> DatabaseWrapper
+GithubWrapper --* MainActivity
+
+
+interface PreferencesHolder {
+    +getPreferencesWrapper(): PreferencesWrapper
 }
 
 class PreferencesWrapper {
 
 }
+PreferencesWrapper ..|> PreferencesHolder
+PreferencesWrapper --* MainActivity
 
-interface android.content.SharedPreferences {
-    +getAll(): Map<String, ?>
-    +getString(String,String): String
-    +getStringSet(String,Set<String>): Set<String>
-    +getInt(String,int): int
-    +getLong(String,long): long
-    +getFloat(String,float): float
-    +getBoolean(String,boolean): boolean
-    +contains(String): boolean
-    +edit(): SharedPreferences.Editor
+class LoginActivity {
+
 }
 
-interface PreferencesWrapperHolder {
-    +getPreferencesWrapper(): PreferencesWrapper
-}
+class MainActivity {
 
+}
+MainActivity ..|> GithubHolder
+MainActivity ..|> DatabaseHolder
+MainActivity ..|> PreferencesHolder
+MainActivity ..|> OnFetchGithubUser
 MainActivity --> ChatFragment
-MainActivity --> LoginActivity
-MainActivity --> CreateChatFragment
 MainActivity --> ChatInfoFragment
+MainActivity --> CreateChatFragment
 MainActivity --> HomeFragment
 MainActivity --> SettingsFragment
-MainActivity --|> android.app.Activity
-MainActivity ..|> FetchImageListener
-MainActivity ..|> GithubWrapperHolder
-MainActivity ..|> DatabaseHelperHolder
-MainActivity ..|> AuthStateListener
-MainActivity ..|> PreferencesWrapperHolder
+MainActivity --> GithubUser
+MainActivity --> LoginActivity
 
-LoginActivity --|> android.app.Activity
+class ChatFragment {
 
-PreferencesWrapper --* MainActivity
-PreferencesWrapper ..|> android.content.SharedPreferences
+}
+ChatFragment ..|> OnFetchAttachableList
+ChatFragment --> GithubAttachable
+ChatFragment --> ChatRoom
 
-FetchImageListener --* FetchImageTask
+class ChatInfoFragment {
 
-DatabaseHelper --* MainActivity
-DatabaseHelper ..|> FetchGithubAPIListener
-
-GithubWrapper --* MainActivity
-GithubWrapper --> DatabaseHelper
-GithubWrapper ..> FetchGithubUserTask
-GithubWrapper ..> FetchGithubRepoTask
-GithubWrapper ..> FetchGithubLinkablesTask
-GithubWrapper ..> FetchGithubRepoListTask
-
-
-GithubCache --o DatabaseHelper
-
-Repository --o DatabaseHelper
-
-Issue ..|> Linkable
-
-Linkable --* LinkableList
-
-LinkableList --* ChatFragment
-
-PullRequest ..|> Linkable
-
-GithubRepo --* ChatInfoFragment
-GithubRepo --* GithubRepoList
-
-GithubUser --* MainActivity
-
-GithubUser --* FirebaseChatMessage
-
-GithubRepoList --* CreateChatFragment
-
-ChatFragment --> GithubWrapper
-ChatFragment ..|> FetchLinkablesListener
-
-FirebaseChatMessage --* MessageCard
-
+}
+ChatInfoFragment --> ChatRoom
+ChatInfoFragment --> DatabaseWrapper
 ChatInfoFragment --> GithubWrapper
-ChatInfoFragment ..|> FetchRepoListener
+ChatInfoFragment ..|> OnFetchGithubRepo
 
+class CreateChatFragment {
 
-FetchGithubTask --|> android.os.AsyncTask
-FetchGithubTask --> DatabaseHelper
-
-
+}
 CreateChatFragment --> GithubWrapper
-CreateChatFragment --> DatabaseHelper
-CreateChatFragment ..|> FetchRepoListListener
+CreateChatFragment ..|> OnSetChatRoom
+CreateChatFragment ..|> OnGithubRepoSelected
 
-FetchGithubUserTask --|> FetchGithubTask
+class HomeFragment {
 
-FetchGithubRepoTask --|> FetchGithubTask
+}
+HomeFragment --> DatabaseWrapper
+HomeFragment ..|> OnFetchChatRooms
+HomeFragment ..|> OnChatRoomSelected
 
-FetchGithubLinkablesTask --|> FetchGithubTask
+class SettingsFragment {
 
-FetchRepoListener --* FetchGithubRepoTask
+}
 
-FetchUserListener --* FetchGithubUserTask
+interface OnChatRoomSelected {
 
-FetchRepoListListener --* FetchGithubRepoListTask
+}
 
-FetchLinkablesListener --* FetchGithubLinkablesTask
+interface OnGithubRepoSelected {
 
-FetchGithubAPIListener --* FetchGithubTask
+}
 
-MessageCard --* ChatFragment
-MessageCard --> ChatFragment
-MessageCard ..|> FetchImageListener
-MessageCard ..|> FetchUserListener
-MessageCard ..|> FetchLinkablesListener
+class ChatRoomViewHolder {
 
-HomeFragment --> DatabaseHelper
+}
+ChatRoomViewHolder --> ChatRoom
+ChatRoomViewHolder --* ChatRoomAdapter
 
-FetchImageTask --|> android.os.AsyncTask
+class GithubRepoViewHolder {
+
+}
+GithubRepoViewHolder --> GithubRepo
+GithubRepoViewHolder --* GithubRepoAdapter
+
+class MessageViewHolder {
+
+}
+MessageViewHolder --> Message
+MessageViewHolder --* MessageAdapter
+MessageViewHolder ..|> OnFetchImage
+MessageViewHolder ..|> OnFetchGithubUser
+
+class MessageAdapter {
+
+}
+MessageAdapter --* ChatFragment
+
+class ChatRoomAdapter {
+
+}
+ChatRoomAdapter --* HomeFragment
+
+class GithubRepoAdapter {
+
+}
+GithubRepoAdapter --* CreateChatFragment
+
+interface OnFetchImage {
+
+}
 
 @enduml

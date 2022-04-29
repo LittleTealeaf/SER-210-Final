@@ -1,0 +1,306 @@
+@startuml Class Diagram
+
+skinparam class {
+    BackgroundColor LightGrey
+    BorderColor Black
+    ArrowColor Black
+}
+
+' database
+class GithubCache {
+    -url: String
+    -content: String
+    -fetchTime: long
+}
+
+class Repository {
+    -name: String
+    -isFavorite: String
+}
+
+class DatabaseHelper {
+    +setGithubCache(GithubCache): void
+    +getGithubCache(String): GithubCache
+    +getRepository(long): Repository
+    +addRepository(Repository): long
+    +removeRepository(Repository): void
+    +findRepository(String): Repository
+}
+
+interface DatabaseHelperHolder {
+    +getDatabaseHelper(): DatabaseHelper
+}
+
+' firebase
+class FirebaseChatMessage {
+    -message: String
+    -time: long
+    -sender: String
+}
+
+' github
+class GithubWrapper {
+    -githubToken: String
+    +setGithubToken(String): void
+    +getGitubToken(): String
+    +fetchIssues(String,FetchIssuesListener): void
+    +fetchPullRequests(String,FetchIssuesListener): void
+    +fetchUser(String,FetchUserListener): void
+    +fetchRepo(String,FetchRepoListener): void
+    +fetchRepoList(String,FetchRepoListListener): void
+}
+
+interface GithubWrapperHolder {
+    +getGithubWrapper(): GithubWrapper
+}
+
+class GithubRepo {
+    -name: String
+    -full_name: String
+    -url: String
+    -homepage: String
+    +getName(): String
+    +getFullName(): String
+    +getURL(): String
+    +getHomepage(): String
+}
+
+interface FetchRepoListener {
+    +onFetchRepo(GithubRepo): void
+}
+
+interface FetchRepoListListener {
+    +onFetchRepoList(List<GithubRepo>): void
+}
+
+abstract FetchGithubTask {
+    +doInBackground(String...): String
+}
+
+class FetchGithubRepoTask {
+    +onPostExecute(String): void
+}
+
+class FetchGithubRepoListTask {
+    +onPostExecute(String): void
+}
+
+class FetchGithubLinkablesTask {
+    +onPostExecute(String): void
+}
+
+class FetchGithubUserTask {
+    +onPostExecute(String): void
+}
+
+interface FetchGithubAPIListener {
+    +onFetchGithubAPI(String): void
+}
+
+class android.os.AsyncTask<String,Void,String> {
+
+}
+
+class android.app.Activity {
+
+}
+
+
+class GithubUser {
+    -imageURL: String
+    -login: String
+    +getImageURL(): String
+    +getLogin(): String
+}
+
+interface FetchUserListener {
+    +onFetchUser(GithubUser): void
+}
+
+interface Linkable {
+    +getNumber(): int
+    +getTitle(): String
+    +getURL(): String
+    +isClosed(): bool
+}
+
+class Issue {
+
+}
+
+class PullRequest {
+
+}
+
+interface FetchLinkablesListener {
+    +onFetchLinkables(List<Linkable>): void
+}
+
+
+'Helpers
+
+class FetchImageTask {
+    +doInBackground(String...): Bitmap
+    +onPostExecute(Bitmap): void
+}
+
+interface FetchImageListener {
+    +onFetchImage(Bitmap): void
+}
+
+
+
+'UI
+
+class MainActivity {
+
+}
+
+class HomeFragment {
+
+}
+
+class ChatFragment {
+
+}
+
+class ChatInfoFragment {
+
+}
+
+class CreateChatFragment {
+
+}
+
+class SettingsFragment {
+
+}
+
+class MessageCard {
+
+}
+
+class LoginActivity {
+
+}
+
+interface AuthStateListener {
+    +onAuthStateChanged(FirebaseAuth): void
+}
+
+class PreferencesWrapper {
+
+}
+
+interface android.content.SharedPreferences {
+    +getAll(): Map<String, ?>
+    +getString(String,String): String
+    +getStringSet(String,Set<String>): Set<String>
+    +getInt(String,int): int
+    +getLong(String,long): long
+    +getFloat(String,float): float
+    +getBoolean(String,boolean): boolean
+    +contains(String): boolean
+    +edit(): SharedPreferences.Editor
+}
+
+interface PreferencesWrapperHolder {
+    +getPreferencesWrapper(): PreferencesWrapper
+}
+
+MainActivity --> ChatFragment
+MainActivity --> LoginActivity
+MainActivity --> CreateChatFragment
+MainActivity --> ChatInfoFragment
+MainActivity --> HomeFragment
+MainActivity --> SettingsFragment
+MainActivity --|> android.app.Activity
+MainActivity ..|> FetchImageListener
+MainActivity ..|> GithubWrapperHolder
+MainActivity ..|> DatabaseHelperHolder
+MainActivity ..|> AuthStateListener
+MainActivity ..|> PreferencesWrapperHolder
+
+LoginActivity --|> android.app.Activity
+
+PreferencesWrapper --* MainActivity
+PreferencesWrapper ..|> android.content.SharedPreferences
+
+FetchImageListener --* FetchImageTask
+
+DatabaseHelper --* MainActivity
+DatabaseHelper ..|> FetchGithubAPIListener
+
+GithubWrapper --* MainActivity
+GithubWrapper --> DatabaseHelper
+GithubWrapper ..> FetchGithubUserTask
+GithubWrapper ..> FetchGithubRepoTask
+GithubWrapper ..> FetchGithubLinkablesTask
+GithubWrapper ..> FetchGithubRepoListTask
+
+
+GithubCache --o DatabaseHelper
+
+Repository --o DatabaseHelper
+
+Issue ..|> Linkable
+
+Linkable --* LinkableList
+
+LinkableList --* ChatFragment
+
+PullRequest ..|> Linkable
+
+GithubRepo --* ChatInfoFragment
+GithubRepo --* GithubRepoList
+
+GithubUser --* MainActivity
+
+GithubUser --* FirebaseChatMessage
+
+GithubRepoList --* CreateChatFragment
+
+ChatFragment --> GithubWrapper
+ChatFragment ..|> FetchLinkablesListener
+
+FirebaseChatMessage --* MessageCard
+
+ChatInfoFragment --> GithubWrapper
+ChatInfoFragment ..|> FetchRepoListener
+
+
+FetchGithubTask --|> android.os.AsyncTask
+FetchGithubTask --> DatabaseHelper
+
+
+CreateChatFragment --> GithubWrapper
+CreateChatFragment --> DatabaseHelper
+CreateChatFragment ..|> FetchRepoListListener
+
+FetchGithubUserTask --|> FetchGithubTask
+
+FetchGithubRepoTask --|> FetchGithubTask
+
+FetchGithubLinkablesTask --|> FetchGithubTask
+
+FetchRepoListener --* FetchGithubRepoTask
+
+FetchUserListener --* FetchGithubUserTask
+
+FetchRepoListListener --* FetchGithubRepoListTask
+
+FetchLinkablesListener --* FetchGithubLinkablesTask
+
+FetchGithubAPIListener --* FetchGithubTask
+
+MessageCard --* ChatFragment
+MessageCard --> ChatFragment
+MessageCard ..|> FetchImageListener
+MessageCard ..|> FetchUserListener
+MessageCard ..|> FetchLinkablesListener
+
+HomeFragment --> DatabaseHelper
+
+FetchImageTask --|> android.os.AsyncTask
+
+@enduml
