@@ -16,7 +16,7 @@ public class GithubPull implements GithubAttachable {
 
     public GithubPull(JSONObject jsonObject) throws JSONException {
         number = jsonObject.getInt("number");
-        title =jsonObject.getString("title");
+        title = jsonObject.getString("title");
         url = jsonObject.getString("html_url");
         closed = jsonObject.getString("state").equals("closed");
         githubUser = new GithubUser(jsonObject.getJSONObject("user"));

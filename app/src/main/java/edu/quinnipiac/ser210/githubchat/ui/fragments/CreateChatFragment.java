@@ -26,8 +26,8 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnGithubRepoSelec
 /**
  * @author Thomas Kwashnak
  */
-public class CreateChatFragment extends Fragment implements OnGithubRepoSelected, SearchView.OnQueryTextListener, View.OnClickListener,
-                                                            OnUpdateChatRoom {
+public class CreateChatFragment extends Fragment
+        implements OnGithubRepoSelected, SearchView.OnQueryTextListener, View.OnClickListener, OnUpdateChatRoom {
 
     private GithubRepoAdapter adapter;
 
@@ -54,11 +54,10 @@ public class CreateChatFragment extends Fragment implements OnGithubRepoSelected
 
         RecyclerView recyclerView = view.findViewById(R.id.frag_create_recycler_repos);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(adapter = new GithubRepoAdapter(requireContext(),this));
+        recyclerView.setAdapter(adapter = new GithubRepoAdapter(requireContext(), this));
 
         confirmButton = view.findViewById(R.id.frag_create_fab_confirm);
         confirmButton.setOnClickListener(this);
-
     }
 
     @Override
@@ -79,20 +78,20 @@ public class CreateChatFragment extends Fragment implements OnGithubRepoSelected
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.frag_create_fab_confirm) {
+        if (view.getId() == R.id.frag_create_fab_confirm) {
             ChatRoom chatRoom = new ChatRoom();
             chatRoom.setFavorite(false);
             chatRoom.setRepoName(adapter.getSelected() != null ? adapter.getSelected().getFullName() : searchView.getQuery().toString());
-            channelUpdateChatRoom = DatabaseWrapper.from(requireContext()).startUpdateChatRoom(chatRoom,this);
+            channelUpdateChatRoom = DatabaseWrapper.from(requireContext()).startUpdateChatRoom(chatRoom, this);
         }
     }
 
     @Override
     public void onUpdateChatRoom(ChatRoom chatRoom, int channel) {
-        if(channel == channelUpdateChatRoom) {
+        if (channel == channelUpdateChatRoom) {
             Bundle bundle = new Bundle();
-            bundle.putString(DatabaseWrapper.KEY_REPO_NAME,chatRoom.getRepoName());
-            Navigation.findNavController(requireView()).navigate(R.id.action_createChatFragment_to_chatFragment,bundle);
+            bundle.putString(DatabaseWrapper.KEY_REPO_NAME, chatRoom.getRepoName());
+            Navigation.findNavController(requireView()).navigate(R.id.action_createChatFragment_to_chatFragment, bundle);
         }
     }
 }

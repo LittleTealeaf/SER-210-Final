@@ -13,8 +13,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
@@ -29,6 +27,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnCh
     private ChatRoomAdapter adapter;
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
@@ -40,20 +43,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnCh
 
         RecyclerView recyclerView = view.findViewById(R.id.frag_home_recycler_rooms);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(adapter = new ChatRoomAdapter(requireContext(),this));
+        recyclerView.setAdapter(adapter = new ChatRoomAdapter(requireContext(), this));
         view.findViewById(R.id.frag_home_fab_create).setOnClickListener(this);
         adapter.setFetchChatRoomChannel(DatabaseWrapper.from(requireContext()).startGetChatRoomList(adapter));
     }
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-    }
-
-    @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.frag_home_fab_create) {
+        if (view.getId() == R.id.frag_home_fab_create) {
             Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_createChatFragment);
         }
     }
@@ -61,7 +58,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnCh
     @Override
     public void onChatRoomSelected(ChatRoom chatRoom) {
         Bundle bundle = new Bundle();
-        bundle.putString(DatabaseWrapper.KEY_REPO_NAME,chatRoom.getRepoName());
-        Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chatFragment,bundle);
+        bundle.putString(DatabaseWrapper.KEY_REPO_NAME, chatRoom.getRepoName());
+        Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chatFragment, bundle);
     }
 }

@@ -57,21 +57,19 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
     public void onBindViewHolder(@NonNull GithubRepoViewHolder holder, int position) {
         if (position == 0) {
             holder.bindToCustom(filter);
-
         } else {
             holder.bindToGithubRepo(displayRepos.get(position - 1));
-
         }
         holder.onGithubRepoSelected(selected);
-    }
-
-    public GithubRepo getSelected() {
-        return selected;
     }
 
     @Override
     public int getItemCount() {
         return displayRepos.size() + 1;
+    }
+
+    public GithubRepo getSelected() {
+        return selected;
     }
 
     @Override
@@ -101,7 +99,7 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
     public void onGithubRepoSelected(GithubRepo githubRepo) {
         this.selected = githubRepo;
         listener.onGithubRepoSelected(githubRepo);
-        for(GithubRepoViewHolder viewHolder : holderList) {
+        for (GithubRepoViewHolder viewHolder : holderList) {
             viewHolder.onGithubRepoSelected(githubRepo);
         }
     }

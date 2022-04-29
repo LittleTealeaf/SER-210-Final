@@ -11,10 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.quinnipiac.ser210.githubchat.R;
-import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoomList;
-import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnChatRoomSelected;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.ChatRoomViewHolder;
 
@@ -23,14 +21,10 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.ChatRoomViewHold
  */
 public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> implements OnFetchChatRoomList {
 
-
     private final OnChatRoomSelected listener;
-
-    private int fetchChatRoomChannel;
-
     private final LayoutInflater inflater;
-
     private final List<ChatRoom> chatRooms = new LinkedList<>();
+    private int fetchChatRoomChannel;
 
     public ChatRoomAdapter(Context context, OnChatRoomSelected listener) {
         this.listener = listener;
@@ -40,7 +34,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> im
     @NonNull
     @Override
     public ChatRoomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ChatRoomViewHolder(listener,inflater.inflate(R.layout.list_chat_room_item,parent,false));
+        return new ChatRoomViewHolder(listener, inflater.inflate(R.layout.list_chat_room_item, parent, false));
     }
 
     @Override
@@ -57,15 +51,14 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> im
         this.fetchChatRoomChannel = channel;
     }
 
-
     @Override
     public void onFetchChatRoomList(List<ChatRoom> chatRooms, int channel) {
-        if(channel == fetchChatRoomChannel) {
+        if (channel == fetchChatRoomChannel) {
             int size = this.chatRooms.size();
             this.chatRooms.clear();
-            notifyItemRangeRemoved(0,size);
+            notifyItemRangeRemoved(0, size);
             this.chatRooms.addAll(chatRooms);
-            notifyItemRangeInserted(0,chatRooms.size());
+            notifyItemRangeInserted(0, chatRooms.size());
         }
     }
 }

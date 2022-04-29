@@ -2,8 +2,6 @@ package edu.quinnipiac.ser210.githubchat.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.service.autofill.UserData;
-import android.util.Log;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
@@ -43,13 +41,6 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         setContentView(R.layout.activity_main);
 
         loginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onLoginActivityResult);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        firebaseAuth.addAuthStateListener(this);
     }
 
     @Override
@@ -59,24 +50,21 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     }
 
     @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        if(firebaseAuth.getCurrentUser() == null) {
-            loginLauncher.launch(new Intent(this,LoginActivity.class));
-        } else {
-            getGithubWrapper().setToken(getPreferencesWrapper().getString(GithubWrapper.AUTH_TOKEN,null));
-        }
+    protected void onResume() {
+        super.onResume();
+        firebaseAuth.addAuthStateListener(this);
     }
 
     private void onLoginActivityResult(ActivityResult result) {
-        if(result.getResultCode() == RESULT_OK) {
+        if (result.getResultCode() == RESULT_OK) {
             assert result.getData() != null;
-            getPreferencesWrapper().setString(GithubWrapper.AUTH_TOKEN,result.getData().getStringExtra(GithubWrapper.AUTH_TOKEN));
+            getPreferencesWrapper().setString(GithubWrapper.AUTH_TOKEN, result.getData().getStringExtra(GithubWrapper.AUTH_TOKEN));
         }
     }
 
     @Override
     public PreferencesWrapper getPreferencesWrapper() {
-        if(preferencesWrapper == null) {
+        if (preferencesWrapper == null) {
             return preferencesWrapper = new PreferencesWrapper(this);
         } else {
             return preferencesWrapper;
@@ -84,8 +72,17 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     }
 
     @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        if (firebaseAuth.getCurrentUser() == null) {
+            loginLauncher.launch(new Intent(this, LoginActivity.class));
+        } else {
+            getGithubWrapper().setToken(getPreferencesWrapper().getString(GithubWrapper.AUTH_TOKEN, null));
+        }
+    }
+
+    @Override
     public GithubWrapper getGithubWrapper() {
-        if(githubWrapper == null) {
+        if (githubWrapper == null) {
             return githubWrapper = new GithubWrapper(this);
         } else {
             return githubWrapper;
@@ -94,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
     @Override
     public DatabaseWrapper getDatabaseWrapper() {
-        if(databaseWrapper == null) {
+        if (databaseWrapper == null) {
             return databaseWrapper = new DatabaseWrapper(this);
         } else {
             return databaseWrapper;
