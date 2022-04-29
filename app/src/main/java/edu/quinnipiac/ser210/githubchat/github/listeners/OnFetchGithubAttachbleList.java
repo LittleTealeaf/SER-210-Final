@@ -7,6 +7,6 @@ import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
 /**
  * @author Thomas Kwashnak
  */
-public interface OnFetchAttachableList {
+public interface OnFetchGithubAttachbleList {
     void onFetchMessageAttachableList(List<GithubAttachable> attachableList, int channel);
 }
