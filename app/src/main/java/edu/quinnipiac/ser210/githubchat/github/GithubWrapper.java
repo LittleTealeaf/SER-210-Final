@@ -114,7 +114,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
 
         System.out.println("Fetching from url:" + url);
 
-        GithubCache urlCache = databaseWrapper.getOldGithubCache(url);
+        GithubCache urlCache = databaseWrapper.getGithubCache(url);
         if (urlCache != null && urlCache.getFetchTime() > Instant.now().getEpochSecond() - 24 * 60 * 60) {
             return urlCache.getContent();
         }
@@ -150,7 +150,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
             return json.toString();
         }
 
-        databaseWrapper.oldstartsetgithubcache(new GithubCache(url, Instant.now().getEpochSecond(), json.toString()));
+        databaseWrapper.updateGithubCache(new GithubCache(url, Instant.now().getEpochSecond(), json.toString()));
 
         return json.toString();
     }

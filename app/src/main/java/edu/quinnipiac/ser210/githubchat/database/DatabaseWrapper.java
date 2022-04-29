@@ -17,9 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
-import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoom;
-import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRooms;
-import edu.quinnipiac.ser210.githubchat.database.listeners.OnSetChatRoom;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadWrapper;
 
 /**
@@ -83,22 +81,22 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         }
     }
 
-    @Deprecated
-    public GithubCache getOldGithubCache(String url) {
-        String[] columns = {COL_FETCH_TIME, COL_CONTENT};
-
-        AtomicReference<GithubCache> cache = new AtomicReference<>();
-
-        executeDatabaseOperation((db) -> {
-            Cursor cursor = db.query(TABLE_GITHUB_CACHE, columns, COL_URL + " = ?", new String[]{url}, null, null, null);
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                cache.set(new GithubCache(url, cursor.getLong(0), cursor.getString(1)));
-            }
-            cursor.close();
-        });
-        return cache.get();
-    }
+//    @Deprecated
+//    public GithubCache getOldGithubCache(String url) {
+//        String[] columns = {COL_FETCH_TIME, COL_CONTENT};
+//
+//        AtomicReference<GithubCache> cache = new AtomicReference<>();
+//
+//        executeDatabaseOperation((db) -> {
+//            Cursor cursor = db.query(TABLE_GITHUB_CACHE, columns, COL_URL + " = ?", new String[]{url}, null, null, null);
+//            if (cursor.getCount() > 0) {
+//                cursor.moveToFirst();
+//                cache.set(new GithubCache(url, cursor.getLong(0), cursor.getString(1)));
+//            }
+//            cursor.close();
+//        });
+//        return cache.get();
+//    }
 
     public synchronized void executeDatabaseOperation(DatabaseOperation operation) {
         SQLiteDatabase database = getWritableDatabase();
@@ -106,127 +104,118 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         database.close();
     }
 
-    @Deprecated
-    public void setOldChatRoom(ChatRoom chatRoom) {
-        ContentValues values = new ContentValues();
-        values.put(COL_REPO_NAME, chatRoom.getRepoName());
-        values.put(COL_FAVORITE, chatRoom.isFavorite() ? 1 : 0);
+//    @Deprecated
+//    public void setOldChatRoom(ChatRoom chatRoom) {
+//        ContentValues values = new ContentValues();
+//        values.put(COL_REPO_NAME, chatRoom.getRepoName());
+//        values.put(COL_FAVORITE, chatRoom.isFavorite() ? 1 : 0);
+//
+//        executeDatabaseOperation((db) -> {
+//            if (db.update(TABLE_CHAT_ROOM, values, COL_REPO_NAME + " = ?", new String[]{chatRoom.getRepoName()}) == 0) {
+//                db.insert(TABLE_CHAT_ROOM, null, values);
+//            }
+//        });
+//    }
 
-        executeDatabaseOperation((db) -> {
-            if (db.update(TABLE_CHAT_ROOM, values, COL_REPO_NAME + " = ?", new String[]{chatRoom.getRepoName()}) == 0) {
-                db.insert(TABLE_CHAT_ROOM, null, values);
-            }
-        });
-    }
+//    @Deprecated
+//    public void oldStartSetChatRoom(ChatRoom chatRoom) {
+//        oldstartthread(() -> setOldChatRoom(chatRoom));
+//    }
+//
+//    @Deprecated
+//    public void oldStartSetChatRoom(ChatRoom chatRoom, OnSetChatRoom listener) {
+//        oldStartSetChatRoom(chatRoom, listener, CHANNEL_DEFAULT);
+//    }
+//
+//    @Deprecated
+//    public void oldStartSetChatRoom(ChatRoom chatRoom, OnSetChatRoom listener, int channel) {
+//        oldstartthread(() -> {
+//            setOldChatRoom(chatRoom);
+//            return chatRoom;
+//        }, listener::onSetChatRoom, channel);
+//    }
+//
+//    @Deprecated
+//    public void oldStartGetRoom(String repoName, OnFetchChatRoom listener) {
+//        oldStartGetRoom(repoName, listener, CHANNEL_DEFAULT);
+//    }
+//
+//    @Deprecated
+//    public void oldStartGetRoom(String repoName, OnFetchChatRoom listener, int channel) {
+//        oldstartthread(() -> oldGetChatRoom(repoName), listener::onFetchChatRoom, channel);
+//    }
+//
+//    @Deprecated
+//    private synchronized <T> void oldstartthread(Callable<T> callable, Notifier<T> notifier, int channel) {
+//        executorService.execute(() -> {
+//            try {
+//                T item = callable.call();
+//                handler.post(() -> notifier.notify(item, channel));
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        });
+//    }
+//
+//    @Deprecated
+//    public ChatRoom oldGetChatRoom(String repoName) {
+//        String[] columns = {COL_REPO_NAME, COL_FAVORITE};
+//
+//        AtomicReference<ChatRoom> room = new AtomicReference<>();
+//
+//        executeDatabaseOperation((db) -> {
+//            Cursor cursor = db.query(TABLE_CHAT_ROOM, columns, COL_REPO_NAME + " = ?", new String[]{repoName}, null, null, null);
+//            if (cursor.getCount() > 0) {
+//                cursor.moveToFirst();
+//                room.set(new ChatRoom(cursor.getString(0), cursor.getInt(1) == 1));
+//            }
+//            cursor.close();
+//        });
+//        return room.get();
+//    }
+//
+//    @Deprecated
+//    public void oldstartgetchatrooms(OnFetchChatRooms listener) {
+//        oldstartgetchatrooms(listener, CHANNEL_DEFAULT);
+//    }
+//
+//    @Deprecated
+//    public void oldstartgetchatrooms(OnFetchChatRooms listener, int channel) {
+//        oldstartthread(this::oldgetchatrooms, listener::onFetchChatRooms, channel);
+//    }
+//
+//    @Deprecated
+//    public List<ChatRoom> oldgetchatrooms() {
+//        String[] columns = {COL_REPO_NAME, COL_FAVORITE};
+//        List<ChatRoom> chatRooms = new LinkedList<>();
+//
+//        executeDatabaseOperation((db) -> {
+//            Cursor cursor = db.query(TABLE_CHAT_ROOM, columns, null, null, null, null, null);
+//            cursor.moveToFirst();
+//            while (!cursor.isAfterLast()) {
+//                chatRooms.add(new ChatRoom(cursor.getString(0), cursor.getInt(1) == 1));
+//                cursor.moveToNext();
+//            }
+//            cursor.close();
+//        });
+//        return chatRooms;
+//    }
+//
+//    @Deprecated
+//    public void oldstartsetgithubcache(GithubCache githubCache) {
+//        oldstartthread(() -> oldsetgithubcache(githubCache));
+//    }
+//
+//    @Deprecated
+//    private void oldstartthread(Runnable runnable) {
+//        executorService.execute(runnable);
+//    }
+//
+//
+//    @Deprecated
+//    public void oldsetgithubcache(GithubCache githubCache) {
 
-    @Deprecated
-    public void oldStartSetChatRoom(ChatRoom chatRoom) {
-        oldstartthread(() -> setOldChatRoom(chatRoom));
-    }
-
-    @Deprecated
-    public void oldStartSetChatRoom(ChatRoom chatRoom, OnSetChatRoom listener) {
-        oldStartSetChatRoom(chatRoom, listener, CHANNEL_DEFAULT);
-    }
-
-    @Deprecated
-    public void oldStartSetChatRoom(ChatRoom chatRoom, OnSetChatRoom listener, int channel) {
-        oldstartthread(() -> {
-            setOldChatRoom(chatRoom);
-            return chatRoom;
-        }, listener::onSetChatRoom, channel);
-    }
-
-    @Deprecated
-    public void oldStartGetRoom(String repoName, OnFetchChatRoom listener) {
-        oldStartGetRoom(repoName, listener, CHANNEL_DEFAULT);
-    }
-
-    @Deprecated
-    public void oldStartGetRoom(String repoName, OnFetchChatRoom listener, int channel) {
-        oldstartthread(() -> oldGetChatRoom(repoName), listener::onFetchChatRoom, channel);
-    }
-
-    @Deprecated
-    private synchronized <T> void oldstartthread(Callable<T> callable, Notifier<T> notifier, int channel) {
-        executorService.execute(() -> {
-            try {
-                T item = callable.call();
-                handler.post(() -> notifier.notify(item, channel));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    @Deprecated
-    public ChatRoom oldGetChatRoom(String repoName) {
-        String[] columns = {COL_REPO_NAME, COL_FAVORITE};
-
-        AtomicReference<ChatRoom> room = new AtomicReference<>();
-
-        executeDatabaseOperation((db) -> {
-            Cursor cursor = db.query(TABLE_CHAT_ROOM, columns, COL_REPO_NAME + " = ?", new String[]{repoName}, null, null, null);
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                room.set(new ChatRoom(cursor.getString(0), cursor.getInt(1) == 1));
-            }
-            cursor.close();
-        });
-        return room.get();
-    }
-
-    @Deprecated
-    public void oldstartgetchatrooms(OnFetchChatRooms listener) {
-        oldstartgetchatrooms(listener, CHANNEL_DEFAULT);
-    }
-
-    @Deprecated
-    public void oldstartgetchatrooms(OnFetchChatRooms listener, int channel) {
-        oldstartthread(this::oldgetchatrooms, listener::onFetchChatRooms, channel);
-    }
-
-    @Deprecated
-    public List<ChatRoom> oldgetchatrooms() {
-        String[] columns = {COL_REPO_NAME, COL_FAVORITE};
-        List<ChatRoom> chatRooms = new LinkedList<>();
-
-        executeDatabaseOperation((db) -> {
-            Cursor cursor = db.query(TABLE_CHAT_ROOM, columns, null, null, null, null, null);
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                chatRooms.add(new ChatRoom(cursor.getString(0), cursor.getInt(1) == 1));
-                cursor.moveToNext();
-            }
-            cursor.close();
-        });
-        return chatRooms;
-    }
-
-    @Deprecated
-    public void oldstartsetgithubcache(GithubCache githubCache) {
-        oldstartthread(() -> oldsetgithubcache(githubCache));
-    }
-
-    @Deprecated
-    private void oldstartthread(Runnable runnable) {
-        executorService.execute(runnable);
-    }
-
-
-    @Deprecated
-    public void oldsetgithubcache(GithubCache githubCache) {
-        ContentValues values = new ContentValues();
-        values.put(COL_URL, githubCache.getUrl());
-        values.put(COL_FETCH_TIME, githubCache.getFetchTime());
-        values.put(COL_CONTENT, githubCache.getContent());
-
-        executeDatabaseOperation((db) -> {
-            if (db.update(TABLE_GITHUB_CACHE, values, COL_URL + " = ?", new String[]{githubCache.getUrl()}) == 0) {
-                db.insert(TABLE_GITHUB_CACHE, null, values);
-            }
-        });
-    }
+//    }
 
     public GithubCache getGithubCache(String url) {
         String[] columns = {COL_FETCH_TIME, COL_CONTENT};
@@ -347,6 +336,27 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         return ThreadWrapper.startThread(this::getChatRoomList, listener::onFetchChatRoomList, channel);
     }
 
+    public GithubCache updateGithubCache(GithubCache githubCache) {
+        ContentValues values = new ContentValues();
+        values.put(COL_URL, githubCache.getUrl());
+        values.put(COL_FETCH_TIME, githubCache.getFetchTime());
+        values.put(COL_CONTENT, githubCache.getContent());
+
+        executeDatabaseOperation((db) -> {
+            if (db.update(TABLE_GITHUB_CACHE, values, COL_URL + " = ?", new String[]{githubCache.getUrl()}) == 0) {
+                db.insert(TABLE_GITHUB_CACHE, null, values);
+            }
+        });
+        return githubCache;
+    }
+
+    public int startUpdateGithubCache(GithubCache githubCache, OnUpdateGithubCache listener) {
+        return ThreadWrapper.startThread(() -> updateGithubCache(githubCache),listener::onUpdateGithubCache);
+    }
+
+    public int startUpdateGithubCache(GithubCache githubCache, OnUpdateGithubCache listener, int channel) {
+        return ThreadWrapper.startThread(() -> updateGithubCache(githubCache),listener::onUpdateGithubCache,channel);
+    }
 
 
 
@@ -368,6 +378,10 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
 
     public interface OnUpdateChatRoom {
         void onUpdateChatRoom(ChatRoom chatRoom, int channel);
+    }
+
+    public interface OnUpdateGithubCache {
+        void onUpdateGithubCache(GithubCache cache, int channel);
     }
 
     @Deprecated
