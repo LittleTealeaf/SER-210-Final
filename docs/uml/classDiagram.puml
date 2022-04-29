@@ -6,27 +6,30 @@ skinparam class {
 }
 
 class ChatRoom {
-
+    -repoName: String
+    -favorite: Boolean
 }
 
 class GithubCache {
-
+    -url: String
+    -content: String
+    -fetchTime: long
 }
 
 interface OnFetchChatRoom {
-
+    +onFetchChatRoom(ChatRoom): void
 }
 
 interface OnFetchChatRooms {
-
+    +onFetchChatRoom(List<ChatRoom>): void
 }
 
 interface OnSetChatRoom {
-
+    +onSetChatRoom(): void
 }
 
 interface DatabaseHolder {
-
+    +getDatabaseWrapper(): DatabaseWrapper
 }
 
 class DatabaseWrapper {
@@ -39,11 +42,16 @@ DatabaseWrapper --> OnFetchChatRooms
 DatabaseWrapper --* MainActivity
 
 class Message {
-
+    -message: String
+    -sender: String
 }
 
 interface GithubAttachable {
-
+    +getNumber(): int
+    +getTitle(): String
+    +getURL(): String
+    +isClosed(): boolean
+    +getGithubUser(): GithubUser
 }
 
 class GithubIssue {
@@ -64,33 +72,35 @@ class GithubUser {
 
 }
 GithubUser --* GithubRepo
+GithubUser --* GithubPull
+GithubUser --* GithubIssue
 
 interface OnFetchAttachableList {
-
+    +onFetchAttachableList(List<GithubAttachable>): void
 }
 
 interface OnFetchGithubIssues {
-
+    +onFetchGithubIssues(List<GithubIssue>): void
 }
 
 interface OnFetchGithubPulls {
-
+    +onFetchGithubPulls(List<GithubIssue>): void
 }
 
 interface OnFetchGithubRepo {
-
+    +onFetchGithubRepo(GithubRepo): void
 }
 
 interface OnFetchGithubRepoList {
-
+    +onFetchGithubRepoList(List<GithubRepo>): void
 }
 
 interface OnFetchGithubUser {
-
+    +onFetchGithubUser(GithubUser): void
 }
 
 interface GithubHolder {
-
+    +getGithubWrapper(): GithubWrapper
 }
 
 class GithubWrapper {
@@ -109,7 +119,7 @@ GithubWrapper --* MainActivity
 
 
 interface PreferencesHolder {
-
+    +getPreferencesWrapper(): PreferencesWrapper
 }
 
 class PreferencesWrapper {
@@ -142,10 +152,15 @@ class ChatFragment {
 }
 ChatFragment ..|> OnFetchAttachableList
 ChatFragment --> GithubAttachable
+ChatFragment --> ChatRoom
 
 class ChatInfoFragment {
 
 }
+ChatInfoFragment --> ChatRoom
+ChatInfoFragment --> DatabaseWrapper
+ChatInfoFragment --> GithubWrapper
+ChatInfoFragment ..|> OnFetchGithubRepo
 
 class CreateChatFragment {
 
@@ -190,6 +205,8 @@ class MessageViewHolder {
 }
 MessageViewHolder --> Message
 MessageViewHolder --* MessageAdapter
+MessageViewHolder ..|> OnFetchImage
+MessageViewHolder ..|> OnFetchGithubUser
 
 class MessageAdapter {
 
@@ -205,5 +222,9 @@ class GithubRepoAdapter {
 
 }
 GithubRepoAdapter --* CreateChatFragment
+
+interface OnFetchImage {
+
+}
 
 @enduml
