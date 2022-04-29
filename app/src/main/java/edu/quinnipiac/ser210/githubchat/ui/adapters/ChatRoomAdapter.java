@@ -13,6 +13,7 @@ import java.util.List;
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
+import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoomList;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnChatRoomSelected;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.ChatRoomViewHolder;
@@ -20,7 +21,7 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.ChatRoomViewHold
 /**
  * @author Thomas Kwashnak
  */
-public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> implements DatabaseWrapper.OnFetchChatRoomList {
+public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> implements OnFetchChatRoomList {
 
 
     private final OnChatRoomSelected listener;

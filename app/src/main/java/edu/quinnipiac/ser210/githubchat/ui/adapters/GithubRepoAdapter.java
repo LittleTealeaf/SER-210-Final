@@ -39,7 +39,7 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
     public GithubRepoAdapter(Context context, OnGithubRepoSelected listener) {
         this.inflater = LayoutInflater.from(context);
         this.listener = listener;
-        GithubWrapper.from(context).startFetchGithubRepoList(null, this, CHANNEL_FETCH);
+        GithubWrapper.from(context).oldfetchgithubrepolist(null, this, CHANNEL_FETCH);
     }
 
     @NonNull

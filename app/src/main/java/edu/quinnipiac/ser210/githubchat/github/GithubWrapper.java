@@ -34,13 +34,16 @@ import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubPulls;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepo;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepoList;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubUser;
+import edu.quinnipiac.ser210.githubchat.threads.ThreadWrapper;
 
 /**
  * @author Thomas Kwashnak
  */
 public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithubUser {
 
+    @Deprecated
     public static final int CHANNEL_DEFAULT = -1;
+    @Deprecated
     private static final int CHANNEL_SET_USER = 10924;
     public static final String AUTH_TOKEN = "Github Token";
     private static final int PER_PAGE = 100;
@@ -66,15 +69,17 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
 
     public void setToken(String token) {
         this.token = token;
-        startFetchGithubUser(null,this,CHANNEL_SET_USER);
+        startFetchGithubUser(null,(user,channel) -> githubUser = user);
     }
 
-    private void startThread(Runnable runnable) {
+    @Deprecated
+    private void dstartthread(Runnable runnable) {
         executorService.execute(runnable);
     }
 
-    private <T> void startThread(Callable<T> callable, Notifier<T> notifier, int channel) {
-        startThread(() -> {
+    @Deprecated
+    private <T> void dstartthread(Callable<T> callable, Notifier<T> notifier, int channel) {
+        dstartthread(() -> {
             try {
                 T item = callable.call();
                 handler.post(() -> notifier.notify(item,channel));
@@ -94,13 +99,16 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         return databaseWrapper;
     }
 
-    public void startFetchGithubUser(String username, OnFetchGithubUser listener) {
-        startFetchGithubUser(username, listener, CHANNEL_DEFAULT);
+    @Deprecated
+    public void oldfetchgithubuser(String username, OnFetchGithubUser listener) {
+        oldfetchgithubuser(username, listener, CHANNEL_DEFAULT);
     }
 
-    public void startFetchGithubUser(String username, OnFetchGithubUser listener, int channel) {
-        startThread(() -> fetchGithubUser(username),listener::onFetchGithubUser,channel);
+    @Deprecated
+    public void oldfetchgithubuser(String username, OnFetchGithubUser listener, int channel) {
+        dstartthread(() -> fetchGithubUser(username), listener::onFetchGithubUser, channel);
     }
+
 
     public GithubUser fetchGithubUser(String username) {
         try {
@@ -155,12 +163,14 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         return json.toString();
     }
 
-    public void startFetchGithubRepo(String fullName, OnFetchGithubRepo listener) {
-        startFetchGithubRepo(fullName, listener, CHANNEL_DEFAULT);
+    @Deprecated
+    public void oldfetchgithubrepo(String fullName, OnFetchGithubRepo listener) {
+        oldfetchgithubrepo(fullName, listener, CHANNEL_DEFAULT);
     }
 
-    public void startFetchGithubRepo(String fullName, OnFetchGithubRepo listener, int channel) {
-        startThread(() -> fetchGithubRepo(fullName),listener::onFetchGithubRepo,channel);
+    @Deprecated
+    public void oldfetchgithubrepo(String fullName, OnFetchGithubRepo listener, int channel) {
+        dstartthread(() -> fetchGithubRepo(fullName), listener::onFetchGithubRepo, channel);
     }
 
     public GithubRepo fetchGithubRepo(String fullName) {
@@ -171,12 +181,14 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         }
     }
 
-    public void startFetchGithubRepoList(String username, OnFetchGithubRepoList listener) {
-        startFetchGithubRepoList(username, listener, CHANNEL_DEFAULT);
+    @Deprecated
+    public void oldfetchgithubrepolist(String username, OnFetchGithubRepoList listener) {
+        oldfetchgithubrepolist(username, listener, CHANNEL_DEFAULT);
     }
 
-    public void startFetchGithubRepoList(String username, OnFetchGithubRepoList listener, int channel) {
-        startThread(() -> fetchGithubRepoList(username),listener::onFetchGithubRepoList,channel);
+    @Deprecated
+    public void oldfetchgithubrepolist(String username, OnFetchGithubRepoList listener, int channel) {
+        dstartthread(() -> fetchGithubRepoList(username), listener::onFetchGithubRepoList, channel);
     }
 
     public List<GithubRepo> fetchGithubRepoList(String username) {
@@ -214,12 +226,14 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         return jsonArray;
     }
 
-    public void startFetchGithubPulls(String repoName, OnFetchGithubPulls listener) {
-        startFetchGithubPulls(repoName, listener, CHANNEL_DEFAULT);
+    @Deprecated
+    public void oldfetchgithubpulls(String repoName, OnFetchGithubPulls listener) {
+        oldfetchgithubpulls(repoName, listener, CHANNEL_DEFAULT);
     }
 
-    public void startFetchGithubPulls(String repoName, OnFetchGithubPulls listener, int channel) {
-        startThread(() -> fetchGithubPulls(repoName),listener::onFetchGithubPulls,channel);
+    @Deprecated
+    public void oldfetchgithubpulls(String repoName, OnFetchGithubPulls listener, int channel) {
+        dstartthread(() -> fetchGithubPulls(repoName), listener::onFetchGithubPulls, channel);
     }
 
     public List<GithubPull> fetchGithubPulls(String repoName) {
@@ -236,12 +250,14 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         return pulls;
     }
 
-    public void startFetchGithubIssues(String repoName, OnFetchGithubIssues listener) {
-        startFetchGithubIssues(repoName, listener, CHANNEL_DEFAULT);
+    @Deprecated
+    public void oldfetchgithubissues(String repoName, OnFetchGithubIssues listener) {
+        oldfetchgithubissues(repoName, listener, CHANNEL_DEFAULT);
     }
 
-    public void startFetchGithubIssues(String repoName, OnFetchGithubIssues listener, int channel) {
-        startThread(() -> fetchGithubIssues(repoName),listener::onFetchGithubIssues,channel);
+    @Deprecated
+    public void oldfetchgithubissues(String repoName, OnFetchGithubIssues listener, int channel) {
+        dstartthread(() -> fetchGithubIssues(repoName), listener::onFetchGithubIssues, channel);
     }
 
     public List<GithubIssue> fetchGithubIssues(String repoName) {
@@ -264,14 +280,17 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         return attachableList;
     }
 
-    public void startFetchGithubAttachableList(String repoName, OnFetchAttachableList listener, int channel) {
-        startThread(() -> fetchGithubAttachableList(repoName),listener::onFetchMessageAttachableList,channel);
+    @Deprecated
+    public void oldfetchgithubattachables(String repoName, OnFetchAttachableList listener, int channel) {
+        dstartthread(() -> fetchGithubAttachableList(repoName), listener::onFetchMessageAttachableList, channel);
     }
 
-    public void startFetchGithubAttachableList(String repoName, OnFetchAttachableList listener) {
-        startFetchGithubAttachableList(repoName, listener, CHANNEL_DEFAULT);
+    @Deprecated
+    public void oldfetchgithubattachables(String repoName, OnFetchAttachableList listener) {
+        oldfetchgithubattachables(repoName, listener, CHANNEL_DEFAULT);
     }
 
+    @Deprecated
     @Override
     public void onFetchGithubUser(GithubUser githubUser, int channel) {
         if(channel == CHANNEL_SET_USER) {
@@ -283,9 +302,25 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder, OnFetchGithu
         return githubUser;
     }
 
+    @Deprecated
     private interface Notifier<T> {
 
         void notify(T item, int channel);
     }
 
+
+    public int startFetchGithubUser(String username, OnFetchGithubUser listener) {
+        return ThreadWrapper.startThread(() -> fetchGithubUser(username),listener::onFetchGithubUser);
+    }
+
+    public int startFetchGithubUser(String username, OnFetchGithubUser listener, int channel) {
+        return ThreadWrapper.startThread(() -> fetchGithubUser(username), listener::onFetchGithubUser,channel);
+    }
+
+
+
+
+    public interface OnFetchGithubUser {
+        void onFetchGithubUser(GithubUser githubUser, int channel);
+    }
 }
