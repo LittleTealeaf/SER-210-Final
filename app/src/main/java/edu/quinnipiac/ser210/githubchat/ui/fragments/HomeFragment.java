@@ -40,7 +40,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnCh
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter = new ChatRoomAdapter(requireContext(),this));
         view.findViewById(R.id.frag_home_fab_create).setOnClickListener(this);
-        DatabaseWrapper.from(requireContext()).startGetChatRooms(adapter);
+        DatabaseWrapper.from(requireContext()).oldstartgetchatrooms(adapter);
     }
 
     @Override

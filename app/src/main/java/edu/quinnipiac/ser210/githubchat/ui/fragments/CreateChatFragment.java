@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -84,7 +83,7 @@ public class CreateChatFragment extends Fragment implements OnGithubRepoSelected
             ChatRoom chatRoom = new ChatRoom();
             chatRoom.setFavorite(false);
             chatRoom.setRepoName(adapter.getSelected() != null ? adapter.getSelected().getFullName() : searchView.getQuery().toString());
-            DatabaseWrapper.from(requireContext()).startSetChatRoom(chatRoom,this,CHANNEL_CREATE);
+            DatabaseWrapper.from(requireContext()).oldStartSetChatRoom(chatRoom, this, CHANNEL_CREATE);
         }
     }
 

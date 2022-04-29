@@ -79,7 +79,8 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         }
     }
 
-    public GithubCache getGithubCache(String url) {
+    @Deprecated
+    public GithubCache getOldGithubCache(String url) {
         String[] columns = {COL_FETCH_TIME, COL_CONTENT};
 
         AtomicReference<GithubCache> cache = new AtomicReference<>();
@@ -101,7 +102,8 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         database.close();
     }
 
-    public void setChatRoom(ChatRoom chatRoom) {
+    @Deprecated
+    public void setOldChatRoom(ChatRoom chatRoom) {
         ContentValues values = new ContentValues();
         values.put(COL_REPO_NAME, chatRoom.getRepoName());
         values.put(COL_FAVORITE, chatRoom.isFavorite() ? 1 : 0);
@@ -113,30 +115,36 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         });
     }
 
-    public void startSetChatRoom(ChatRoom chatRoom) {
-        startThread(() -> setChatRoom(chatRoom));
+    @Deprecated
+    public void oldStartSetChatRoom(ChatRoom chatRoom) {
+        oldstartthread(() -> setOldChatRoom(chatRoom));
     }
 
-    public void startSetChatRoom(ChatRoom chatRoom, OnSetChatRoom listener) {
-        startSetChatRoom(chatRoom,listener,CHANNEL_DEFAULT);
+    @Deprecated
+    public void oldStartSetChatRoom(ChatRoom chatRoom, OnSetChatRoom listener) {
+        oldStartSetChatRoom(chatRoom, listener, CHANNEL_DEFAULT);
     }
 
-    public void startSetChatRoom(ChatRoom chatRoom, OnSetChatRoom listener, int channel) {
-        startThread(() -> {
-            setChatRoom(chatRoom);
+    @Deprecated
+    public void oldStartSetChatRoom(ChatRoom chatRoom, OnSetChatRoom listener, int channel) {
+        oldstartthread(() -> {
+            setOldChatRoom(chatRoom);
             return chatRoom;
-        },listener::onSetChatRoom,channel);
+        }, listener::onSetChatRoom, channel);
     }
 
-    public void startGetChatRoom(String repoName, OnFetchChatRoom listener) {
-        startGetChatRoom(repoName, listener, CHANNEL_DEFAULT);
+    @Deprecated
+    public void oldStartGetRoom(String repoName, OnFetchChatRoom listener) {
+        oldStartGetRoom(repoName, listener, CHANNEL_DEFAULT);
     }
 
-    public void startGetChatRoom(String repoName, OnFetchChatRoom listener, int channel) {
-        startThread(() -> getChatRoom(repoName), listener::onFetchChatRoom, channel);
+    @Deprecated
+    public void oldStartGetRoom(String repoName, OnFetchChatRoom listener, int channel) {
+        oldstartthread(() -> oldGetChatRoom(repoName), listener::onFetchChatRoom, channel);
     }
 
-    private synchronized <T> void startThread(Callable<T> callable, Notifier<T> notifier, int channel) {
+    @Deprecated
+    private synchronized <T> void oldstartthread(Callable<T> callable, Notifier<T> notifier, int channel) {
         executorService.execute(() -> {
             try {
                 T item = callable.call();
@@ -147,7 +155,8 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         });
     }
 
-    public ChatRoom getChatRoom(String repoName) {
+    @Deprecated
+    public ChatRoom oldGetChatRoom(String repoName) {
         String[] columns = {COL_REPO_NAME, COL_FAVORITE};
 
         AtomicReference<ChatRoom> room = new AtomicReference<>();
@@ -163,15 +172,18 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         return room.get();
     }
 
-    public void startGetChatRooms(OnFetchChatRooms listener) {
-        startGetChatRooms(listener, CHANNEL_DEFAULT);
+    @Deprecated
+    public void oldstartgetchatrooms(OnFetchChatRooms listener) {
+        oldstartgetchatrooms(listener, CHANNEL_DEFAULT);
     }
 
-    public void startGetChatRooms(OnFetchChatRooms listener, int channel) {
-        startThread(this::getChatRooms, listener::onFetchChatRooms, channel);
+    @Deprecated
+    public void oldstartgetchatrooms(OnFetchChatRooms listener, int channel) {
+        oldstartthread(this::oldgetchatrooms, listener::onFetchChatRooms, channel);
     }
 
-    public List<ChatRoom> getChatRooms() {
+    @Deprecated
+    public List<ChatRoom> oldgetchatrooms() {
         String[] columns = {COL_REPO_NAME, COL_FAVORITE};
         List<ChatRoom> chatRooms = new LinkedList<>();
 
@@ -187,15 +199,19 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         return chatRooms;
     }
 
-    public void startSetGithubCache(GithubCache githubCache) {
-        startThread(() -> setGithubCache(githubCache));
+    @Deprecated
+    public void oldstartsetgithubcache(GithubCache githubCache) {
+        oldstartthread(() -> oldsetgithubcache(githubCache));
     }
 
-    private void startThread(Runnable runnable) {
+    @Deprecated
+    private void oldstartthread(Runnable runnable) {
         executorService.execute(runnable);
     }
 
-    public void setGithubCache(GithubCache githubCache) {
+
+    @Deprecated
+    public void oldsetgithubcache(GithubCache githubCache) {
         ContentValues values = new ContentValues();
         values.put(COL_URL, githubCache.getUrl());
         values.put(COL_FETCH_TIME, githubCache.getFetchTime());
@@ -208,6 +224,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         });
     }
 
+    @Deprecated
     private interface Notifier<T> {
 
         void notify(T item, int channel);
