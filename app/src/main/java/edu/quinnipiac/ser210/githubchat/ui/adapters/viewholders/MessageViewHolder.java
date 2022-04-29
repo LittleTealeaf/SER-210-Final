@@ -12,7 +12,6 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
 
 public class MessageViewHolder extends RecyclerView.ViewHolder {
 
-
     private final TextView textView;
 
     public MessageViewHolder(MessageAdapter messageAdapter, @NonNull View itemView) {

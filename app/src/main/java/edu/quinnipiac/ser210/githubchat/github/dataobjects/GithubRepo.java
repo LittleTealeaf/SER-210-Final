@@ -7,6 +7,7 @@ import org.json.JSONObject;
  * @author Thomas Kwashnak
  */
 public class GithubRepo {
+
     private final String name;
     private final String fullName;
     private final GithubUser owner;
@@ -17,7 +18,6 @@ public class GithubRepo {
         fullName = object.getString("full_name");
         owner = new GithubUser(object.getJSONObject("owner"));
         url = object.getString("html_url");
-
     }
 
     public GithubRepo(String name, String fullName, GithubUser owner, String url) {

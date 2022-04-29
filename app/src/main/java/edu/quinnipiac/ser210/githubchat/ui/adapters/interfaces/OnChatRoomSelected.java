@@ -6,5 +6,6 @@ import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
  * @author Thomas Kwashnak
  */
 public interface OnChatRoomSelected {
+
     void onChatRoomSelected(ChatRoom chatRoom);
 }

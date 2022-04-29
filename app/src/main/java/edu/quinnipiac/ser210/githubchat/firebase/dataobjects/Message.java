@@ -1,27 +1,17 @@
 package edu.quinnipiac.ser210.githubchat.firebase.dataobjects;
 
 public class Message {
+
     private String message;
     private String sender;
 
     public Message() {}
 
-    public String getMessage() {
-        return message;
-    }
-
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-
-    public void setMessage(String message) {
-        this.message = message;
+    @Override
+    public int hashCode() {
+        int result = getMessage() != null ? getMessage().hashCode() : 0;
+        result = 31 * result + (getSender() != null ? getSender().hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -35,10 +25,19 @@ public class Message {
         return getSender() != null ? getSender().equals(message1.getSender()) : message1.getSender() == null;
     }
 
-    @Override
-    public int hashCode() {
-        int result = getMessage() != null ? getMessage().hashCode() : 0;
-        result = 31 * result + (getSender() != null ? getSender().hashCode() : 0);
-        return result;
+    public String getMessage() {
+        return message;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

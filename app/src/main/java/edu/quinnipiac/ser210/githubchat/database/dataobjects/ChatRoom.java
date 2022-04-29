@@ -2,6 +2,7 @@ package edu.quinnipiac.ser210.githubchat.database.dataobjects;
 
 /**
  * Represents a chat room
+ *
  * @author Thomas Kwashnak
  */
 public class ChatRoom {
@@ -15,7 +16,6 @@ public class ChatRoom {
         this.repoName = repoName;
         this.favorite = favorite;
     }
-
 
     public String getRepoName() {
         return repoName;

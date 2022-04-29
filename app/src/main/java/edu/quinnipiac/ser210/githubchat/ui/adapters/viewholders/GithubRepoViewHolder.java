@@ -19,7 +19,7 @@ public class GithubRepoViewHolder extends RecyclerView.ViewHolder implements Vie
 
     private final GithubRepoAdapter adapter;
     private GithubRepo githubRepo;
-    private TextView textView;
+    private final TextView textView;
 
     public GithubRepoViewHolder(GithubRepoAdapter adapter, @NonNull View itemView) {
         super(itemView);
@@ -39,7 +39,7 @@ public class GithubRepoViewHolder extends RecyclerView.ViewHolder implements Vie
 
     public void bindToGithubRepo(GithubRepo githubRepo) {
         this.githubRepo = githubRepo;
-        if(githubRepo != null) {
+        if (githubRepo != null) {
             textView.setText(githubRepo.getFullName());
         }
     }

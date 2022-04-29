@@ -6,11 +6,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
-import edu.quinnipiac.ser210.githubchat.ui.adapters.ChatRoomAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnChatRoomSelected;
 
 /**
@@ -33,7 +30,7 @@ public class ChatRoomViewHolder extends RecyclerView.ViewHolder implements View.
 
     public void bindToChatRoom(ChatRoom chatRoom) {
         this.chatRoom = chatRoom;
-        if(chatRoom != null) {
+        if (chatRoom != null) {
             textView.setText(chatRoom.getRepoName());
         }
     }

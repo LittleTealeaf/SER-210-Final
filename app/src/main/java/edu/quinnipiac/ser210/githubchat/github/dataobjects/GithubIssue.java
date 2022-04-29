@@ -8,11 +8,11 @@ import org.json.JSONObject;
  */
 public class GithubIssue implements GithubAttachable {
 
-    private int number;
-    private String title;
-    private String url;
-    private boolean closed;
-    private GithubUser githubUser;
+    private final int number;
+    private final String title;
+    private final String url;
+    private final boolean closed;
+    private final GithubUser githubUser;
 
     public GithubIssue(JSONObject jsonObject) throws JSONException {
         number = jsonObject.getInt("number");
