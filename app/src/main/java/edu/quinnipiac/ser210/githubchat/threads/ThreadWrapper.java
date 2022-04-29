@@ -12,7 +12,7 @@ public class ThreadWrapper {
     private static int lastRegisteredChannel;
 
     static {
-        lastRegisteredChannel = 1;
+        lastRegisteredChannel = Integer.MIN_VALUE;
     }
 
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
