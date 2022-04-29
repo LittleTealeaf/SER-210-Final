@@ -18,7 +18,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
-import edu.quinnipiac.ser210.githubchat.database.listeners.OnSetChatRoom;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.GithubRepoAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnGithubRepoSelected;
@@ -27,18 +26,18 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnGithubRepoSelec
  * @author Thomas Kwashnak
  */
 public class CreateChatFragment extends Fragment implements OnGithubRepoSelected, SearchView.OnQueryTextListener, View.OnClickListener,
-                                                            OnSetChatRoom {
+                                                            DatabaseWrapper.OnUpdateChatRoom {
 
-    private static final int CHANNEL_CREATE = 1;
     private GithubRepoAdapter adapter;
 
     private SearchView searchView;
+
+    private int channelUpdateChatRoom;
 
     private FloatingActionButton confirmButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_chat, container, false);
     }
 
@@ -83,13 +82,13 @@ public class CreateChatFragment extends Fragment implements OnGithubRepoSelected
             ChatRoom chatRoom = new ChatRoom();
             chatRoom.setFavorite(false);
             chatRoom.setRepoName(adapter.getSelected() != null ? adapter.getSelected().getFullName() : searchView.getQuery().toString());
-            DatabaseWrapper.from(requireContext()).oldStartSetChatRoom(chatRoom, this, CHANNEL_CREATE);
+            channelUpdateChatRoom = DatabaseWrapper.from(requireContext()).startUpdateChatRoom(chatRoom,this);
         }
     }
 
     @Override
-    public void onSetChatRoom(ChatRoom chatRoom, int channel) {
-        if(channel == CHANNEL_CREATE) {
+    public void onUpdateChatRoom(ChatRoom chatRoom, int channel) {
+        if(channel == channelUpdateChatRoom) {
             Bundle bundle = new Bundle();
             bundle.putString(DatabaseWrapper.KEY_REPO_NAME,chatRoom.getRepoName());
             Navigation.findNavController(requireView()).navigate(R.id.action_createChatFragment_to_chatFragment,bundle);
