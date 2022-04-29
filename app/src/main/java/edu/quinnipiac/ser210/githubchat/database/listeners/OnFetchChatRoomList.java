@@ -4,9 +4,7 @@ import java.util.List;
 
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 
-/**
- * @author Thomas Kwashnak
- */
-public interface OnFetchChatRooms {
-    void onFetchChatRooms(List<ChatRoom> chatRooms, int channel);
+public interface OnFetchChatRoomList {
+
+    void onFetchChatRoomList(List<ChatRoom> chatRooms, int channel);
 }

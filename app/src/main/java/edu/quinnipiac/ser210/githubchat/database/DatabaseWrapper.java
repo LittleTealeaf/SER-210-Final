@@ -10,22 +10,24 @@ import android.os.Looper;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
-import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoom;
-import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRooms;
-import edu.quinnipiac.ser210.githubchat.database.listeners.OnSetChatRoom;
+import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoomList;
+import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchGithubCache;
+import edu.quinnipiac.ser210.githubchat.database.listeners.OnUpdateChatRoom;
+import edu.quinnipiac.ser210.githubchat.database.listeners.OnUpdateGithubCache;
+import edu.quinnipiac.ser210.githubchat.threads.ThreadWrapper;
 
 /**
  * @author Thomas Kwashnak
  */
 public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder {
 
+    @Deprecated
     public static final int CHANNEL_DEFAULT = -1;
 
     public static final String KEY_REPO_NAME = "RepoName";
@@ -42,7 +44,9 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     private static final String COL_FAVORITE = "FAVORITE";
     private static final String COL_ID = "ID";
 
+    @Deprecated
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    @Deprecated
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     private SQLiteDatabase database;
@@ -79,6 +83,12 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         }
     }
 
+    public synchronized void executeDatabaseOperation(DatabaseOperation operation) {
+        SQLiteDatabase database = getWritableDatabase();
+        operation.execute(database);
+        database.close();
+    }
+
     public GithubCache getGithubCache(String url) {
         String[] columns = {COL_FETCH_TIME, COL_CONTENT};
 
@@ -95,56 +105,12 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         return cache.get();
     }
 
-    public synchronized void executeDatabaseOperation(DatabaseOperation operation) {
-        SQLiteDatabase database = getWritableDatabase();
-        operation.execute(database);
-        database.close();
+    public int startGetGithubCache(String url, OnFetchGithubCache listener) {
+        return ThreadWrapper.startThread(() -> getGithubCache(url),listener::onFetchGithubCache);
     }
 
-    public void setChatRoom(ChatRoom chatRoom) {
-        ContentValues values = new ContentValues();
-        values.put(COL_REPO_NAME, chatRoom.getRepoName());
-        values.put(COL_FAVORITE, chatRoom.isFavorite() ? 1 : 0);
-
-        executeDatabaseOperation((db) -> {
-            if (db.update(TABLE_CHAT_ROOM, values, COL_REPO_NAME + " = ?", new String[]{chatRoom.getRepoName()}) == 0) {
-                db.insert(TABLE_CHAT_ROOM, null, values);
-            }
-        });
-    }
-
-    public void startSetChatRoom(ChatRoom chatRoom) {
-        startThread(() -> setChatRoom(chatRoom));
-    }
-
-    public void startSetChatRoom(ChatRoom chatRoom, OnSetChatRoom listener) {
-        startSetChatRoom(chatRoom,listener,CHANNEL_DEFAULT);
-    }
-
-    public void startSetChatRoom(ChatRoom chatRoom, OnSetChatRoom listener, int channel) {
-        startThread(() -> {
-            setChatRoom(chatRoom);
-            return chatRoom;
-        },listener::onSetChatRoom,channel);
-    }
-
-    public void startGetChatRoom(String repoName, OnFetchChatRoom listener) {
-        startGetChatRoom(repoName, listener, CHANNEL_DEFAULT);
-    }
-
-    public void startGetChatRoom(String repoName, OnFetchChatRoom listener, int channel) {
-        startThread(() -> getChatRoom(repoName), listener::onFetchChatRoom, channel);
-    }
-
-    private synchronized <T> void startThread(Callable<T> callable, Notifier<T> notifier, int channel) {
-        executorService.execute(() -> {
-            try {
-                T item = callable.call();
-                handler.post(() -> notifier.notify(item, channel));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+    public int startGetGithubCache(String url, OnFetchGithubCache listener, int channel) {
+        return ThreadWrapper.startThread(() -> getGithubCache(url),listener::onFetchGithubCache,channel);
     }
 
     public ChatRoom getChatRoom(String repoName) {
@@ -163,15 +129,62 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         return room.get();
     }
 
-    public void startGetChatRooms(OnFetchChatRooms listener) {
-        startGetChatRooms(listener, CHANNEL_DEFAULT);
+    public int startGetChatRoom(String repoName, edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoom listener) {
+        return ThreadWrapper.startThread(() -> getChatRoom(repoName),listener::onFetchChatRoom);
     }
 
-    public void startGetChatRooms(OnFetchChatRooms listener, int channel) {
-        startThread(this::getChatRooms, listener::onFetchChatRooms, channel);
+    public int startGetChatRoom(String repoName, edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoom listener, int channel) {
+        return ThreadWrapper.startThread(() -> getChatRoom(repoName),listener::onFetchChatRoom,channel);
     }
 
-    public List<ChatRoom> getChatRooms() {
+    public String removeChatRoom(ChatRoom chatRoom) {
+        return removeChatRoom(chatRoom.getRepoName());
+    }
+
+    public String removeChatRoom(String repoName) {
+        executeDatabaseOperation((db) -> db.delete(TABLE_CHAT_ROOM, COL_REPO_NAME + " = ?", new String[] {repoName}));
+        return repoName;
+    }
+
+    public int startRemoveChatRoom(ChatRoom chatRoom, edu.quinnipiac.ser210.githubchat.database.listeners.OnRemoveChatRoom listener) {
+        return ThreadWrapper.startThread(() -> removeChatRoom(chatRoom), listener::onRemoveChatRoom);
+    }
+
+    public int startRemoveChatRoom(String repoName, edu.quinnipiac.ser210.githubchat.database.listeners.OnRemoveChatRoom listener) {
+        return ThreadWrapper.startThread(() -> removeChatRoom(repoName), listener::onRemoveChatRoom);
+    }
+
+    public int startRemoveChatRoom(String repoName, edu.quinnipiac.ser210.githubchat.database.listeners.OnRemoveChatRoom listener, int channel) {
+        return ThreadWrapper.startThread(() -> removeChatRoom(repoName), listener::onRemoveChatRoom, channel);
+    }
+
+    public int startRemoveChatRoom(ChatRoom chatRoom, edu.quinnipiac.ser210.githubchat.database.listeners.OnRemoveChatRoom listener, int channel) {
+        return ThreadWrapper.startThread(() -> removeChatRoom(chatRoom), listener::onRemoveChatRoom, channel);
+    }
+
+    public ChatRoom updateChatRoom(ChatRoom chatRoom) {
+        ContentValues values = new ContentValues();
+        values.put(COL_REPO_NAME, chatRoom.getRepoName());
+        values.put(COL_FAVORITE, chatRoom.isFavorite() ? 1 : 0);
+
+        executeDatabaseOperation((db) -> {
+            if (db.update(TABLE_CHAT_ROOM, values, COL_REPO_NAME + " = ?", new String[]{chatRoom.getRepoName()}) == 0) {
+                db.insert(TABLE_CHAT_ROOM, null, values);
+            }
+        });
+        return chatRoom;
+    }
+
+    public int startUpdateChatRoom(ChatRoom chatRoom, OnUpdateChatRoom listener) {
+        return ThreadWrapper.startThread(() -> updateChatRoom(chatRoom), listener::onUpdateChatRoom);
+    }
+
+    public int startUpdateChatRoom(ChatRoom chatRoom, OnUpdateChatRoom listener, int channel) {
+        return ThreadWrapper.startThread(() -> updateChatRoom(chatRoom), listener::onUpdateChatRoom, channel);
+    }
+
+
+    public List<ChatRoom> getChatRoomList() {
         String[] columns = {COL_REPO_NAME, COL_FAVORITE};
         List<ChatRoom> chatRooms = new LinkedList<>();
 
@@ -187,15 +200,15 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         return chatRooms;
     }
 
-    public void startSetGithubCache(GithubCache githubCache) {
-        startThread(() -> setGithubCache(githubCache));
+    public int startGetChatRoomList(OnFetchChatRoomList listener) {
+        return ThreadWrapper.startThread(this::getChatRoomList, listener::onFetchChatRoomList);
     }
 
-    private void startThread(Runnable runnable) {
-        executorService.execute(runnable);
+    public int startGetChatRoomList(OnFetchChatRoomList listener, int channel) {
+        return ThreadWrapper.startThread(this::getChatRoomList, listener::onFetchChatRoomList, channel);
     }
 
-    public void setGithubCache(GithubCache githubCache) {
+    public GithubCache updateGithubCache(GithubCache githubCache) {
         ContentValues values = new ContentValues();
         values.put(COL_URL, githubCache.getUrl());
         values.put(COL_FETCH_TIME, githubCache.getFetchTime());
@@ -206,12 +219,17 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
                 db.insert(TABLE_GITHUB_CACHE, null, values);
             }
         });
+        return githubCache;
     }
 
-    private interface Notifier<T> {
-
-        void notify(T item, int channel);
+    public int startUpdateGithubCache(GithubCache githubCache, OnUpdateGithubCache listener) {
+        return ThreadWrapper.startThread(() -> updateGithubCache(githubCache),listener::onUpdateGithubCache);
     }
+
+    public int startUpdateGithubCache(GithubCache githubCache, OnUpdateGithubCache listener, int channel) {
+        return ThreadWrapper.startThread(() -> updateGithubCache(githubCache),listener::onUpdateGithubCache,channel);
+    }
+
 
     interface DatabaseOperation {
         void execute(SQLiteDatabase database);

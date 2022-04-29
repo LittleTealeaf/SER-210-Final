@@ -13,17 +13,20 @@ import java.util.List;
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
-import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRooms;
+import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoomList;
+import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnChatRoomSelected;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.ChatRoomViewHolder;
 
 /**
  * @author Thomas Kwashnak
  */
-public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> implements OnFetchChatRooms {
+public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> implements OnFetchChatRoomList {
 
 
     private final OnChatRoomSelected listener;
+
+    private int fetchChatRoomChannel;
 
     private final LayoutInflater inflater;
 
@@ -50,12 +53,19 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> im
         return chatRooms.size();
     }
 
+    public void setFetchChatRoomChannel(int channel) {
+        this.fetchChatRoomChannel = channel;
+    }
+
+
     @Override
-    public void onFetchChatRooms(List<ChatRoom> chatRooms, int channel) {
-        int size = this.chatRooms.size();
-        this.chatRooms.clear();
-        notifyItemRangeRemoved(0,size);
-        this.chatRooms.addAll(chatRooms);
-        notifyItemRangeInserted(0,chatRooms.size());
+    public void onFetchChatRoomList(List<ChatRoom> chatRooms, int channel) {
+        if(channel == fetchChatRoomChannel) {
+            int size = this.chatRooms.size();
+            this.chatRooms.clear();
+            notifyItemRangeRemoved(0,size);
+            this.chatRooms.addAll(chatRooms);
+            notifyItemRangeInserted(0,chatRooms.size());
+        }
     }
 }

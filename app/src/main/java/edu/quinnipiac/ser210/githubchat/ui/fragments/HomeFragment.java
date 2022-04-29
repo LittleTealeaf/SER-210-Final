@@ -13,6 +13,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
@@ -40,7 +42,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnCh
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter = new ChatRoomAdapter(requireContext(),this));
         view.findViewById(R.id.frag_home_fab_create).setOnClickListener(this);
-        DatabaseWrapper.from(requireContext()).startGetChatRooms(adapter);
+        adapter.setFetchChatRoomChannel(DatabaseWrapper.from(requireContext()).startGetChatRoomList(adapter));
     }
 
     @Override

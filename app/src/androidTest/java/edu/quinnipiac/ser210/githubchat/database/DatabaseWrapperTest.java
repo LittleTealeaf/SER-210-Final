@@ -3,8 +3,6 @@ package edu.quinnipiac.ser210.githubchat.database;
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.junit.Assert.*;
 
-import android.app.Instrumentation;
-
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.After;
@@ -38,7 +36,7 @@ public class DatabaseWrapperTest {
     public void getChatRoom() {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setRepoName("LittleTealeaf/SER-210-Final");
-        databaseWrapper.setChatRoom(chatRoom);
+        databaseWrapper.updateChatRoom(chatRoom);
         ChatRoom fetched = databaseWrapper.getChatRoom("LittleTealeaf/SER-210-Final");
         assertEquals(chatRoom.getRepoName(),fetched.getRepoName());
     }
@@ -47,9 +45,9 @@ public class DatabaseWrapperTest {
     public void getChatRooms() {
         String[] strings = new String[] {"a","b","c","d","e"};
         for(String name : strings) {
-            databaseWrapper.setChatRoom(new ChatRoom(name,false));
+            databaseWrapper.updateChatRoom(new ChatRoom(name, false));
         }
-        List<ChatRoom> chatRoomList = databaseWrapper.getChatRooms();
+        List<ChatRoom> chatRoomList = databaseWrapper.getChatRoomList();
         assertEquals(strings.length,chatRoomList.size());
     }
 
@@ -58,7 +56,7 @@ public class DatabaseWrapperTest {
         assertNull(databaseWrapper.getGithubCache("test"));
         GithubCache githubCache = new GithubCache();
         githubCache.setUrl("test");
-        databaseWrapper.setGithubCache(githubCache);
+        databaseWrapper.updateGithubCache(githubCache);
         assertNotNull(databaseWrapper.getGithubCache("test"));
     }
 }

@@ -24,7 +24,10 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.GithubRepoViewHo
  */
 public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder> implements OnFetchGithubRepoList, OnGithubRepoSelected {
 
+    @Deprecated
     private final int CHANNEL_FETCH = 1;
+
+    private final int channelFetchGithubRepoList;
 
     private final LayoutInflater inflater;
 
@@ -39,7 +42,7 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
     public GithubRepoAdapter(Context context, OnGithubRepoSelected listener) {
         this.inflater = LayoutInflater.from(context);
         this.listener = listener;
-        GithubWrapper.from(context).startFetchGithubRepoList(null, this, CHANNEL_FETCH);
+        channelFetchGithubRepoList = GithubWrapper.from(context).startFetchGithubRepoList(null, this);
     }
 
     @NonNull
@@ -73,7 +76,7 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
 
     @Override
     public void onFetchGithubRepoList(List<GithubRepo> githubRepos, int channel) {
-        if (channel == CHANNEL_FETCH) {
+        if (channel == channelFetchGithubRepoList) {
             this.githubRepos.addAll(githubRepos);
             filterItems("");
             notifyItemRangeInserted(this.githubRepos.size() - githubRepos.size(), githubRepos.size());
