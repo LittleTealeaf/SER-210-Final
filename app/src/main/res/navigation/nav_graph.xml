@@ -12,10 +12,18 @@
             tools:layout="@layout/fragment_home">
         <action
                 android:id="@+id/action_homeFragment_to_createChatFragment"
-                app:destination="@id/createChatFragment" />
+                app:destination="@id/createChatFragment"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"/>
         <action
                 android:id="@+id/action_homeFragment_to_chatFragment"
-                app:destination="@id/chatFragment" />
+                app:destination="@id/chatFragment"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"/>
         <action
                 android:id="@+id/action_homeFragment_to_settingsFragment"
                 app:destination="@id/settingsFragment" />
@@ -29,6 +37,10 @@
                 android:id="@+id/action_createChatFragment_to_chatFragment"
                 app:destination="@id/chatFragment"
                 app:popUpTo="@id/createChatFragment"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
                 app:popUpToInclusive="true" />
     </fragment>
     <fragment
