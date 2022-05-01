@@ -19,7 +19,13 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: gradle
-
+    - name: Set up npm
+      uses: actions/setup-node@v3
+      with:
+        node-version: '17'
+        cache: 'npm'
+    - name: Install npm packages
+      run: npm i
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
