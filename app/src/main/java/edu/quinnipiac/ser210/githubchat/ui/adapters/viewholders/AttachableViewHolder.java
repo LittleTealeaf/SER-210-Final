@@ -33,7 +33,7 @@ public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnI
 
         itemView.setOnClickListener(this);
 
-        this.imageView = itemView.findViewById(R.id.list_attachable_owner_avatar);
+        this.imageView = itemView.findViewById(R.id.list_attachable_imageview_icon);
         numberView = itemView.findViewById(R.id.list_attachable_textview_number);
         titleView = itemView.findViewById(R.id.list_attachable_textview_title);
     }
@@ -41,10 +41,12 @@ public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnI
     public void bindAttachable(GithubAttachable attachable) {
         this.githubAttachable = attachable;
         imageView.setVisibility(View.GONE);
-        if (attachable.getGithubUser() != null) {
-            channelLoadImage = ImageLoader.loadImage(attachable.getGithubUser().getAvatarUrl(), this);
-        }
-        numberView.setText(MessageFormat.format(" #{0} {1}: ", attachable.getNumber(), attachable.isClosed() ? "closed" : ""));
+        imageView.setVisibility(View.VISIBLE);
+        imageView.setImageResource(attachable.getStatusDrawable());
+//        if (attachable.getGithubUser() != null) {
+//            channelLoadImage = ImageLoader.loadImage(attachable.getGithubUser().getAvatarUrl(), this);
+//        }
+        numberView.setText(MessageFormat.format(" #{0}: ", attachable.getNumber()));
         titleView.setText(attachable.getTitle());
     }
 

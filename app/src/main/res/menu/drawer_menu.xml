@@ -6,7 +6,7 @@
     <item
             android:id="@+id/menu_drawer_view_profile"
             android:title="@string/view_profile"
-            android:icon="@drawable/ic_logo_github" />
+            android:icon="@drawable/ic_mark_github_16" />
 
     <item
             android:id="@+id/menu_drawer_share"

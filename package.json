@@ -1,0 +1,25 @@
+{
+  "name": "ser-210-final",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LittleTealeaf/SER-210-Final.git"
+  },
+  "author": "Thomas Kwashnak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LittleTealeaf/SER-210-Final/issues"
+  },
+  "homepage": "https://github.com/LittleTealeaf/SER-210-Final#readme",
+  "dependencies": {
+    "@primer/octicons": "^17.0.0"
+  }
+}
