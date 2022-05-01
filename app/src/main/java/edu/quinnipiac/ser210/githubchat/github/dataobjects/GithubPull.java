@@ -1,5 +1,7 @@
 package edu.quinnipiac.ser210.githubchat.github.dataobjects;
 
+import static edu.quinnipiac.ser210.githubchat.util.JsonUtil.tryOrDefault;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,12 +23,12 @@ public class GithubPull implements GithubAttachable {
 
     public GithubPull(JSONObject jsonObject) throws JSONException {
         number = jsonObject.getInt("number");
-        title = jsonObject.getString("title");
+        title = tryOrDefault(() -> jsonObject.getString("title"),"");
         url = jsonObject.getString("html_url");
-        state = JsonUtil.tryGetString(jsonObject, "state");
+        state = tryOrDefault(() -> jsonObject.getString("state"),"open");
         isMerged = jsonObject.getBoolean("merged");
         isDraft = jsonObject.getBoolean("draft");
-        githubUser = new GithubUser(jsonObject.getJSONObject("user"));
+        githubUser = tryOrDefault(() -> new GithubUser(jsonObject.getJSONObject("user")),null);
     }
 
     @Override

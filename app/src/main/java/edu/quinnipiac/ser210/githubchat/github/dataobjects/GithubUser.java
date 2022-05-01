@@ -1,5 +1,7 @@
 package edu.quinnipiac.ser210.githubchat.github.dataobjects;
 
+import static edu.quinnipiac.ser210.githubchat.util.JsonUtil.tryGetString;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,15 +19,11 @@ public class GithubUser {
     private final String url;
 
     public GithubUser(JSONObject object) throws JSONException {
-        login = JsonUtil.tryGetString(object, "login");
-        email = JsonUtil.tryGetString(object, "email");
-//        email = object.has("email") ? object.getString("email") : null;
-        name = JsonUtil.tryGetString(object, "name");
-//        name = object.has("name") ? object.getString("name") : null;
-        url = JsonUtil.tryGetString(object, "html_url");
-//        url = object.getString("html_url");
-        avatarUrl = JsonUtil.tryGetString(object, "avatar_url");
-//        avatarUrl = object.getString("avatar_url");
+        login = object.getString("login");
+        email = tryGetString(object, "email");
+        name = tryGetString(object, "name");
+        url = object.getString("html_url");
+        avatarUrl = object.getString("avatar_url");
 
     }
 
