@@ -22,7 +22,7 @@ public class GithubIssue implements GithubAttachable {
 
     public GithubIssue(JSONObject jsonObject) throws JSONException {
         number = jsonObject.getInt("number");
-        title = jsonObject.getString("title");
+        title = tryOrDefault(() -> jsonObject.getString("title"),"");
         url = jsonObject.getString("html_url");
         state = tryOrDefault(() -> jsonObject.getString("state"),"closed");
         githubUser = tryOrDefault(() -> new GithubUser(jsonObject.getJSONObject("user")),null);
