@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +37,7 @@ import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepo;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
-import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.ToolbarHolder;
+import edu.quinnipiac.ser210.githubchat.ui.interfaces.ToolbarHolder;
 
 /**
  * @author Thomas Kwashnak
@@ -129,7 +128,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
     public void onStart() {
         super.onStart();
         adapter.clearEntries();
+
         databaseReference.addChildEventListener(adapter);
+
+        Toolbar toolbar = ToolbarHolder.from(requireContext());
+        toolbar.getMenu().findItem(R.id.menu_toolbar_share).setVisible(true);
     }
 
     @Override

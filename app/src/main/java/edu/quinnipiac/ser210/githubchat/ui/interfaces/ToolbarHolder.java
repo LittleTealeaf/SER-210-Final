@@ -1,4 +1,4 @@
-package edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces;
+package edu.quinnipiac.ser210.githubchat.ui.interfaces;
 
 import androidx.appcompat.widget.Toolbar;
 

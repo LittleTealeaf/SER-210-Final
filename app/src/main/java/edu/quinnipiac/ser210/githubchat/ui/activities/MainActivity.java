@@ -39,7 +39,7 @@ import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubUser;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesHolder;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesWrapper;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
-import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.ToolbarHolder;
+import edu.quinnipiac.ser210.githubchat.ui.interfaces.ToolbarHolder;
 import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
 import edu.quinnipiac.ser210.githubchat.ui.util.OnImageLoaded;
 
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -104,6 +105,8 @@ public class MainActivity extends AppCompatActivity
         firebaseAuth.removeAuthStateListener(this);
         channelGithubUser = ThreadManager.NULL_CHANNEL;
         channelUserAvatar = ThreadManager.NULL_CHANNEL;
+
+
     }
 
     @Override
@@ -149,7 +152,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -232,4 +235,6 @@ public class MainActivity extends AppCompatActivity
             ).setImageBitmap(bitmap);
         }
     }
+
+
 }
