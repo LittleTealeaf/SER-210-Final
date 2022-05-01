@@ -39,8 +39,10 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
     private final AttachableAdapter attachableAdapter;
     private final RecyclerView recyclerView;
 
+
     private int channelFetchUser, channelLoadImage, channelFetchAttachable;
 
+    private Message message;
     private GithubUser githubUser;
 
     public MessageViewHolder(MessageAdapter messageAdapter, @NonNull View itemView) {
@@ -62,6 +64,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
     }
 
     public void onBindMessage(Message message) {
+        this.message = message;
         this.githubUser = null;
         userView.setText(message.getSender());
         messageView.setText(message.getMessage());
@@ -71,11 +74,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
         attachableAdapter.clearItems();
         channelFetchUser = GithubWrapper.from(adapter.getContext()).startFetchGithubUser(message.getSender(), this);
 
-
-        /*
-        Source: https://stackoverflow.com/a/69348167/12206859
-         */
-        timeView.setText(DateUtils.getRelativeTimeSpanString(message.getSendTime()));
+        updateTime();
 
         Matcher matcher = Pattern.compile("(#[0-9]*)\\w+").matcher(message.getMessage());
         GithubWrapper githubWrapper = GithubWrapper.from(adapter.getContext());
@@ -119,4 +118,13 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
             adapter.getContext().startActivity(intent);
         }
     }
+
+    public void updateTime() {
+         /*
+        Source: https://stackoverflow.com/a/69348167/12206859
+         */
+        timeView.setText(DateUtils.getRelativeTimeSpanString(message.getSendTime()));
+
+    }
+
 }
