@@ -1,7 +1,9 @@
 package edu.quinnipiac.ser210.githubchat.database;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -29,7 +31,6 @@ public class DatabaseWrapperTest {
     @After
     public void tearDown() throws Exception {
         getApplicationContext().deleteDatabase("GithubChatDatabase");
-
     }
 
     @Test
@@ -38,17 +39,17 @@ public class DatabaseWrapperTest {
         chatRoom.setRepoName("LittleTealeaf/SER-210-Final");
         databaseWrapper.updateChatRoom(chatRoom);
         ChatRoom fetched = databaseWrapper.getChatRoom("LittleTealeaf/SER-210-Final");
-        assertEquals(chatRoom.getRepoName(),fetched.getRepoName());
+        assertEquals(chatRoom.getRepoName(), fetched.getRepoName());
     }
 
     @Test
     public void getChatRooms() {
-        String[] strings = new String[] {"a","b","c","d","e"};
-        for(String name : strings) {
+        String[] strings = new String[]{"a", "b", "c", "d", "e"};
+        for (String name : strings) {
             databaseWrapper.updateChatRoom(new ChatRoom(name, false));
         }
         List<ChatRoom> chatRoomList = databaseWrapper.getChatRoomList();
-        assertEquals(strings.length,chatRoomList.size());
+        assertEquals(strings.length, chatRoomList.size());
     }
 
     @Test

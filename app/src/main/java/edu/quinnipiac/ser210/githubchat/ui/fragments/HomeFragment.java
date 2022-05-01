@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,7 +18,6 @@ import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.ChatRoomAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnChatRoomSelected;
-import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.ToolbarHolder;
 
 /**
  * @author Thomas Kwashnak
@@ -49,8 +47,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnCh
         view.findViewById(R.id.frag_home_fab_create).setOnClickListener(this);
         adapter.setFetchChatRoomChannel(DatabaseWrapper.from(requireContext()).startGetChatRoomList(adapter));
     }
-
-
 
     @Override
     public void onClick(View view) {

@@ -20,15 +20,12 @@ import edu.quinnipiac.ser210.githubchat.ui.util.OnImageLoaded;
 
 public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnImageLoaded, View.OnClickListener {
 
-    private int channelLoadImage;
-
     private final AttachableAdapter adapter;
-
     private final ImageView imageView;
     private final TextView numberView;
     private final TextView titleView;
+    private int channelLoadImage;
     private GithubAttachable githubAttachable;
-
 
     public AttachableViewHolder(AttachableAdapter adapter, @NonNull View itemView) {
         super(itemView);
@@ -44,10 +41,10 @@ public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnI
     public void bindAttachable(GithubAttachable attachable) {
         this.githubAttachable = attachable;
         imageView.setVisibility(View.GONE);
-        if(attachable.getGithubUser() != null) {
-            channelLoadImage = ImageLoader.loadImage(attachable.getGithubUser().getAvatarUrl(),this);
+        if (attachable.getGithubUser() != null) {
+            channelLoadImage = ImageLoader.loadImage(attachable.getGithubUser().getAvatarUrl(), this);
         }
-        numberView.setText(MessageFormat.format(" #{0} {1}: ", attachable.getNumber(),attachable.isClosed() ? "closed" : ""));
+        numberView.setText(MessageFormat.format(" #{0} {1}: ", attachable.getNumber(), attachable.isClosed() ? "closed" : ""));
         titleView.setText(attachable.getTitle());
     }
 
@@ -59,7 +56,7 @@ public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnI
 
     @Override
     public void onClick(View view) {
-        if(githubAttachable != null) {
+        if (githubAttachable != null) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubAttachable.getURL()));
             adapter.getContext().startActivity(intent);
         }

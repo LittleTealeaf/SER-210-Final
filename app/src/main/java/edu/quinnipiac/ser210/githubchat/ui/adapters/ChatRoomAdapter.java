@@ -20,8 +20,8 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.ChatRoomViewHold
 /**
  * @author Thomas Kwashnak
  */
-public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> implements OnFetchChatRoomList, OnUpdateChatRoom, ChatRoomViewHolder.IListener {
-
+public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder>
+        implements OnFetchChatRoomList, OnUpdateChatRoom, ChatRoomViewHolder.IListener {
 
     private final Context context;
     private final OnChatRoomSelected listener;
@@ -41,7 +41,7 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> im
     @NonNull
     @Override
     public ChatRoomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ChatRoomViewHolder(context,this, inflater.inflate(R.layout.list_chat_room_item, parent, false));
+        return new ChatRoomViewHolder(context, this, inflater.inflate(R.layout.list_chat_room_item, parent, false));
     }
 
     @Override
@@ -77,14 +77,14 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> im
 
     private void addFavorite(ChatRoom chatRoom) {
         if (!favorites.contains(chatRoom)) {
-            favorites.add(0,chatRoom);
+            favorites.add(0, chatRoom);
             notifyItemInserted(0);
         }
     }
 
     private void addRoom(ChatRoom chatRoom) {
         if (!rooms.contains(chatRoom)) {
-            rooms.add(0,chatRoom);
+            rooms.add(0, chatRoom);
             notifyItemInserted(favorites.size());
         }
     }

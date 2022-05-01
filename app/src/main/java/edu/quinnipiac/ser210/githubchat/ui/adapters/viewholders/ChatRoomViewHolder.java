@@ -1,7 +1,6 @@
 package edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -43,21 +42,23 @@ public class ChatRoomViewHolder extends RecyclerView.ViewHolder implements View.
         this.chatRoom = chatRoom;
         if (chatRoom != null) {
             textView.setText(chatRoom.getRepoName());
-            if(chatRoom.isFavorite()) {
-                favoriteButton.setBackground(ResourcesCompat.getDrawable(context.getResources(),R.drawable.ic_baseline_star_24,context.getTheme()));
+            if (chatRoom.isFavorite()) {
+                favoriteButton.setBackground(ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_24, context.getTheme()));
             } else {
-                favoriteButton.setBackground(ResourcesCompat.getDrawable(context.getResources(),R.drawable.ic_baseline_star_border_24,context.getTheme()));
+                favoriteButton.setBackground(
+                        ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_border_24, context.getTheme()));
             }
         } else {
-            favoriteButton.setBackground(ResourcesCompat.getDrawable(context.getResources(),R.drawable.ic_baseline_star_border_24,context.getTheme()));
+            favoriteButton.setBackground(
+                    ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_border_24, context.getTheme()));
         }
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.list_chat_room_button_favorite) {
+        if (view.getId() == R.id.list_chat_room_button_favorite) {
             chatRoom.setFavorite(!chatRoom.isFavorite());
-            DatabaseWrapper.from(context).startUpdateChatRoom(chatRoom,listener);
+            DatabaseWrapper.from(context).startUpdateChatRoom(chatRoom, listener);
         } else {
             listener.onChatRoomSelected(chatRoom);
         }

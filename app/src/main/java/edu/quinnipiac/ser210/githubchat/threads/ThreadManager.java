@@ -8,12 +8,11 @@ import java.util.concurrent.Executors;
 
 public class ThreadManager {
 
+    public static final int NULL_CHANNEL = 0;
     @Deprecated
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static final Handler handler = new Handler(Looper.getMainLooper());
     private static int channelRegistry;
-
-    public static final int NULL_CHANNEL = 0;
 
     static {
         channelRegistry = Integer.MIN_VALUE;
@@ -31,8 +30,13 @@ public class ThreadManager {
         return channel;
     }
 
+    public synchronized static int registerChannel() {
+        return (channelRegistry = channelRegistry + 1) == NULL_CHANNEL ? (channelRegistry = channelRegistry + 1) : channelRegistry;
+    }
+
     /**
      * Starts a runnable thread
+     *
      * @param runnable Script to run
      */
     public static void run(Runnable runnable) {
@@ -41,14 +45,10 @@ public class ThreadManager {
 
     /**
      * Schedules a runnable to execute on the main thread
+     *
      * @param runnable Script to run
      */
     public static void schedule(Runnable runnable) {
         handler.post(runnable);
-    }
-
-    public synchronized static int registerChannel()
-    {
-        return (channelRegistry = channelRegistry + 1) == NULL_CHANNEL ? (channelRegistry = channelRegistry + 1) : channelRegistry;
     }
 }

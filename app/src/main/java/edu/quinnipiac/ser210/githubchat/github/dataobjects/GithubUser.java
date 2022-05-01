@@ -17,14 +17,14 @@ public class GithubUser {
     private final String url;
 
     public GithubUser(JSONObject object) throws JSONException {
-        login = JsonUtil.tryGetString(object,"login");
-        email = JsonUtil.tryGetString(object,"email");
+        login = JsonUtil.tryGetString(object, "login");
+        email = JsonUtil.tryGetString(object, "email");
 //        email = object.has("email") ? object.getString("email") : null;
-        name = JsonUtil.tryGetString(object,"name");
+        name = JsonUtil.tryGetString(object, "name");
 //        name = object.has("name") ? object.getString("name") : null;
-        url = JsonUtil.tryGetString(object,"html_url");
+        url = JsonUtil.tryGetString(object, "html_url");
 //        url = object.getString("html_url");
-        avatarUrl = JsonUtil.tryGetString(object,"avatar_url");
+        avatarUrl = JsonUtil.tryGetString(object, "avatar_url");
 //        avatarUrl = object.getString("avatar_url");
 
     }

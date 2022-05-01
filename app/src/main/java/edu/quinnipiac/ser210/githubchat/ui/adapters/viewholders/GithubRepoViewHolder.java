@@ -18,8 +18,8 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnGithubRepoSelec
 public class GithubRepoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnGithubRepoSelected {
 
     private final GithubRepoAdapter adapter;
-    private GithubRepo githubRepo;
     private final TextView textView;
+    private GithubRepo githubRepo;
 
     public GithubRepoViewHolder(GithubRepoAdapter adapter, @NonNull View itemView) {
         super(itemView);

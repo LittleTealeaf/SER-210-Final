@@ -25,7 +25,8 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.GithubRepoViewHo
 /**
  * @author Thomas Kwashnak
  */
-public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder> implements OnFetchGithubRepoList, OnGithubRepoSelected, OnFetchChatRoomList {
+public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder>
+        implements OnFetchGithubRepoList, OnGithubRepoSelected, OnFetchChatRoomList {
 
     @Deprecated
     private final int CHANNEL_FETCH = 1;
@@ -86,20 +87,6 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
         }
     }
 
-    public void filterItems(String filterText) {
-        String[] filters = filterText.split(" ");
-        displayRepos = filterText.equals("") ? githubRepos : githubRepos.stream().filter(githubRepo -> {
-            for (String filter : filters) {
-                if (!githubRepo.getFullName().toLowerCase().contains(filter.toLowerCase(Locale.ROOT))) {
-                    return false;
-                }
-            }
-            return true;
-        }).collect(Collectors.toList());
-        this.filter = filterText;
-        notifyDataSetChanged();
-    }
-
     private synchronized void filterOpenedChats() {
         List<GithubRepo> tmp = githubRepos.stream().filter((repo) -> {
             for (ChatRoom chatRoom : openRooms) {
@@ -114,6 +101,20 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
         filterItems("");
     }
 
+    public void filterItems(String filterText) {
+        String[] filters = filterText.split(" ");
+        displayRepos = filterText.equals("") ? githubRepos : githubRepos.stream().filter(githubRepo -> {
+            for (String filter : filters) {
+                if (!githubRepo.getFullName().toLowerCase().contains(filter.toLowerCase(Locale.ROOT))) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+        this.filter = filterText;
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onGithubRepoSelected(GithubRepo githubRepo) {
         this.selected = githubRepo;
@@ -125,7 +126,7 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
 
     @Override
     public void onFetchChatRoomList(List<ChatRoom> chatRooms, int channel) {
-        if(channel == channelChatRoomList) {
+        if (channel == channelChatRoomList) {
             openRooms.addAll(chatRooms);
             filterOpenedChats();
         }

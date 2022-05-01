@@ -20,8 +20,6 @@ import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoomList;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchGithubCache;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnUpdateChatRoom;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnUpdateGithubCache;
-import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
-import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubPull;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 
 /**
@@ -79,7 +77,8 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int old, int cur) {
         if (old < 1) {
             sqLiteDatabase.execSQL(
-                    "CREATE TABLE " + TABLE_GITHUB_CACHE + " (" + COL_URL + " TEXT PRIMARY KEY, " + COL_FETCH_TIME + " LONG, " + COL_CONTENT + " " + "TEXT);");
+                    "CREATE TABLE " + TABLE_GITHUB_CACHE + " (" + COL_URL + " TEXT PRIMARY KEY, " + COL_FETCH_TIME + " LONG, " + COL_CONTENT + " " +
+                    "TEXT);");
             sqLiteDatabase.execSQL(
                     "CREATE TABLE " + TABLE_CHAT_ROOM + "(" + COL_REPO_NAME + " TEXT PRIMARY KEY NOT NULL, " + COL_FAVORITE + " INTEGER)");
         }

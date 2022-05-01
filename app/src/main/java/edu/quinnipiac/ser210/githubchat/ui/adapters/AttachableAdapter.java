@@ -16,10 +16,10 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.AttachableViewHo
 
 public class AttachableAdapter extends RecyclerView.Adapter<AttachableViewHolder> {
 
-    private Context context;
-    private LayoutInflater inflater;
+    private final Context context;
+    private final LayoutInflater inflater;
 
-    private List<GithubAttachable> attachableList = new LinkedList<>();
+    private final List<GithubAttachable> attachableList = new LinkedList<>();
 
     public AttachableAdapter(Context context) {
         this.context = context;
@@ -29,7 +29,7 @@ public class AttachableAdapter extends RecyclerView.Adapter<AttachableViewHolder
     @NonNull
     @Override
     public AttachableViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new AttachableViewHolder(this,inflater.inflate(R.layout.list_attachable_item,parent,false));
+        return new AttachableViewHolder(this, inflater.inflate(R.layout.list_attachable_item, parent, false));
     }
 
     @Override
@@ -37,27 +37,27 @@ public class AttachableAdapter extends RecyclerView.Adapter<AttachableViewHolder
         holder.bindAttachable(attachableList.get(position));
     }
 
+    @Override
+    public int getItemCount() {
+        return attachableList.size();
+    }
+
     public void clearItems() {
         int size = attachableList.size();
         attachableList.clear();
-        notifyItemRangeRemoved(0,size);
+        notifyItemRangeRemoved(0, size);
     }
 
     public void addAttachable(GithubAttachable attachable) {
-        for(int i = 0; i < attachableList.size(); i++) {
-            if(attachable.getNumber() < attachableList.get(i).getNumber()) {
-                attachableList.add(i,attachable);
+        for (int i = 0; i < attachableList.size(); i++) {
+            if (attachable.getNumber() < attachableList.get(i).getNumber()) {
+                attachableList.add(i, attachable);
                 notifyItemInserted(i);
                 return;
             }
         }
         attachableList.add(attachable);
         notifyItemInserted(attachableList.size() - 1);
-    }
-
-    @Override
-    public int getItemCount() {
-        return attachableList.size();
     }
 
     public Context getContext() {

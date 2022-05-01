@@ -55,11 +55,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
         return messages.size();
     }
 
-
     public void clearEntries() {
         int count = messages.size();
         messages.clear();
-        notifyItemRangeRemoved(0,count);
+        notifyItemRangeRemoved(0, count);
     }
 
     @Deprecated
@@ -72,8 +71,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
             notifyItemInserted(messages.size() - 1);
         }
     }
-
-
 
     @Override
     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {

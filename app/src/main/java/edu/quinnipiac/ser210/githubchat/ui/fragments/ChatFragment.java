@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -88,8 +87,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(!recyclerView.canScrollVertically(1) == scrollBack.isShown()) {
-                    if(scrollBack.isShown()) {
+                if (!recyclerView.canScrollVertically(1) == scrollBack.isShown()) {
+                    if (scrollBack.isShown()) {
                         scrollBack.hide();
                     } else {
                         scrollBack.show();
@@ -146,7 +145,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
             inputText.setText("");
 
             databaseReference.push().setValue(message);
-        } else if(view.getId() == R.id.frag_chat_fab_scroll) {
+        } else if (view.getId() == R.id.frag_chat_fab_scroll) {
             recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
         }
     }

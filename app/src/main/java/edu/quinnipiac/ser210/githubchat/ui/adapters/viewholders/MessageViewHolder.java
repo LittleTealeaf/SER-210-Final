@@ -30,7 +30,6 @@ import edu.quinnipiac.ser210.githubchat.ui.util.OnImageLoaded;
 public class MessageViewHolder extends RecyclerView.ViewHolder
         implements OnFetchGithubUser, OnImageLoaded, OnFetchGithubAttachable, View.OnClickListener {
 
-
     private final MessageAdapter adapter;
     private final TextView userView;
     private final TextView messageView;
@@ -52,7 +51,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
 
         avatarView.setOnClickListener(this);
 
-        recyclerView =((RecyclerView) itemView.findViewById(R.id.list_message_recyclerview_attachable));
+        recyclerView = ((RecyclerView) itemView.findViewById(R.id.list_message_recyclerview_attachable));
         recyclerView.setLayoutManager(new LinearLayoutManager(adapter.getContext()));
         recyclerView.setAdapter(attachableAdapter);
     }
@@ -65,24 +64,22 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
         recyclerView.setVisibility(View.GONE);
         channelFetchAttachable = ThreadManager.registerChannel();
         attachableAdapter.clearItems();
-        channelFetchUser = GithubWrapper.from(adapter.getContext()).startFetchGithubUser(message.getSender(),this);
+        channelFetchUser = GithubWrapper.from(adapter.getContext()).startFetchGithubUser(message.getSender(), this);
 
         Matcher matcher = Pattern.compile("(#[0-9]*)\\w+").matcher(message.getMessage());
         GithubWrapper githubWrapper = GithubWrapper.from(adapter.getContext());
-        while(matcher.find()) {
+        while (matcher.find()) {
             int number = Integer.parseInt(matcher.group().substring(1));
-            githubWrapper.startFetchGithubAttachable(adapter.getRepoName(),number,this,channelFetchAttachable);
+            githubWrapper.startFetchGithubAttachable(adapter.getRepoName(), number, this, channelFetchAttachable);
         }
     }
 
-
-
     @Override
     public void onFetchGithubUser(GithubUser githubUser, int channel) {
-        if(channel == channelFetchUser) {
+        if (channel == channelFetchUser) {
             this.githubUser = githubUser;
-            channelLoadImage = ImageLoader.loadImage(githubUser.getAvatarUrl(),this);
-            if(githubUser.getName() != null) {
+            channelLoadImage = ImageLoader.loadImage(githubUser.getAvatarUrl(), this);
+            if (githubUser.getName() != null) {
                 userView.setText(githubUser.getName());
             }
         }
@@ -90,7 +87,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
 
     @Override
     public void onImageLoaded(Bitmap bitmap, int channel) {
-        if(channel == channelLoadImage) {
+        if (channel == channelLoadImage) {
             avatarView.setImageBitmap(bitmap);
             avatarView.setVisibility(View.VISIBLE);
         }
@@ -98,7 +95,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
 
     @Override
     public void onFetchGithubAttachable(GithubAttachable attachable, int channel) {
-        if(channel == channelFetchAttachable && attachable != null) {
+        if (channel == channelFetchAttachable && attachable != null) {
             attachableAdapter.addAttachable(attachable);
             recyclerView.setVisibility(View.VISIBLE);
         }
@@ -106,7 +103,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.list_message_imageview_avatar && githubUser != null) {
+        if (view.getId() == R.id.list_message_imageview_avatar && githubUser != null) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubUser.getUrl()));
             adapter.getContext().startActivity(intent);
         }
