@@ -52,4 +52,8 @@ public class AttachableAdapter extends RecyclerView.Adapter<AttachableViewHolder
     public int getItemCount() {
         return attachableList.size();
     }
+
+    public Context getContext() {
+        return context;
+    }
 }

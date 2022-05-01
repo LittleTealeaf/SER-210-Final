@@ -1,6 +1,8 @@
 package edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,7 +18,7 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.AttachableAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
 import edu.quinnipiac.ser210.githubchat.ui.util.OnImageLoaded;
 
-public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnImageLoaded {
+public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnImageLoaded, View.OnClickListener {
 
     private int channelLoadImage;
 
@@ -25,22 +27,27 @@ public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnI
     private final ImageView imageView;
     private final TextView numberView;
     private final TextView titleView;
+    private GithubAttachable githubAttachable;
 
 
     public AttachableViewHolder(AttachableAdapter adapter, @NonNull View itemView) {
         super(itemView);
         this.adapter = adapter;
+
+        itemView.setOnClickListener(this);
+
         this.imageView = itemView.findViewById(R.id.list_attachable_owner_avatar);
         numberView = itemView.findViewById(R.id.list_attachable_textview_number);
         titleView = itemView.findViewById(R.id.list_attachable_textview_title);
     }
 
     public void bindAttachable(GithubAttachable attachable) {
+        this.githubAttachable = attachable;
         imageView.setVisibility(View.GONE);
         if(attachable.getGithubUser() != null) {
             channelLoadImage = ImageLoader.loadImage(attachable.getGithubUser().getAvatarUrl(),this);
         }
-        numberView.setText(MessageFormat.format(" #{0}: ", attachable.getNumber()));
+        numberView.setText(MessageFormat.format(" #{0} {1}: ", attachable.getNumber(),attachable.isClosed() ? "closed" : ""));
         titleView.setText(attachable.getTitle());
     }
 
@@ -48,5 +55,13 @@ public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnI
     public void onImageLoaded(Bitmap bitmap, int channel) {
         imageView.setImageBitmap(bitmap);
         imageView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(githubAttachable != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubAttachable.getURL()));
+            adapter.getContext().startActivity(intent);
+        }
     }
 }

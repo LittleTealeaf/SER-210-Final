@@ -48,13 +48,13 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements OnFetc
         recyclerView =((RecyclerView) itemView.findViewById(R.id.list_message_recyclerview_attachable));
         recyclerView.setLayoutManager(new LinearLayoutManager(adapter.getContext()));
         recyclerView.setAdapter(attachableAdapter);
-        recyclerView.setVisibility(View.GONE);
     }
 
     public void onBindMessage(Message message) {
         userView.setText(message.getSender());
         messageView.setText(message.getMessage());
         avatarView.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.GONE);
         channelFetchAttachable = ThreadManager.registerChannel();
         attachableAdapter.clearItems();
         channelFetchUser = GithubWrapper.from(adapter.getContext()).startFetchGithubUser(message.getSender(),this);
