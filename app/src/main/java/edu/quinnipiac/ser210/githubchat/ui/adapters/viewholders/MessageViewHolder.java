@@ -1,6 +1,8 @@
 package edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,7 +27,8 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
 import edu.quinnipiac.ser210.githubchat.ui.util.OnImageLoaded;
 
-public class MessageViewHolder extends RecyclerView.ViewHolder implements OnFetchGithubUser, OnImageLoaded, OnFetchGithubAttachable {
+public class MessageViewHolder extends RecyclerView.ViewHolder
+        implements OnFetchGithubUser, OnImageLoaded, OnFetchGithubAttachable, View.OnClickListener {
 
 
     private final MessageAdapter adapter;
@@ -37,6 +40,8 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements OnFetc
 
     private int channelFetchUser, channelLoadImage, channelFetchAttachable;
 
+    private GithubUser githubUser;
+
     public MessageViewHolder(MessageAdapter messageAdapter, @NonNull View itemView) {
         super(itemView);
         adapter = messageAdapter;
@@ -45,12 +50,15 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements OnFetc
         avatarView = itemView.findViewById(R.id.list_message_imageview_avatar);
         attachableAdapter = new AttachableAdapter(messageAdapter.getContext());
 
+        avatarView.setOnClickListener(this);
+
         recyclerView =((RecyclerView) itemView.findViewById(R.id.list_message_recyclerview_attachable));
         recyclerView.setLayoutManager(new LinearLayoutManager(adapter.getContext()));
         recyclerView.setAdapter(attachableAdapter);
     }
 
     public void onBindMessage(Message message) {
+        this.githubUser = null;
         userView.setText(message.getSender());
         messageView.setText(message.getMessage());
         avatarView.setVisibility(View.INVISIBLE);
@@ -72,6 +80,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements OnFetc
     @Override
     public void onFetchGithubUser(GithubUser githubUser, int channel) {
         if(channel == channelFetchUser) {
+            this.githubUser = githubUser;
             channelLoadImage = ImageLoader.loadImage(githubUser.getAvatarUrl(),this);
             if(githubUser.getName() != null) {
                 userView.setText(githubUser.getName());
@@ -92,6 +101,14 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements OnFetc
         if(channel == channelFetchAttachable && attachable != null) {
             attachableAdapter.addAttachable(attachable);
             recyclerView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.list_message_imageview_avatar && githubUser != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubUser.getUrl()));
+            adapter.getContext().startActivity(intent);
         }
     }
 }
