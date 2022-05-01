@@ -13,20 +13,27 @@ import java.util.List;
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoomList;
+import edu.quinnipiac.ser210.githubchat.database.listeners.OnUpdateChatRoom;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnChatRoomSelected;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.ChatRoomViewHolder;
 
 /**
  * @author Thomas Kwashnak
  */
-public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> implements OnFetchChatRoomList {
+public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> implements OnFetchChatRoomList, OnUpdateChatRoom, ChatRoomViewHolder.IListener {
 
+
+    private final Context context;
     private final OnChatRoomSelected listener;
     private final LayoutInflater inflater;
+    private final List<ChatRoom> favorites = new LinkedList<>();
+    private final List<ChatRoom> rooms = new LinkedList<>();
+    @Deprecated
     private final List<ChatRoom> chatRooms = new LinkedList<>();
     private int fetchChatRoomChannel;
 
     public ChatRoomAdapter(Context context, OnChatRoomSelected listener) {
+        this.context = context;
         this.listener = listener;
         inflater = LayoutInflater.from(context);
     }
@@ -34,17 +41,21 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> im
     @NonNull
     @Override
     public ChatRoomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ChatRoomViewHolder(listener, inflater.inflate(R.layout.list_chat_room_item, parent, false));
+        return new ChatRoomViewHolder(context,this, inflater.inflate(R.layout.list_chat_room_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatRoomViewHolder holder, int position) {
-        holder.bindToChatRoom(chatRooms.get(position));
+        if (position < favorites.size()) {
+            holder.bindToChatRoom(favorites.get(position));
+        } else {
+            holder.bindToChatRoom(rooms.get(position - favorites.size()));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return chatRooms.size();
+        return favorites.size() + rooms.size();
     }
 
     public void setFetchChatRoomChannel(int channel) {
@@ -54,11 +65,59 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> im
     @Override
     public void onFetchChatRoomList(List<ChatRoom> chatRooms, int channel) {
         if (channel == fetchChatRoomChannel) {
-            int size = this.chatRooms.size();
-            this.chatRooms.clear();
-            notifyItemRangeRemoved(0, size);
-            this.chatRooms.addAll(chatRooms);
-            notifyItemRangeInserted(0, chatRooms.size());
+            for (ChatRoom chatRoom : chatRooms) {
+                if (chatRoom.isFavorite()) {
+                    addFavorite(chatRoom);
+                } else {
+                    addRoom(chatRoom);
+                }
+            }
         }
+    }
+
+    private void addFavorite(ChatRoom chatRoom) {
+        if (!favorites.contains(chatRoom)) {
+            favorites.add(chatRoom);
+            notifyItemInserted(favorites.size() - 1);
+        }
+    }
+
+    private void addRoom(ChatRoom chatRoom) {
+        if (!rooms.contains(chatRoom)) {
+            rooms.add(chatRoom);
+            notifyItemInserted(favorites.size() + rooms.size() - 1);
+        }
+    }
+
+    @Override
+    public void onUpdateChatRoom(ChatRoom chatRoom, int channel) {
+        if (chatRoom.isFavorite()) {
+            removeRoom(chatRoom);
+            addFavorite(chatRoom);
+        } else {
+            removeFavorite(chatRoom);
+            addRoom(chatRoom);
+        }
+    }
+
+    private void removeRoom(ChatRoom chatRoom) {
+        int index = rooms.indexOf(chatRoom);
+        if (index != -1) {
+            rooms.remove(index);
+            notifyItemRemoved(favorites.size() + index);
+        }
+    }
+
+    private void removeFavorite(ChatRoom chatRoom) {
+        int index = favorites.indexOf(chatRoom);
+        if (index != -1) {
+            favorites.remove(index);
+            notifyItemRemoved(index);
+        }
+    }
+
+    @Override
+    public void onChatRoomSelected(ChatRoom chatRoom) {
+        listener.onChatRoomSelected(chatRoom);
     }
 }
