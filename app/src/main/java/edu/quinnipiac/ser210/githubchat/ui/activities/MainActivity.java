@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity
         if (channel == channelGithubUser) {
             this.githubUser = githubUser;
             View header = navigationView.getHeaderView(navigationView.getHeaderCount() - 1);
-            if (!githubUser.getName().equals("null")) {
+            if (githubUser.getName() != null) {
                 ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getName());
                 ((TextView) header.findViewById(R.id.drawer_header_text_username)).setText(githubUser.getLogin());
             } else {

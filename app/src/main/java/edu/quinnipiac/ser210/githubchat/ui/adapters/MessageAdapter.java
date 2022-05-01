@@ -21,6 +21,8 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.MessageViewHolde
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> implements ChildEventListener {
 
+    private final Context context;
+
     private final LayoutInflater inflater;
 
     private final RecyclerView recyclerView;
@@ -28,6 +30,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
     private final List<Message> messages;
 
     public MessageAdapter(Context context, RecyclerView recyclerView) {
+        this.context = context;
         messages = new ArrayList<>();
         this.inflater = LayoutInflater.from(context);
         this.recyclerView = recyclerView;
@@ -50,12 +53,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
     }
 
     public void setInitialData(DataSnapshot snapshot) {
-        int count = messages.size();
-        messages.clear();
-        notifyItemRangeRemoved(0, count);
-        for (DataSnapshot child : snapshot.getChildren()) {
-            messages.add(child.getValue(Message.class));
-            notifyItemInserted(messages.size() - 1);
+                int count = messages.size();
+                messages.clear();
+                notifyItemRangeRemoved(0, count);
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    messages.add(child.getValue(Message.class));
+                    notifyItemInserted(messages.size() - 1);
         }
     }
 
@@ -95,5 +98,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
     @Override
     public void onCancelled(@NonNull DatabaseError error) {
 
+    }
+
+    public Context getContext() {
+        return context;
     }
 }
