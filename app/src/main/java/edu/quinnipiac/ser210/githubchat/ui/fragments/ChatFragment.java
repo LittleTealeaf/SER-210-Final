@@ -3,7 +3,6 @@ package edu.quinnipiac.ser210.githubchat.ui.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.sql.Array;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
@@ -28,7 +30,10 @@ import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoom;
 import edu.quinnipiac.ser210.githubchat.firebase.dataobjects.Message;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
+import edu.quinnipiac.ser210.githubchat.github.interfaces.GithubAttachableHolder;
+import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubAttachbleList;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepo;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
@@ -37,10 +42,11 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.ToolbarHolder;
 /**
  * @author Thomas Kwashnak
  */
-public class ChatFragment extends Fragment implements View.OnClickListener, OnFetchChatRoom, OnFetchGithubRepo, TextWatcher {
+public class ChatFragment extends Fragment implements View.OnClickListener, OnFetchChatRoom, OnFetchGithubRepo, TextWatcher, OnFetchGithubAttachbleList, GithubAttachableHolder {
 
     private int channelChatRoom;
     private int channelGithubRepo;
+    private int channelGithubAttachable;
 
     private ChatRoom chatRoom;
 
@@ -54,6 +60,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
     private Button sendButton;
 
     private GithubWrapper githubWrapper;
+
+    private final List<GithubAttachable> attachableList = new ArrayList<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -134,7 +142,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
     public void onFetchChatRoom(ChatRoom chatRoom, int channel) {
         if (channel == channelChatRoom) {
             this.chatRoom = chatRoom;
-            channelGithubRepo = GithubWrapper.from(requireContext()).startFetchGithubRepo(chatRoom.getRepoName(), this);
+            channelGithubRepo = githubWrapper.startFetchGithubRepo(chatRoom.getRepoName(), this);
+            channelGithubAttachable = githubWrapper.startFetchGithubAttachableList(chatRoom.getRepoName(),this);
         }
     }
 
@@ -159,5 +168,28 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
     @Override
     public void afterTextChanged(Editable editable) {
         sendButton.setEnabled(!editable.toString().equals(""));
+    }
+
+    @Override
+    public void onFetchMessageAttachableList(List<GithubAttachable> attachableList, int channel) {
+        if(channel == channelGithubAttachable) {
+            this.attachableList.clear();
+            this.attachableList.addAll(attachableList);
+        }
+    }
+
+    @Override
+    public List<GithubAttachable> getAttachableList() {
+        return attachableList;
+    }
+
+    @Override
+    public GithubAttachable getAttachable(int number) {
+        for(GithubAttachable attachable : attachableList) {
+            if(attachable.getNumber() == number) {
+                return attachable;
+            }
+        }
+        return null;
     }
 }
