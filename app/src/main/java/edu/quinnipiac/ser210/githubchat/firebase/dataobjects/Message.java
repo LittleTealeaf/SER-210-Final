@@ -4,6 +4,7 @@ public class Message {
 
     private String message;
     private String sender;
+    private long sendTime;
 
     public Message() {}
 
@@ -39,5 +40,13 @@ public class Message {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public long getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(long sendTime) {
+        this.sendTime = sendTime;
     }
 }

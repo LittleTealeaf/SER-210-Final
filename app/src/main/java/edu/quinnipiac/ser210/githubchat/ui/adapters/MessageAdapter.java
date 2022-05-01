@@ -21,13 +21,19 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.MessageViewHolde
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> implements ChildEventListener {
 
+    private final Context context;
+
+    private final String repoName;
+
     private final LayoutInflater inflater;
 
     private final RecyclerView recyclerView;
 
     private final List<Message> messages;
 
-    public MessageAdapter(Context context, RecyclerView recyclerView) {
+    public MessageAdapter(String repoName, Context context, RecyclerView recyclerView) {
+        this.repoName = repoName;
+        this.context = context;
         messages = new ArrayList<>();
         this.inflater = LayoutInflater.from(context);
         this.recyclerView = recyclerView;
@@ -49,6 +55,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
         return messages.size();
     }
 
+
+    public void clearEntries() {
+        int count = messages.size();
+        messages.clear();
+        notifyItemRangeRemoved(0,count);
+    }
+
+    @Deprecated
     public void setInitialData(DataSnapshot snapshot) {
         int count = messages.size();
         messages.clear();
@@ -59,17 +73,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
         }
     }
 
+
+
     @Override
     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         messages.add(snapshot.getValue(Message.class));
         notifyItemInserted(messages.size() - 1);
-        recyclerView.scrollToPosition(messages.size() - 1);
+        recyclerView.smoothScrollToPosition(messages.size() - 1);
     }
 
     @Override
     public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         setData(snapshot);
-        System.out.println(previousChildName);
     }
 
     private void setData(DataSnapshot snapshot) {
@@ -95,5 +110,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
     @Override
     public void onCancelled(@NonNull DatabaseError error) {
 
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public String getRepoName() {
+        return repoName;
     }
 }

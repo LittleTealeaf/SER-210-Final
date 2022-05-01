@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".ui.fragments.ChatFragment">
 
     <LinearLayout
@@ -11,37 +11,66 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_gravity="bottom"
-                android:foregroundGravity="bottom"
-                android:id="@+id/frag_chat_recycler_messages" />
+            >
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="horizontal">
-
-            <EditText
-                    android:layout_width="0dp"
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textShortMessage"
-                    android:layout_weight="1"
                     android:layout_gravity="bottom"
-                    android:ems="10"
-                    android:id="@+id/frag_chat_edittext_insert" />
+                    android:foregroundGravity="bottom"
+                    android:id="@+id/frag_chat_recycler_messages" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_send_24"
+                    android:layout_gravity="bottom|end"
+                    android:elevation="0dp"
+                    android:layout_margin="5dp"
+                    app:pressedTranslationZ="0dp"
+                    app:fabSize="mini"
+                    android:visibility="invisible"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
 
-                    android:id="@+id/frag_chat_fab_send"
-                    android:contentDescription="@string/send" />
-        </LinearLayout>
+                    android:id="@+id/frag_chat_fab_scroll"/>
+        </FrameLayout>
+
+        <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_margin="7dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:cardMaxElevation="4dp"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    app:cardCornerRadius="5dp"
+                    android:orientation="horizontal">
+
+                <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:maxLines="6"
+                        android:scrollbarStyle="insideOverlay"
+                        android:ems="10"
+                        android:id="@+id/frag_chat_edittext_insert" />
+
+                <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_baseline_send_24"
+                        android:enabled="false"
+                        android:id="@+id/frag_chat_button_send" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
 
