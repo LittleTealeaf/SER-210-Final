@@ -22,6 +22,9 @@ import javax.net.ssl.HttpsURLConnection;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHolder;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
+import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubAttachable;
+import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubIssue;
+import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubPull;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubIssue;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubPull;
@@ -80,13 +83,17 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
     }
 
     protected final String fetchURL(String url) {
+        return fetchURL(url,10 * 60);
+    }
 
-        System.out.println("Fetching from url:" + url);
-
+    protected final String fetchURL(String url, int keepTime) {
         GithubCache urlCache = databaseWrapper.getGithubCache(url);
-        if (urlCache != null && urlCache.getFetchTime() > Instant.now().getEpochSecond() - 5 * 60) {
+        if (urlCache != null && urlCache.getFetchTime() > Instant.now().getEpochSecond() - keepTime) {
+            System.out.println("Fetching from Cache: " + url);
             return urlCache.getContent();
         }
+
+        System.out.println("Fetching from url: " + url);
 
         HttpsURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -249,5 +256,56 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public int startFetchGithubAttachableList(String repoName, OnFetchGithubAttachbleList listener, int channel) {
         return ThreadManager.startThread(() -> fetchGithubAttachableList(repoName), listener::onFetchMessageAttachableList, channel);
+    }
+
+    public GithubPull fetchGithubPull(String repoName, int number) {
+        try {
+            return new GithubPull(new JSONObject(Objects.requireNonNull(fetchURL("https://api.github.com/repos/" + repoName + "/pulls/" + number))));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public int startFetchGithubPull(String repoName, int number, OnFetchGithubPull listener) {
+        return ThreadManager.startThread(() -> fetchGithubPull(repoName, number), listener::onFetchGithubPull);
+    }
+
+    public int startFetchGithubPull(String repoName, int number, OnFetchGithubPull listener, int channel) {
+        return ThreadManager.startThread(() -> fetchGithubPull(repoName, number),listener::onFetchGithubPull,channel);
+    }
+
+
+    public GithubIssue fetchGithubIssue(String repoName, int number) {
+        try {
+            return new GithubIssue(
+                    new JSONObject(Objects.requireNonNull(fetchURL("https://api.github.com/repos/" + repoName + "/issues/" + number))));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public int startFetchGithubIssue(String repoName, int number, OnFetchGithubIssue listener) {
+        return startFetchGithubIssue(repoName,number,listener,ThreadManager.registerChannel());
+    }
+
+    public int startFetchGithubIssue(String repoName, int number, OnFetchGithubIssue listener, int channel) {
+        return ThreadManager.startThread(() -> fetchGithubIssue(repoName,number),listener::onFetchGithubIssue,channel);
+    }
+
+    public GithubAttachable fetchGithubAttachable(String repoName, int number) {
+        GithubIssue issue = fetchGithubIssue(repoName,number);
+        if(issue != null) {
+            return issue;
+        } else {
+            return fetchGithubPull(repoName,number);
+        }
+    }
+
+    public int startFetchGithubAttachable(String repoName, int number, OnFetchGithubAttachable listener) {
+        return ThreadManager.startThread(() -> fetchGithubAttachable(repoName, number), listener::onFetchGithubAttachable);
+    }
+
+    public int startFetchGithubAttachable(String repoName, int number, OnFetchGithubAttachable listener, int channel) {
+        return ThreadManager.startThread(() -> fetchGithubAttachable(repoName, number),listener::onFetchGithubAttachable,channel);
     }
 }

@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.sql.Array;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +31,6 @@ import edu.quinnipiac.ser210.githubchat.firebase.dataobjects.Message;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
-import edu.quinnipiac.ser210.githubchat.github.interfaces.GithubAttachableHolder;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubAttachbleList;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepo;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
@@ -42,26 +39,18 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.ToolbarHolder;
 /**
  * @author Thomas Kwashnak
  */
-public class ChatFragment extends Fragment implements View.OnClickListener, OnFetchChatRoom, OnFetchGithubRepo, TextWatcher, OnFetchGithubAttachbleList, GithubAttachableHolder {
-
-    private int channelChatRoom;
-    private int channelGithubRepo;
-    private int channelGithubAttachable;
-
-    private ChatRoom chatRoom;
-
-    private GithubRepo githubRepo;
-
-    private MessageAdapter adapter;
-
-    private DatabaseReference databaseReference;
-
-    private EditText inputText;
-    private Button sendButton;
-
-    private GithubWrapper githubWrapper;
+public class ChatFragment extends Fragment implements View.OnClickListener, OnFetchChatRoom, OnFetchGithubRepo, TextWatcher {
 
     private final List<GithubAttachable> attachableList = new ArrayList<>();
+    private int channelChatRoom;
+    private int channelGithubRepo;
+    private ChatRoom chatRoom;
+    private GithubRepo githubRepo;
+    private MessageAdapter adapter;
+    private DatabaseReference databaseReference;
+    private EditText inputText;
+    private Button sendButton;
+    private GithubWrapper githubWrapper;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -92,7 +81,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
         LinearLayoutManager manager = new LinearLayoutManager(requireContext());
         manager.setStackFromEnd(true);
         recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(adapter = new MessageAdapter(requireContext(), recyclerView));
+        recyclerView.setAdapter(
+                adapter = new MessageAdapter(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME), requireContext(), recyclerView));
         databaseReference.get().addOnSuccessListener(adapter::setInitialData);
 
         inputText = view.findViewById(R.id.frag_chat_edittext_insert);
@@ -116,6 +106,13 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        channelChatRoom = ThreadManager.NULL_CHANNEL;
+        channelGithubRepo = ThreadManager.NULL_CHANNEL;
+    }
+
+    @Override
     public void onClick(View view) {
         if (view.getId() == R.id.frag_chat_button_send) {
 
@@ -132,18 +129,10 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        channelChatRoom = ThreadManager.NULL_CHANNEL;
-        channelGithubRepo = ThreadManager.NULL_CHANNEL;
-    }
-
-    @Override
     public void onFetchChatRoom(ChatRoom chatRoom, int channel) {
         if (channel == channelChatRoom) {
             this.chatRoom = chatRoom;
             channelGithubRepo = githubWrapper.startFetchGithubRepo(chatRoom.getRepoName(), this);
-            channelGithubAttachable = githubWrapper.startFetchGithubAttachableList(chatRoom.getRepoName(),this);
         }
     }
 
@@ -168,28 +157,5 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
     @Override
     public void afterTextChanged(Editable editable) {
         sendButton.setEnabled(!editable.toString().equals(""));
-    }
-
-    @Override
-    public void onFetchMessageAttachableList(List<GithubAttachable> attachableList, int channel) {
-        if(channel == channelGithubAttachable) {
-            this.attachableList.clear();
-            this.attachableList.addAll(attachableList);
-        }
-    }
-
-    @Override
-    public List<GithubAttachable> getAttachableList() {
-        return attachableList;
-    }
-
-    @Override
-    public GithubAttachable getAttachable(int number) {
-        for(GithubAttachable attachable : attachableList) {
-            if(attachable.getNumber() == number) {
-                return attachable;
-            }
-        }
-        return null;
     }
 }

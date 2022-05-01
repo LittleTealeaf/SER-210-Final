@@ -20,6 +20,8 @@ import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoomList;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchGithubCache;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnUpdateChatRoom;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnUpdateGithubCache;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubPull;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 
 /**

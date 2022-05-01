@@ -17,11 +17,14 @@ import java.util.List;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.firebase.dataobjects.Message;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.MessageViewHolder;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> implements ChildEventListener {
 
     private final Context context;
+
+    private final String repoName;
 
     private final LayoutInflater inflater;
 
@@ -29,7 +32,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
 
     private final List<Message> messages;
 
-    public MessageAdapter(Context context, RecyclerView recyclerView) {
+    public MessageAdapter(String repoName, Context context, RecyclerView recyclerView) {
+        this.repoName = repoName;
         this.context = context;
         messages = new ArrayList<>();
         this.inflater = LayoutInflater.from(context);
@@ -100,7 +104,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
 
     }
 
+
     public Context getContext() {
         return context;
+    }
+
+    public String getRepoName() {
+        return repoName;
     }
 }

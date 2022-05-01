@@ -11,9 +11,10 @@
         app:cardPreventCornerOverlap="true"
         android:layout_marginBottom="8dp">
 
-    <FrameLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="5dp">
 
         <LinearLayout
@@ -44,9 +45,14 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/list_message_text_message" />
             </LinearLayout>
-
         </LinearLayout>
-    </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="2dp"
+                android:id="@+id/list_message_recyclerview_attachable"/>
+    </LinearLayout>
 
 
 </androidx.cardview.widget.CardView>
