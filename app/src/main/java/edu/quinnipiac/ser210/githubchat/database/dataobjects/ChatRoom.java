@@ -14,6 +14,7 @@ public class ChatRoom {
 
     public ChatRoom(String repoName, boolean favorite) {
         this.repoName = repoName;
+        this.favorite = favorite;
     }
 
     public String getRepoName() {
