@@ -30,31 +30,35 @@
                     android:id="@+id/list_message_imageview_avatar" />
 
             <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
 
                 <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                        android:orientation="horizontal">
+
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/list_message_text_user"
                             android:textStyle="bold" />
+
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                        android:id="@+id/list_message_text_time"
+                            android:id="@+id/list_message_text_time"
                             android:gravity="center_horizontal"
                             android:layout_marginLeft="10dp"
-                        android:textSize="12sp" />
+                            android:textSize="12sp" />
                 </LinearLayout>
 
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+
                         android:id="@+id/list_message_text_message" />
             </LinearLayout>
         </LinearLayout>
@@ -63,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
-                android:id="@+id/list_message_recyclerview_attachable"/>
+                android:id="@+id/list_message_recyclerview_attachable" />
     </LinearLayout>
 
 
