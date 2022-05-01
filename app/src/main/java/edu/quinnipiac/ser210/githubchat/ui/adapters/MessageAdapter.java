@@ -17,7 +17,6 @@ import java.util.List;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.firebase.dataobjects.Message;
-import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.MessageViewHolder;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> implements ChildEventListener {
@@ -56,27 +55,36 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
         return messages.size();
     }
 
+
+    public void clearEntries() {
+        int count = messages.size();
+        messages.clear();
+        notifyItemRangeRemoved(0,count);
+    }
+
+    @Deprecated
     public void setInitialData(DataSnapshot snapshot) {
-                int count = messages.size();
-                messages.clear();
-                notifyItemRangeRemoved(0, count);
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    messages.add(child.getValue(Message.class));
-                    notifyItemInserted(messages.size() - 1);
+        int count = messages.size();
+        messages.clear();
+        notifyItemRangeRemoved(0, count);
+        for (DataSnapshot child : snapshot.getChildren()) {
+            messages.add(child.getValue(Message.class));
+            notifyItemInserted(messages.size() - 1);
         }
     }
+
+
 
     @Override
     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         messages.add(snapshot.getValue(Message.class));
         notifyItemInserted(messages.size() - 1);
-        recyclerView.scrollToPosition(messages.size() - 1);
+        recyclerView.smoothScrollToPosition(messages.size() - 1);
     }
 
     @Override
     public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         setData(snapshot);
-        System.out.println(previousChildName);
     }
 
     private void setData(DataSnapshot snapshot) {
@@ -103,7 +111,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
     public void onCancelled(@NonNull DatabaseError error) {
 
     }
-
 
     public Context getContext() {
         return context;

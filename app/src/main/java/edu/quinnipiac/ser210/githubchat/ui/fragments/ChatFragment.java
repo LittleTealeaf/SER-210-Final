@@ -103,7 +103,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(
                 adapter = new MessageAdapter(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME), requireContext(), recyclerView));
-        databaseReference.get().addOnSuccessListener(adapter::setInitialData);
+//        databaseReference.get().addOnSuccessListener(adapter::setInitialData);
 
         inputText = view.findViewById(R.id.frag_chat_edittext_insert);
         inputText.addTextChangedListener(this);
@@ -116,6 +116,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
     @Override
     public void onStart() {
         super.onStart();
+        adapter.clearEntries();
         databaseReference.addChildEventListener(adapter);
     }
 
