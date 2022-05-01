@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_logout) {
+        if (item.getItemId() == R.id.menu_drawer_logout) {
             new AlertDialog.Builder(this)
                     .setTitle("Log Out")
                     .setMessage("Are you sure you want to log out of Github App?")
@@ -187,9 +187,15 @@ public class MainActivity extends AppCompatActivity
                     .setNegativeButton("Cancel", (dialog, id) -> {})
                     .create()
                     .show();
-        } else if(item.getItemId() == R.id.menu_item_view_profile) {
+        } else if (item.getItemId() == R.id.menu_drawer_view_profile) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubUser.getUrl()));
             startActivity(intent);
+        } else if (item.getItemId() == R.id.menu_drawer_share) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT,"Look at this cool app! https://github.com/LittleTealeaf/SER-210-Final");
+            intent.setType("text/plain");
+            startActivity(Intent.createChooser(intent,null));
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
