@@ -76,7 +76,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
 
         updateTime();
 
-        Matcher matcher = Pattern.compile("(#[0-9]*)\\w+").matcher(message.getMessage());
+        Matcher matcher = Pattern.compile("(#[0-9]*)*").matcher(message.getMessage());
         GithubWrapper githubWrapper = GithubWrapper.from(adapter.getContext());
         while (matcher.find()) {
             int number = Integer.parseInt(matcher.group().substring(1));
