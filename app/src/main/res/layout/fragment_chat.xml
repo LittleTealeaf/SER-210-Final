@@ -11,13 +11,32 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_gravity="bottom"
-                android:foregroundGravity="bottom"
-                android:id="@+id/frag_chat_recycler_messages" />
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:foregroundGravity="bottom"
+                    android:id="@+id/frag_chat_recycler_messages" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:elevation="0dp"
+                    android:layout_margin="5dp"
+                    app:pressedTranslationZ="0dp"
+                    app:fabSize="mini"
+                    android:visibility="invisible"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+
+                    android:id="@+id/frag_chat_fab_scroll"/>
+        </FrameLayout>
 
         <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
