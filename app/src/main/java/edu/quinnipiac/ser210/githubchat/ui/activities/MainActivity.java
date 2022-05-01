@@ -3,6 +3,7 @@ package edu.quinnipiac.ser210.githubchat.ui.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,8 +14,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -70,7 +73,6 @@ public class MainActivity extends AppCompatActivity
 //        NavigationUI.setupWithNavController(navigationView,navController);
 //        navigationView.setNavigationItemSelectedListener(this);
 
-
         firebaseAuth = FirebaseAuth.getInstance();
 
         setContentView(R.layout.activity_main);
@@ -79,9 +81,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-
 
         drawerLayout = findViewById(R.id.activity_main_layout);
         navigationView = findViewById(R.id.navigation_view);
@@ -131,7 +130,7 @@ public class MainActivity extends AppCompatActivity
             loginLauncher.launch(new Intent(this, LoginActivity.class));
         } else {
             getGithubWrapper().setToken(getPreferencesWrapper().getString(GithubWrapper.AUTH_TOKEN, null));
-            channelGithubUser = getGithubWrapper().startFetchGithubUser(null,this);
+            channelGithubUser = getGithubWrapper().startFetchGithubUser(null, this);
         }
     }
 
@@ -141,6 +140,21 @@ public class MainActivity extends AppCompatActivity
             return githubWrapper = new GithubWrapper(this);
         } else {
             return githubWrapper;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -155,11 +169,23 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onSupportNavigateUp() {
-        return NavigationUI.navigateUp(navController,drawerLayout);
+        return NavigationUI.navigateUp(navController, drawerLayout);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_item_logout) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Log Out")
+                    .setMessage("Are you sure you want to log out of Github App?")
+                    .setIcon(R.drawable.ic_material_logout_48)
+                    .setCancelable(true)
+                    .setPositiveButton("Logout", (dialog, id) -> FirebaseAuth.getInstance().signOut())
+                    .setNegativeButton("Cancel", (dialog, id) -> {})
+                    .create()
+                    .show();
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
         return false;
     }
 
@@ -170,22 +196,22 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFetchGithubUser(GithubUser githubUser, int channel) {
-        if(channel == channelGithubUser) {
+        if (channel == channelGithubUser) {
             View header = navigationView.getHeaderView(navigationView.getHeaderCount() - 1);
-            if(!githubUser.getName().equals("null")) {
+            if (!githubUser.getName().equals("null")) {
                 ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getName());
                 ((TextView) header.findViewById(R.id.drawer_header_text_username)).setText(githubUser.getLogin());
             } else {
                 ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getLogin());
             }
 
-            channelUserAvatar = ImageLoader.loadImage(githubUser.getAvatarUrl(),this);
+            channelUserAvatar = ImageLoader.loadImage(githubUser.getAvatarUrl(), this);
         }
     }
 
     @Override
     public void onImageLoaded(Bitmap bitmap, int channel) {
-        if(channel == channelUserAvatar) {
+        if (channel == channelUserAvatar) {
             ((ImageView) navigationView.getHeaderView(navigationView.getHeaderCount() - 1).findViewById(R.id.drawer_header_imageview_account)).setImageBitmap(bitmap);
         }
     }

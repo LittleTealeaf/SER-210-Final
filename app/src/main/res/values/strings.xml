@@ -7,6 +7,8 @@
     <string name="create_chat_room">Create Chat Room</string>
     <string name="confirm_create_content_description">Confirm Create Chat</string>
     <string name="send">Send</string>
+    <string name="logout">Logout</string>
+    <string name="account">Account</string>
     <!--    &lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
     <!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
     <!--    <string name="login_github">Login with Github</string>-->
