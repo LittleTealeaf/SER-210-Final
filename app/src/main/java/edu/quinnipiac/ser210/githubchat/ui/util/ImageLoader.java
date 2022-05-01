@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import java.io.InputStream;
 import java.net.URL;
 
-import edu.quinnipiac.ser210.githubchat.threads.ThreadWrapper;
+import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 
 public class ImageLoader {
 
@@ -25,11 +25,11 @@ public class ImageLoader {
     }
 
     public static int loadImage(String url, OnImageLoaded listener) {
-        return ThreadWrapper.startThread(() -> loadBitmap(url),listener::onImageLoaded);
+        return ThreadManager.startThread(() -> loadBitmap(url), listener::onImageLoaded);
     }
 
     public static int loadImage(String url, OnImageLoaded listener, int channel) {
-        return ThreadWrapper.startThread(() -> loadBitmap(url),listener::onImageLoaded,channel);
+        return ThreadManager.startThread(() -> loadBitmap(url), listener::onImageLoaded, channel);
     }
 
 }

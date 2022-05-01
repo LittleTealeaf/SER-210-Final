@@ -13,6 +13,9 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import edu.quinnipiac.ser210.githubchat.R;
+import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
+import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
+import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoomList;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepoList;
@@ -22,17 +25,19 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.GithubRepoViewHo
 /**
  * @author Thomas Kwashnak
  */
-public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder> implements OnFetchGithubRepoList, OnGithubRepoSelected {
+public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder> implements OnFetchGithubRepoList, OnGithubRepoSelected, OnFetchChatRoomList {
 
     @Deprecated
     private final int CHANNEL_FETCH = 1;
 
-    private final int channelFetchGithubRepoList;
+    private final int channelRepoList;
+    private final int channelChatRoomList;
 
     private final LayoutInflater inflater;
 
     private final OnGithubRepoSelected listener;
 
+    private final List<ChatRoom> openRooms = new ArrayList<>();
     private final List<GithubRepo> githubRepos = new ArrayList<>();
     private final List<GithubRepoViewHolder> holderList = new ArrayList<>();
     private List<GithubRepo> displayRepos = new ArrayList<>();
@@ -42,7 +47,8 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
     public GithubRepoAdapter(Context context, OnGithubRepoSelected listener) {
         this.inflater = LayoutInflater.from(context);
         this.listener = listener;
-        channelFetchGithubRepoList = GithubWrapper.from(context).startFetchGithubRepoList(null, this);
+        channelRepoList = GithubWrapper.from(context).startFetchGithubRepoList(null, this);
+        channelChatRoomList = DatabaseWrapper.from(context).startGetChatRoomList(this);
     }
 
     @NonNull
@@ -74,10 +80,9 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
 
     @Override
     public void onFetchGithubRepoList(List<GithubRepo> githubRepos, int channel) {
-        if (channel == channelFetchGithubRepoList) {
+        if (channel == channelRepoList) {
             this.githubRepos.addAll(githubRepos);
-            filterItems("");
-            notifyItemRangeInserted(this.githubRepos.size() - githubRepos.size(), githubRepos.size());
+            filterOpenedChats();
         }
     }
 
@@ -95,12 +100,34 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
         notifyDataSetChanged();
     }
 
+    private synchronized void filterOpenedChats() {
+        List<GithubRepo> tmp = githubRepos.stream().filter((repo) -> {
+            for (ChatRoom chatRoom : openRooms) {
+                if (chatRoom.getRepoName().equals(repo.getFullName())) {
+                    return false;
+                }
+            }
+            return true;
+        }).collect(Collectors.toList());
+        githubRepos.clear();
+        githubRepos.addAll(tmp);
+        filterItems("");
+    }
+
     @Override
     public void onGithubRepoSelected(GithubRepo githubRepo) {
         this.selected = githubRepo;
         listener.onGithubRepoSelected(githubRepo);
         for (GithubRepoViewHolder viewHolder : holderList) {
             viewHolder.onGithubRepoSelected(githubRepo);
+        }
+    }
+
+    @Override
+    public void onFetchChatRoomList(List<ChatRoom> chatRooms, int channel) {
+        if(channel == channelChatRoomList) {
+            openRooms.addAll(chatRooms);
+            filterOpenedChats();
         }
     }
 }
