@@ -35,7 +35,7 @@ public class ThreadManager {
      * @param runnable Script to run
      */
     public static void run(Runnable runnable) {
-        executorService.execute(runnable);
+        new Thread(runnable).start();
     }
 
     /**

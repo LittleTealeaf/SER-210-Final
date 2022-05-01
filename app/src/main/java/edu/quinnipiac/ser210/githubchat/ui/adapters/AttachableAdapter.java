@@ -44,6 +44,13 @@ public class AttachableAdapter extends RecyclerView.Adapter<AttachableViewHolder
     }
 
     public void addAttachable(GithubAttachable attachable) {
+        for(int i = 0; i < attachableList.size(); i++) {
+            if(attachable.getNumber() < attachableList.get(i).getNumber()) {
+                attachableList.add(i,attachable);
+                notifyItemInserted(i);
+                return;
+            }
+        }
         attachableList.add(attachable);
         notifyItemInserted(attachableList.size() - 1);
     }
