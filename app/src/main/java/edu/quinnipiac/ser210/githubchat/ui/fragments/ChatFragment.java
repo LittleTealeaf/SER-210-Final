@@ -2,10 +2,13 @@ package edu.quinnipiac.ser210.githubchat.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -32,7 +35,7 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.ToolbarHolder;
 /**
  * @author Thomas Kwashnak
  */
-public class ChatFragment extends Fragment implements View.OnClickListener, OnFetchChatRoom, OnFetchGithubRepo {
+public class ChatFragment extends Fragment implements View.OnClickListener, OnFetchChatRoom, OnFetchGithubRepo, TextWatcher {
 
     private int channelChatRoom;
     private int channelGithubRepo;
@@ -46,6 +49,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
     private DatabaseReference databaseReference;
 
     private EditText inputText;
+    private Button sendButton;
 
     private GithubWrapper githubWrapper;
 
@@ -53,7 +57,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         githubWrapper = GithubWrapper.from(context);
-        channelChatRoom = DatabaseWrapper.from(context).startGetChatRoom(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME),this);
+        channelChatRoom = DatabaseWrapper.from(context).startGetChatRoom(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME), this);
     }
 
     @Override
@@ -64,7 +68,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
         for (char c : ".#$[]".toCharArray()) {
             ref = ref.replace(c, '_');
         }
-
 
         databaseReference = FirebaseDatabase.getInstance().getReference(ref);
 
@@ -83,9 +86,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
         databaseReference.get().addOnSuccessListener(adapter::setInitialData);
 
         inputText = view.findViewById(R.id.frag_chat_edittext_insert);
-        inputText.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
+        inputText.addTextChangedListener(this);
+//        inputText.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
 
-        view.findViewById(R.id.frag_chat_fab_send).setOnClickListener(this);
+        sendButton = view.findViewById(R.id.frag_chat_button_send);
+        sendButton.setOnClickListener(this);
     }
 
     @Override
@@ -102,7 +107,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.frag_chat_fab_send) {
+        if (view.getId() == R.id.frag_chat_button_send) {
 
             Message message = new Message();
 
@@ -124,17 +129,32 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
 
     @Override
     public void onFetchChatRoom(ChatRoom chatRoom, int channel) {
-        if(channel == channelChatRoom) {
+        if (channel == channelChatRoom) {
             this.chatRoom = chatRoom;
-            channelGithubRepo = GithubWrapper.from(requireContext()).startFetchGithubRepo(chatRoom.getRepoName(),this);
+            channelGithubRepo = GithubWrapper.from(requireContext()).startFetchGithubRepo(chatRoom.getRepoName(), this);
         }
     }
 
     @Override
     public void onFetchGithubRepo(GithubRepo repo, int channel) {
-        if(channel == channelGithubRepo) {
+        if (channel == channelGithubRepo) {
             this.githubRepo = repo;
             ToolbarHolder.from(requireContext()).setTitle(repo.getName());
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        sendButton.setEnabled(!editable.toString().equals(""));
     }
 }
