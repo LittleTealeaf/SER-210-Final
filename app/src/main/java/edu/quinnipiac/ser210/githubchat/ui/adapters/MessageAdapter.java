@@ -31,10 +31,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
 
     private final List<Message> messages;
 
+    private final List<MessageViewHolder> holders;
+
     public MessageAdapter(String repoName, Context context, RecyclerView recyclerView) {
         this.repoName = repoName;
         this.context = context;
         messages = new ArrayList<>();
+        holders = new ArrayList<>();
         this.inflater = LayoutInflater.from(context);
         this.recyclerView = recyclerView;
     }
@@ -42,7 +45,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MessageViewHolder(this, inflater.inflate(R.layout.list_message_item, parent, false));
+        MessageViewHolder holder = new MessageViewHolder(this, inflater.inflate(R.layout.list_message_item, parent, false));
+        holders.add(holder);
+        return holder;
     }
 
     @Override
@@ -53,6 +58,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
     @Override
     public int getItemCount() {
         return messages.size();
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull MessageViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+
     }
 
     public void clearEntries() {
@@ -107,6 +118,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
     @Override
     public void onCancelled(@NonNull DatabaseError error) {
 
+    }
+
+    public void updateTimes() {
+        for(MessageViewHolder holder : holders) {
+            holder.updateTime();
+        }
     }
 
     public Context getContext() {

@@ -51,4 +51,8 @@ public class ThreadManager {
     public static void schedule(Runnable runnable) {
         handler.post(runnable);
     }
+
+    public static void scheduleDelayed(Runnable runnable, long time) {
+        handler.postDelayed(runnable,time);
+    }
 }

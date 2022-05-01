@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import edu.quinnipiac.ser210.githubchat.R;
@@ -42,6 +45,7 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.ToolbarHolder;
  */
 public class ChatFragment extends Fragment implements View.OnClickListener, OnFetchChatRoom, OnFetchGithubRepo, TextWatcher {
 
+
     private final List<GithubAttachable> attachableList = new ArrayList<>();
     private int channelChatRoom;
     private int channelGithubRepo;
@@ -54,9 +58,18 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
     private RecyclerView recyclerView;
     private GithubWrapper githubWrapper;
 
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+
+        ThreadManager.schedule(this::runTimer);
         githubWrapper = GithubWrapper.from(context);
         channelChatRoom = DatabaseWrapper.from(context).startGetChatRoom(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME), this);
     }
@@ -140,7 +153,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
 
             message.setMessage(inputText.getText().toString());
             message.setSender(githubWrapper.getGithubUser().getLogin());
-            message.setSendTime(Instant.now().getEpochSecond());
+            message.setSendTime(Date.from(Instant.now()).getTime());
 
             inputText.setText("");
 
@@ -179,5 +192,14 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
     @Override
     public void afterTextChanged(Editable editable) {
         sendButton.setEnabled(!editable.toString().equals(""));
+    }
+
+    private void runTimer() {
+        if(!isDetached()) {
+            if(adapter != null) {
+                adapter.updateTimes();
+            }
+            ThreadManager.scheduleDelayed(this::runTimer,1000 * 30);
+        }
     }
 }
