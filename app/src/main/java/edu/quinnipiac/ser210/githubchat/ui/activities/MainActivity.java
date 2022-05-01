@@ -1,8 +1,12 @@
 package edu.quinnipiac.ser210.githubchat.ui.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,15 +30,22 @@ import edu.quinnipiac.ser210.githubchat.database.DatabaseHolder;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.github.GithubHolder;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
+import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubUser;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesHolder;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesWrapper;
+import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.ToolbarHolder;
+import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
+import edu.quinnipiac.ser210.githubchat.ui.util.OnImageLoaded;
 
 /**
  * @author Thomas Kwashnak
  */
-public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener, PreferencesHolder, GithubHolder, DatabaseHolder, NavigationView.OnNavigationItemSelectedListener,
-                                                               ToolbarHolder {
+public class MainActivity extends AppCompatActivity
+        implements FirebaseAuth.AuthStateListener, PreferencesHolder, GithubHolder, DatabaseHolder, NavigationView.OnNavigationItemSelectedListener, ToolbarHolder, OnFetchGithubUser, OnImageLoaded {
+
+    private int channelGithubUser, channelUserAvatar;
 
     private DrawerLayout drawerLayout;
     private NavController navController;
@@ -88,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     protected void onPause() {
         super.onPause();
         firebaseAuth.removeAuthStateListener(this);
+        channelGithubUser = ThreadManager.NULL_CHANNEL;
+        channelUserAvatar = ThreadManager.NULL_CHANNEL;
     }
 
     @Override
@@ -118,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
             loginLauncher.launch(new Intent(this, LoginActivity.class));
         } else {
             getGithubWrapper().setToken(getPreferencesWrapper().getString(GithubWrapper.AUTH_TOKEN, null));
+            channelGithubUser = getGithubWrapper().startFetchGithubUser(null,this);
         }
     }
 
@@ -152,5 +166,27 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     @Override
     public Toolbar getToolbar() {
         return toolbar;
+    }
+
+    @Override
+    public void onFetchGithubUser(GithubUser githubUser, int channel) {
+        if(channel == channelGithubUser) {
+            View header = navigationView.getHeaderView(navigationView.getHeaderCount() - 1);
+            if(!githubUser.getName().equals("null")) {
+                ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getName());
+                ((TextView) header.findViewById(R.id.drawer_header_text_username)).setText(githubUser.getLogin());
+            } else {
+                ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getLogin());
+            }
+
+            channelUserAvatar = ImageLoader.loadImage(githubUser.getAvatarUrl(),this);
+        }
+    }
+
+    @Override
+    public void onImageLoaded(Bitmap bitmap, int channel) {
+        if(channel == channelUserAvatar) {
+            ((ImageView) navigationView.getHeaderView(navigationView.getHeaderCount() - 1).findViewById(R.id.drawer_header_imageview_account)).setImageBitmap(bitmap);
+        }
     }
 }
