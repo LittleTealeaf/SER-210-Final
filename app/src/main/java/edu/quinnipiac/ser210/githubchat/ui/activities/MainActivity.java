@@ -2,6 +2,7 @@ package edu.quinnipiac.ser210.githubchat.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
@@ -9,8 +10,16 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHolder;
@@ -23,7 +32,12 @@ import edu.quinnipiac.ser210.githubchat.preferences.PreferencesWrapper;
 /**
  * @author Thomas Kwashnak
  */
-public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener, PreferencesHolder, GithubHolder, DatabaseHolder {
+public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener, PreferencesHolder, GithubHolder, DatabaseHolder, NavigationView.OnNavigationItemSelectedListener {
+
+    private DrawerLayout drawerLayout;
+    private NavController navController;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
 
     private FirebaseAuth firebaseAuth;
     private PreferencesWrapper preferencesWrapper;
@@ -36,9 +50,32 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+//        drawerLayout = findViewById(R.id.activity_main_layout);
+//        navController = Navigation.findNavController(this,R.id.nav_host_fragment);
+//        navigationView = findViewById(R.id.navigation_view);
+//        NavigationUI.setupActionBarWithNavController(this,navController,drawerLayout);
+//        NavigationUI.setupWithNavController(navigationView,navController);
+//        navigationView.setNavigationItemSelectedListener(this);
+
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         setContentView(R.layout.activity_main);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
+        drawerLayout = findViewById(R.id.activity_main_layout);
+        navigationView = findViewById(R.id.navigation_view);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
+        NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.setNavigationItemSelectedListener(this);
+
 
         loginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onLoginActivityResult);
     }
@@ -96,5 +133,15 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         } else {
             return databaseWrapper;
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        return NavigationUI.navigateUp(navController,drawerLayout);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
     }
 }
