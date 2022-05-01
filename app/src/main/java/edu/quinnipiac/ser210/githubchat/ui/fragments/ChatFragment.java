@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.time.Instant;
+
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
@@ -113,6 +115,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, OnFe
 
             message.setMessage(inputText.getText().toString());
             message.setSender(githubWrapper.getGithubUser().getLogin());
+            message.setSendTime(Instant.now().getEpochSecond());
 
             inputText.setText("");
 
