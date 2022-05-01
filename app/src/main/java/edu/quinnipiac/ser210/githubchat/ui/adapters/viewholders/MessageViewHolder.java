@@ -3,6 +3,7 @@ package edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
     private final MessageAdapter adapter;
     private final TextView userView;
     private final TextView messageView;
+    private final TextView timeView;
     private final ImageView avatarView;
     private final AttachableAdapter attachableAdapter;
     private final RecyclerView recyclerView;
@@ -47,7 +49,10 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
         userView = itemView.findViewById(R.id.list_message_text_user);
         messageView = itemView.findViewById(R.id.list_message_text_message);
         avatarView = itemView.findViewById(R.id.list_message_imageview_avatar);
+        timeView = itemView.findViewById(R.id.list_message_text_time);
         attachableAdapter = new AttachableAdapter(messageAdapter.getContext());
+
+
 
         avatarView.setOnClickListener(this);
 
@@ -65,6 +70,12 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
         channelFetchAttachable = ThreadManager.registerChannel();
         attachableAdapter.clearItems();
         channelFetchUser = GithubWrapper.from(adapter.getContext()).startFetchGithubUser(message.getSender(), this);
+
+
+        /*
+        Source: https://stackoverflow.com/a/69348167/12206859
+         */
+        timeView.setText(DateUtils.getRelativeTimeSpanString(message.getSendTime()));
 
         Matcher matcher = Pattern.compile("(#[0-9]*)\\w+").matcher(message.getMessage());
         GithubWrapper githubWrapper = GithubWrapper.from(adapter.getContext());
