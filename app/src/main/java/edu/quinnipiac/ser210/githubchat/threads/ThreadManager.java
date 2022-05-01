@@ -6,7 +6,7 @@ import android.os.Looper;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ThreadWrapper {
+public class ThreadManager {
 
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static final Handler handler = new Handler(Looper.getMainLooper());
@@ -21,11 +21,27 @@ public class ThreadWrapper {
     }
 
     public static <T> int startThread(Task<T> function, Callback<T> notifier, int channel) {
-        executorService.execute(() -> {
+        run(() -> {
             T item = function.execute();
-            handler.post(() -> notifier.notify(item, channel));
+            schedule(() -> notifier.notify(item, channel));
         });
         return channel;
+    }
+
+    /**
+     * Starts a runnable thread
+     * @param runnable Script to run
+     */
+    public static void run(Runnable runnable) {
+        executorService.execute(runnable);
+    }
+
+    /**
+     * Schedules a runnable to execute on the main thread
+     * @param runnable Script to run
+     */
+    public static void schedule(Runnable runnable) {
+        handler.post(runnable);
     }
 
     public synchronized static int registerChannel() {

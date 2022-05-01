@@ -32,7 +32,7 @@ import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubPulls;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepo;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepoList;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubUser;
-import edu.quinnipiac.ser210.githubchat.threads.ThreadWrapper;
+import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 
 /**
  * @author Thomas Kwashnak
@@ -67,7 +67,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
     }
 
     public int startFetchGithubUser(String username, OnFetchGithubUser listener) {
-        return ThreadWrapper.startThread(() -> fetchGithubUser(username), listener::onFetchGithubUser);
+        return ThreadManager.startThread(() -> fetchGithubUser(username), listener::onFetchGithubUser);
     }
 
     public GithubUser fetchGithubUser(String username) {
@@ -159,11 +159,11 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
     }
 
     public int startFetchGithubUser(String username, OnFetchGithubUser listener, int channel) {
-        return ThreadWrapper.startThread(() -> fetchGithubUser(username), listener::onFetchGithubUser, channel);
+        return ThreadManager.startThread(() -> fetchGithubUser(username), listener::onFetchGithubUser, channel);
     }
 
     public int startFetchGithubRepo(String repoName, OnFetchGithubRepo listener) {
-        return ThreadWrapper.startThread(() -> fetchGithubRepo(repoName), listener::onFetchGithubRepo);
+        return ThreadManager.startThread(() -> fetchGithubRepo(repoName), listener::onFetchGithubRepo);
     }
 
     public GithubRepo fetchGithubRepo(String fullName) {
@@ -175,11 +175,11 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
     }
 
     public int startFetchGithubRepo(String repoName, OnFetchGithubRepo listener, int channel) {
-        return ThreadWrapper.startThread(() -> fetchGithubRepo(repoName), listener::onFetchGithubRepo, channel);
+        return ThreadManager.startThread(() -> fetchGithubRepo(repoName), listener::onFetchGithubRepo, channel);
     }
 
     public int startFetchGithubRepoList(String username, OnFetchGithubRepoList listener) {
-        return ThreadWrapper.startThread(() -> fetchGithubRepoList(username), listener::onFetchGithubRepoList);
+        return ThreadManager.startThread(() -> fetchGithubRepoList(username), listener::onFetchGithubRepoList);
     }
 
     public List<GithubRepo> fetchGithubRepoList(String username) {
@@ -218,11 +218,11 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
     }
 
     public int startFetchGithubRepoList(String username, OnFetchGithubRepoList listener, int channel) {
-        return ThreadWrapper.startThread(() -> fetchGithubRepoList(username), listener::onFetchGithubRepoList, channel);
+        return ThreadManager.startThread(() -> fetchGithubRepoList(username), listener::onFetchGithubRepoList, channel);
     }
 
     public int startFetchGithubPulls(String repoName, OnFetchGithubPulls listener) {
-        return ThreadWrapper.startThread(() -> fetchGithubPulls(repoName), listener::onFetchGithubPulls);
+        return ThreadManager.startThread(() -> fetchGithubPulls(repoName), listener::onFetchGithubPulls);
     }
 
     public List<GithubPull> fetchGithubPulls(String repoName) {
@@ -240,14 +240,14 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
     }
 
     public int startFetchGithubPulls(String repoName, OnFetchGithubPulls listener, int channel) {
-        return ThreadWrapper.startThread(() -> fetchGithubPulls(repoName), listener::onFetchGithubPulls, channel);
+        return ThreadManager.startThread(() -> fetchGithubPulls(repoName), listener::onFetchGithubPulls, channel);
     }
 
     public int startFetchGithubAttachableList(String repoName, OnFetchGithubAttachbleList listener) {
-        return ThreadWrapper.startThread(() -> fetchGithubAttachableList(repoName), listener::onFetchMessageAttachableList);
+        return ThreadManager.startThread(() -> fetchGithubAttachableList(repoName), listener::onFetchMessageAttachableList);
     }
 
     public int startFetchGithubAttachableList(String repoName, OnFetchGithubAttachbleList listener, int channel) {
-        return ThreadWrapper.startThread(() -> fetchGithubAttachableList(repoName), listener::onFetchMessageAttachableList, channel);
+        return ThreadManager.startThread(() -> fetchGithubAttachableList(repoName), listener::onFetchMessageAttachableList, channel);
     }
 }

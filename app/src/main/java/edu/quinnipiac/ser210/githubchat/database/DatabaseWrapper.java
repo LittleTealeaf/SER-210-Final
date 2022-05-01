@@ -20,7 +20,7 @@ import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoomList;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchGithubCache;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnUpdateChatRoom;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnUpdateGithubCache;
-import edu.quinnipiac.ser210.githubchat.threads.ThreadWrapper;
+import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 
 /**
  * @author Thomas Kwashnak
@@ -84,7 +84,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     }
 
     public int startGetGithubCache(String url, OnFetchGithubCache listener) {
-        return ThreadWrapper.startThread(() -> getGithubCache(url), listener::onFetchGithubCache);
+        return ThreadManager.startThread(() -> getGithubCache(url), listener::onFetchGithubCache);
     }
 
     public GithubCache getGithubCache(String url) {
@@ -110,11 +110,11 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     }
 
     public int startGetGithubCache(String url, OnFetchGithubCache listener, int channel) {
-        return ThreadWrapper.startThread(() -> getGithubCache(url), listener::onFetchGithubCache, channel);
+        return ThreadManager.startThread(() -> getGithubCache(url), listener::onFetchGithubCache, channel);
     }
 
     public int startGetChatRoom(String repoName, edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoom listener) {
-        return ThreadWrapper.startThread(() -> getChatRoom(repoName), listener::onFetchChatRoom);
+        return ThreadManager.startThread(() -> getChatRoom(repoName), listener::onFetchChatRoom);
     }
 
     public ChatRoom getChatRoom(String repoName) {
@@ -134,11 +134,11 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     }
 
     public int startGetChatRoom(String repoName, edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoom listener, int channel) {
-        return ThreadWrapper.startThread(() -> getChatRoom(repoName), listener::onFetchChatRoom, channel);
+        return ThreadManager.startThread(() -> getChatRoom(repoName), listener::onFetchChatRoom, channel);
     }
 
     public int startRemoveChatRoom(ChatRoom chatRoom, edu.quinnipiac.ser210.githubchat.database.listeners.OnRemoveChatRoom listener) {
-        return ThreadWrapper.startThread(() -> removeChatRoom(chatRoom), listener::onRemoveChatRoom);
+        return ThreadManager.startThread(() -> removeChatRoom(chatRoom), listener::onRemoveChatRoom);
     }
 
     public String removeChatRoom(ChatRoom chatRoom) {
@@ -151,19 +151,19 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     }
 
     public int startRemoveChatRoom(String repoName, edu.quinnipiac.ser210.githubchat.database.listeners.OnRemoveChatRoom listener) {
-        return ThreadWrapper.startThread(() -> removeChatRoom(repoName), listener::onRemoveChatRoom);
+        return ThreadManager.startThread(() -> removeChatRoom(repoName), listener::onRemoveChatRoom);
     }
 
     public int startRemoveChatRoom(String repoName, edu.quinnipiac.ser210.githubchat.database.listeners.OnRemoveChatRoom listener, int channel) {
-        return ThreadWrapper.startThread(() -> removeChatRoom(repoName), listener::onRemoveChatRoom, channel);
+        return ThreadManager.startThread(() -> removeChatRoom(repoName), listener::onRemoveChatRoom, channel);
     }
 
     public int startRemoveChatRoom(ChatRoom chatRoom, edu.quinnipiac.ser210.githubchat.database.listeners.OnRemoveChatRoom listener, int channel) {
-        return ThreadWrapper.startThread(() -> removeChatRoom(chatRoom), listener::onRemoveChatRoom, channel);
+        return ThreadManager.startThread(() -> removeChatRoom(chatRoom), listener::onRemoveChatRoom, channel);
     }
 
     public int startUpdateChatRoom(ChatRoom chatRoom, OnUpdateChatRoom listener) {
-        return ThreadWrapper.startThread(() -> updateChatRoom(chatRoom), listener::onUpdateChatRoom);
+        return ThreadManager.startThread(() -> updateChatRoom(chatRoom), listener::onUpdateChatRoom);
     }
 
     public ChatRoom updateChatRoom(ChatRoom chatRoom) {
@@ -180,11 +180,11 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     }
 
     public int startUpdateChatRoom(ChatRoom chatRoom, OnUpdateChatRoom listener, int channel) {
-        return ThreadWrapper.startThread(() -> updateChatRoom(chatRoom), listener::onUpdateChatRoom, channel);
+        return ThreadManager.startThread(() -> updateChatRoom(chatRoom), listener::onUpdateChatRoom, channel);
     }
 
     public int startGetChatRoomList(OnFetchChatRoomList listener) {
-        return ThreadWrapper.startThread(this::getChatRoomList, listener::onFetchChatRoomList);
+        return ThreadManager.startThread(this::getChatRoomList, listener::onFetchChatRoomList);
     }
 
     public List<ChatRoom> getChatRoomList() {
@@ -204,11 +204,11 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     }
 
     public int startGetChatRoomList(OnFetchChatRoomList listener, int channel) {
-        return ThreadWrapper.startThread(this::getChatRoomList, listener::onFetchChatRoomList, channel);
+        return ThreadManager.startThread(this::getChatRoomList, listener::onFetchChatRoomList, channel);
     }
 
     public int startUpdateGithubCache(GithubCache githubCache, OnUpdateGithubCache listener) {
-        return ThreadWrapper.startThread(() -> updateGithubCache(githubCache), listener::onUpdateGithubCache);
+        return ThreadManager.startThread(() -> updateGithubCache(githubCache), listener::onUpdateGithubCache);
     }
 
     public GithubCache updateGithubCache(GithubCache githubCache) {
@@ -226,7 +226,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     }
 
     public int startUpdateGithubCache(GithubCache githubCache, OnUpdateGithubCache listener, int channel) {
-        return ThreadWrapper.startThread(() -> updateGithubCache(githubCache), listener::onUpdateGithubCache, channel);
+        return ThreadManager.startThread(() -> updateGithubCache(githubCache), listener::onUpdateGithubCache, channel);
     }
 
     interface DatabaseOperation {
