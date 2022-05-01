@@ -19,14 +19,27 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
+import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
+import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoom;
 import edu.quinnipiac.ser210.githubchat.firebase.dataobjects.Message;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
+import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepo;
+import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
+import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.ToolbarHolder;
 
 /**
  * @author Thomas Kwashnak
  */
-public class ChatFragment extends Fragment implements View.OnClickListener {
+public class ChatFragment extends Fragment implements View.OnClickListener, OnFetchChatRoom, OnFetchGithubRepo {
+
+    private int channelChatRoom;
+    private int channelGithubRepo;
+
+    private ChatRoom chatRoom;
+
+    private GithubRepo githubRepo;
 
     private MessageAdapter adapter;
 
@@ -40,15 +53,18 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         githubWrapper = GithubWrapper.from(context);
+        channelChatRoom = DatabaseWrapper.from(context).startGetChatRoom(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME),this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         String ref = requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME);
+
         for (char c : ".#$[]".toCharArray()) {
             ref = ref.replace(c, '_');
         }
+
 
         databaseReference = FirebaseDatabase.getInstance().getReference(ref);
 
@@ -96,6 +112,29 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             inputText.setText("");
 
             databaseReference.push().setValue(message);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        channelChatRoom = ThreadManager.NULL_CHANNEL;
+        channelGithubRepo = ThreadManager.NULL_CHANNEL;
+    }
+
+    @Override
+    public void onFetchChatRoom(ChatRoom chatRoom, int channel) {
+        if(channel == channelChatRoom) {
+            this.chatRoom = chatRoom;
+            channelGithubRepo = GithubWrapper.from(requireContext()).startFetchGithubRepo(chatRoom.getRepoName(),this);
+        }
+    }
+
+    @Override
+    public void onFetchGithubRepo(GithubRepo repo, int channel) {
+        if(channel == channelGithubRepo) {
+            this.githubRepo = repo;
+            ToolbarHolder.from(requireContext()).setTitle(repo.getName());
         }
     }
 }

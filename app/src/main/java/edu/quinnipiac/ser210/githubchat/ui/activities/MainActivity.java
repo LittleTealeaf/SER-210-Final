@@ -28,11 +28,13 @@ import edu.quinnipiac.ser210.githubchat.github.GithubHolder;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesHolder;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesWrapper;
+import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.ToolbarHolder;
 
 /**
  * @author Thomas Kwashnak
  */
-public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener, PreferencesHolder, GithubHolder, DatabaseHolder, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener, PreferencesHolder, GithubHolder, DatabaseHolder, NavigationView.OnNavigationItemSelectedListener,
+                                                               ToolbarHolder {
 
     private DrawerLayout drawerLayout;
     private NavController navController;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
 
 
+
         drawerLayout = findViewById(R.id.activity_main_layout);
         navigationView = findViewById(R.id.navigation_view);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(this);
 
+//        toolbar.setTitle("Github App");
 
         loginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onLoginActivityResult);
     }
@@ -143,5 +147,10 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
+    }
+
+    @Override
+    public Toolbar getToolbar() {
+        return toolbar;
     }
 }

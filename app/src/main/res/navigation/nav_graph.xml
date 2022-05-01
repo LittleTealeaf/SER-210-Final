@@ -8,8 +8,8 @@
     <fragment
             android:id="@+id/homeFragment"
             android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.HomeFragment"
-            android:label="fragment_home"
-            tools:layout="@layout/fragment_home" >
+            android:label="Github App"
+            tools:layout="@layout/fragment_home">
         <action
                 android:id="@+id/action_homeFragment_to_createChatFragment"
                 app:destination="@id/createChatFragment" />
@@ -23,8 +23,8 @@
     <fragment
             android:id="@+id/createChatFragment"
             android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.CreateChatFragment"
-            android:label="fragment_create_chat"
-            tools:layout="@layout/fragment_create_chat" >
+            android:label="Create Chat"
+            tools:layout="@layout/fragment_create_chat">
         <action
                 android:id="@+id/action_createChatFragment_to_chatFragment"
                 app:destination="@id/chatFragment"
@@ -34,7 +34,6 @@
     <fragment
             android:id="@+id/chatFragment"
             android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.ChatFragment"
-            android:label="fragment_chat"
             tools:layout="@layout/fragment_chat" />
     <fragment
             android:id="@+id/settingsFragment"

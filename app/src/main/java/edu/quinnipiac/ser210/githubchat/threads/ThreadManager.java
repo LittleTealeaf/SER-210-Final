@@ -10,10 +10,12 @@ public class ThreadManager {
 
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static final Handler handler = new Handler(Looper.getMainLooper());
-    private static int lastRegisteredChannel;
+    private static int channelRegistry;
+
+    public static final int NULL_CHANNEL = 0;
 
     static {
-        lastRegisteredChannel = Integer.MIN_VALUE;
+        channelRegistry = Integer.MIN_VALUE;
     }
 
     public static <T> int startThread(Task<T> function, Callback<T> notifier) {
@@ -44,7 +46,8 @@ public class ThreadManager {
         handler.post(runnable);
     }
 
-    public synchronized static int registerChannel() {
-        return lastRegisteredChannel++;
+    public synchronized static int registerChannel()
+    {
+        return (channelRegistry = channelRegistry + 1) == NULL_CHANNEL ? (channelRegistry = channelRegistry + 1) : channelRegistry;
     }
 }
