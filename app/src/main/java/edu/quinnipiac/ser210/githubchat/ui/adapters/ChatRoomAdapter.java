@@ -77,15 +77,15 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> im
 
     private void addFavorite(ChatRoom chatRoom) {
         if (!favorites.contains(chatRoom)) {
-            favorites.add(chatRoom);
-            notifyItemInserted(favorites.size() - 1);
+            favorites.add(0,chatRoom);
+            notifyItemInserted(0);
         }
     }
 
     private void addRoom(ChatRoom chatRoom) {
         if (!rooms.contains(chatRoom)) {
-            rooms.add(chatRoom);
-            notifyItemInserted(favorites.size() + rooms.size() - 1);
+            rooms.add(0,chatRoom);
+            notifyItemInserted(favorites.size());
         }
     }
 
