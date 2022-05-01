@@ -156,8 +156,8 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public List<GithubAttachable> fetchGithubAttachableList(String repoName) {
         List<GithubAttachable> attachableList = new LinkedList<>();
-        attachableList.addAll(fetchGithubIssues(repoName));
         attachableList.addAll(fetchGithubPulls(repoName));
+        attachableList.addAll(fetchGithubIssues(repoName));
         return attachableList;
     }
 
@@ -292,11 +292,11 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
     }
 
     public GithubAttachable fetchGithubAttachable(String repoName, int number) {
-        GithubIssue issue = fetchGithubIssue(repoName, number);
+        GithubPull issue = fetchGithubPull(repoName, number);
         if (issue != null) {
             return issue;
         } else {
-            return fetchGithubPull(repoName, number);
+            return fetchGithubIssue(repoName, number);
         }
     }
 

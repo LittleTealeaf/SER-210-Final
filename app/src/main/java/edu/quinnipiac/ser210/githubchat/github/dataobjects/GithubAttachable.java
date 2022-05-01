@@ -11,7 +11,7 @@ public interface GithubAttachable {
 
     String getURL();
 
-    boolean isClosed();
-
     GithubUser getGithubUser();
+
+    int getStatusDrawable();
 }
