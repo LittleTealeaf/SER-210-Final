@@ -12,11 +12,13 @@ public class GithubUser {
     private final String name;
     private final String email;
     private final String avatarUrl;
+    private final String url;
 
     public GithubUser(JSONObject object) throws JSONException {
         login = object.getString("login");
-        email = object.getString("email");
-        name = object.getString("name");
+        email = object.has("email") ? object.getString("email") : null;
+        name = object.has("name") ? object.getString("name") : null;
+        url = object.getString("html_url");
         avatarUrl = object.getString("avatar_url");
     }
 
@@ -34,5 +36,9 @@ public class GithubUser {
 
     public String getName() {
         return name;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

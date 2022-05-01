@@ -2,6 +2,7 @@ package edu.quinnipiac.ser210.githubchat.ui.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity
     private NavController navController;
     private NavigationView navigationView;
     private Toolbar toolbar;
+
+    private GithubUser githubUser;
 
     private FirebaseAuth firebaseAuth;
     private PreferencesWrapper preferencesWrapper;
@@ -184,6 +187,9 @@ public class MainActivity extends AppCompatActivity
                     .setNegativeButton("Cancel", (dialog, id) -> {})
                     .create()
                     .show();
+        } else if(item.getItemId() == R.id.menu_item_view_profile) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubUser.getUrl()));
+            startActivity(intent);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
@@ -197,6 +203,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFetchGithubUser(GithubUser githubUser, int channel) {
         if (channel == channelGithubUser) {
+            this.githubUser = githubUser;
             View header = navigationView.getHeaderView(navigationView.getHeaderCount() - 1);
             if (!githubUser.getName().equals("null")) {
                 ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getName());

@@ -84,7 +84,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         System.out.println("Fetching from url:" + url);
 
         GithubCache urlCache = databaseWrapper.getGithubCache(url);
-        if (urlCache != null && urlCache.getFetchTime() > Instant.now().getEpochSecond() - 24 * 60 * 60) {
+        if (urlCache != null && urlCache.getFetchTime() > Instant.now().getEpochSecond() - 5 * 60) {
             return urlCache.getContent();
         }
 
