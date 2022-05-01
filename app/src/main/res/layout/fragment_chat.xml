@@ -15,40 +15,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-
                 android:layout_gravity="bottom"
                 android:foregroundGravity="bottom"
                 android:id="@+id/frag_chat_recycler_messages" />
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:paddingHorizontal="10dp"
-
-                app:cardCornerRadius="5dp"
-
-
-                android:orientation="horizontal">
-
-            <EditText
-                    android:layout_width="0dp"
+                android:layout_margin="7dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:cardMaxElevation="4dp"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:layout_weight="1"
-                    android:maxLines="6"
-                    android:layout_gravity="bottom"
-                    android:ems="10"
-                    android:id="@+id/frag_chat_edittext_insert" />
+                    android:layout_margin="5dp"
+                    app:cardCornerRadius="5dp"
+                    android:orientation="horizontal">
 
-            <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/ic_baseline_send_24"
-                    android:enabled="false"
-                    android:layout_gravity="bottom"
-                    android:id="@+id/frag_chat_button_send" />
-        </LinearLayout>
+                <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:maxLines="6"
+                        android:scrollbarStyle="insideOverlay"
+                        android:ems="10"
+                        android:id="@+id/frag_chat_edittext_insert" />
+
+                <Button
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_baseline_send_24"
+                        android:enabled="false"
+                        android:id="@+id/frag_chat_button_send" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
 
