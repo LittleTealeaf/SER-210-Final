@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 
 public class ThreadManager {
 
+    @Deprecated
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static final Handler handler = new Handler(Looper.getMainLooper());
     private static int channelRegistry;
