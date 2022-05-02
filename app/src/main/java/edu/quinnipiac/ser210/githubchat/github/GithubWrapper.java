@@ -22,7 +22,7 @@ import javax.net.ssl.HttpsURLConnection;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHolder;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
-import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachment;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubIssue;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubPull;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
@@ -154,8 +154,8 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         return issues;
     }
 
-    public List<GithubAttachable> fetchGithubAttachableList(String repoName) {
-        List<GithubAttachable> attachableList = new LinkedList<>();
+    public List<GithubAttachment> fetchGithubAttachableList(String repoName) {
+        List<GithubAttachment> attachableList = new LinkedList<>();
         attachableList.addAll(fetchGithubPulls(repoName));
         attachableList.addAll(fetchGithubIssues(repoName));
         return attachableList;
@@ -291,7 +291,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         }
     }
 
-    public GithubAttachable fetchGithubAttachable(String repoName, int number) {
+    public GithubAttachment fetchGithubAttachable(String repoName, int number) {
         GithubPull issue = fetchGithubPull(repoName, number);
         if (issue != null) {
             return issue;

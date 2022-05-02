@@ -6,12 +6,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.quinnipiac.ser210.githubchat.R;
-import edu.quinnipiac.ser210.githubchat.util.JsonUtil;
 
 /**
  * @author Thomas Kwashnak
  */
-public class GithubPull implements GithubAttachable {
+public class GithubPull implements GithubAttachment {
 
     private final int number;
     private final String title;

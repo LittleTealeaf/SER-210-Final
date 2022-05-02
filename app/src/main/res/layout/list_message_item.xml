@@ -63,11 +63,16 @@
             </LinearLayout>
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginHorizontal="2dp"-->
+<!--                android:id="@+id/list_message_recyclerview_attachable" />-->
+        <ListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="2dp"
-                android:id="@+id/list_message_recyclerview_attachable" />
+            android:layout_marginHorizontal="2dp"
+            android:id="@+id/list_message_listview_attachments" />
     </LinearLayout>
 
 

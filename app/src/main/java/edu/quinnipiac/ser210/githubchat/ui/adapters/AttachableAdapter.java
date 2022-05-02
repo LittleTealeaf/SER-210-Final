@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.quinnipiac.ser210.githubchat.R;
-import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachment;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.AttachableViewHolder;
 
 @Deprecated
@@ -20,7 +20,7 @@ public class AttachableAdapter extends RecyclerView.Adapter<AttachableViewHolder
     private final Context context;
     private final LayoutInflater inflater;
 
-    private final List<GithubAttachable> attachableList = new LinkedList<>();
+    private final List<GithubAttachment> attachableList = new LinkedList<>();
 
     public AttachableAdapter(Context context) {
         this.context = context;
@@ -30,7 +30,7 @@ public class AttachableAdapter extends RecyclerView.Adapter<AttachableViewHolder
     @NonNull
     @Override
     public AttachableViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new AttachableViewHolder(this, inflater.inflate(R.layout.list_attachable_item, parent, false));
+        return new AttachableViewHolder(this, inflater.inflate(R.layout.list_attachment_item, parent, false));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class AttachableAdapter extends RecyclerView.Adapter<AttachableViewHolder
         notifyItemRangeRemoved(0, size);
     }
 
-    public void addAttachable(GithubAttachable attachable) {
+    public void addAttachable(GithubAttachment attachable) {
         for (int i = 0; i < attachableList.size(); i++) {
             if (attachable.getNumber() < attachableList.get(i).getNumber()) {
                 attachableList.add(i, attachable);

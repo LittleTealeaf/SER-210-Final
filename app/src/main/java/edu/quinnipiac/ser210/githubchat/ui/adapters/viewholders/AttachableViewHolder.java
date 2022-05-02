@@ -13,9 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.MessageFormat;
 
 import edu.quinnipiac.ser210.githubchat.R;
-import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachment;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.AttachableAdapter;
-import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
 import edu.quinnipiac.ser210.githubchat.ui.util.OnImageLoaded;
 
 @Deprecated
@@ -26,7 +25,7 @@ public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnI
     private final TextView numberView;
     private final TextView titleView;
     private int channelLoadImage;
-    private GithubAttachable githubAttachable;
+    private GithubAttachment githubAttachment;
 
     public AttachableViewHolder(AttachableAdapter adapter, @NonNull View itemView) {
         super(itemView);
@@ -34,13 +33,13 @@ public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnI
 
         itemView.setOnClickListener(this);
 
-        this.imageView = itemView.findViewById(R.id.list_attachable_imageview_icon);
-        numberView = itemView.findViewById(R.id.list_attachable_textview_number);
-        titleView = itemView.findViewById(R.id.list_attachable_textview_title);
+        this.imageView = itemView.findViewById(R.id.list_attachment_imageview_icon);
+        numberView = itemView.findViewById(R.id.list_attachment_textview_number);
+        titleView = itemView.findViewById(R.id.list_attachment_textview_title);
     }
 
-    public void bindAttachable(GithubAttachable attachable) {
-        this.githubAttachable = attachable;
+    public void bindAttachable(GithubAttachment attachable) {
+        this.githubAttachment = attachable;
         imageView.setVisibility(View.GONE);
         imageView.setVisibility(View.VISIBLE);
         imageView.setImageResource(attachable.getStatusDrawable());
@@ -59,8 +58,8 @@ public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnI
 
     @Override
     public void onClick(View view) {
-        if (githubAttachable != null) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubAttachable.getURL()));
+        if (githubAttachment != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubAttachment.getURL()));
             adapter.getContext().startActivity(intent);
         }
     }
