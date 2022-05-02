@@ -61,6 +61,12 @@ public class CreateChatFragment extends Fragment
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     public void onGithubRepoSelected(GithubRepo githubRepo) {
         confirmButton.setEnabled(true);
     }
