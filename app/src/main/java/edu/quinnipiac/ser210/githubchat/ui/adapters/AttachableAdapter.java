@@ -14,6 +14,7 @@ import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.AttachableViewHolder;
 
+@Deprecated
 public class AttachableAdapter extends RecyclerView.Adapter<AttachableViewHolder> {
 
     private final Context context;

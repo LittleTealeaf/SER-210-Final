@@ -18,6 +18,7 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.AttachableAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
 import edu.quinnipiac.ser210.githubchat.ui.util.OnImageLoaded;
 
+@Deprecated
 public class AttachableViewHolder extends RecyclerView.ViewHolder implements OnImageLoaded, View.OnClickListener {
 
     private final AttachableAdapter adapter;
