@@ -120,6 +120,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder
         }
     }
 
+    @Deprecated
     @Override
     public void onFetchGithubAttachable(GithubAttachment attachable, int channel) {
         if (channel == channelFetchAttachable && attachable != null) {
