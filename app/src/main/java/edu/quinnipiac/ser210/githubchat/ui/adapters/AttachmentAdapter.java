@@ -1,6 +1,8 @@
 package edu.quinnipiac.ser210.githubchat.ui.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +27,6 @@ public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements
     private int channelGithubAttachable;
 
     private final List<GithubAttachment> githubAttachments;
-    private final Context context;
 
     public AttachmentAdapter(Context context) {
         this(context, R.layout.list_attachment_item, new LinkedList<>());
@@ -34,7 +35,6 @@ public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements
     protected AttachmentAdapter(@NonNull Context context, int resource, @NonNull List<GithubAttachment> objects) {
         super(context, resource, objects);
         this.githubAttachments = objects;
-        this.context = context;
     }
 
     @NonNull
@@ -49,7 +49,7 @@ public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements
 
             viewHolder = new ViewHolder();
 
-            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_attachment_item,parent,false);
             viewHolder.iconView = convertView.findViewById(R.id.list_attachment_imageview_icon);
             viewHolder.numberView = convertView.findViewById(R.id.list_attachment_textview_number);
@@ -78,7 +78,7 @@ public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements
     }
 
     private void onAttachmentClicked(GithubAttachment attachment) {
-
+        getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(attachment.getURL())));
     }
 
     @Override
