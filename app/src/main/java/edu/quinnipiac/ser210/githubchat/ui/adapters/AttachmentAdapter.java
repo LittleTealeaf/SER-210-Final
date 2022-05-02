@@ -66,9 +66,6 @@ public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements
         viewHolder.numberView.setText(MessageFormat.format(" #{0}: ", attachment.getNumber()));
         viewHolder.titleView.setText(attachment.getTitle());
 
-
-
-
         return convertView;
 
     }
