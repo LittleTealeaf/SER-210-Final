@@ -70,11 +70,6 @@ public class GithubIssueTest {
     }
 
     @Test
-    public void isClosed() {
-        assertFalse(githubIssue.isClosed());
-    }
-
-    @Test
     public void getGithubUser() {
         assertEquals("LittleTealeaf", githubIssue.getGithubUser().getLogin());
     }

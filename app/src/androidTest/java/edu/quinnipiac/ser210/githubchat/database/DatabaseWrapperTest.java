@@ -2,8 +2,10 @@ package edu.quinnipiac.ser210.githubchat.database;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -21,11 +23,13 @@ import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
 public class DatabaseWrapperTest {
 
     DatabaseWrapper databaseWrapper;
+    String repoName;
 
     @Before
     public void setUp() throws Exception {
         getApplicationContext().deleteDatabase("GithubChatDatabase");
         databaseWrapper = new DatabaseWrapper(getApplicationContext());
+        repoName = "LittleTealeaf/SER-210";
     }
 
     @After
@@ -35,29 +39,41 @@ public class DatabaseWrapperTest {
 
     @Test
     public void getChatRoom() {
+        assertNull(databaseWrapper.getChatRoom(repoName));
+
         ChatRoom chatRoom = new ChatRoom();
-        chatRoom.setRepoName("LittleTealeaf/SER-210-Final");
+        chatRoom.setRepoName(repoName);
+        chatRoom.setFavorite(true);
         databaseWrapper.updateChatRoom(chatRoom);
-        ChatRoom fetched = databaseWrapper.getChatRoom("LittleTealeaf/SER-210-Final");
-        assertEquals(chatRoom.getRepoName(), fetched.getRepoName());
+
+        ChatRoom chatRoom1 = databaseWrapper.getChatRoom(repoName);
+        assertEquals(repoName,chatRoom1.getRepoName());
+        assertTrue(chatRoom1.isFavorite());
     }
 
     @Test
-    public void getChatRooms() {
-        String[] strings = new String[]{"a", "b", "c", "d", "e"};
-        for (String name : strings) {
-            databaseWrapper.updateChatRoom(new ChatRoom(name, false));
-        }
-        List<ChatRoom> chatRoomList = databaseWrapper.getChatRoomList();
-        assertEquals(strings.length, chatRoomList.size());
+    public void removeChatRoom() {
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoom.setRepoName(repoName);
+        chatRoom.setFavorite(true);
+        databaseWrapper.updateChatRoom(chatRoom);
+        databaseWrapper.removeChatRoom(chatRoom);
+        assertNull(databaseWrapper.getChatRoom(repoName));
+        databaseWrapper.updateChatRoom(chatRoom);
+        databaseWrapper.removeChatRoom(repoName);
+        assertNull(databaseWrapper.getChatRoom(repoName));
     }
 
     @Test
-    public void getGithubCache() {
-        assertNull(databaseWrapper.getGithubCache("test"));
-        GithubCache githubCache = new GithubCache();
-        githubCache.setUrl("test");
-        databaseWrapper.updateGithubCache(githubCache);
-        assertNotNull(databaseWrapper.getGithubCache("test"));
+    public void updateChatRoom() {
+        ChatRoom chatRoom = new ChatRoom();
+        chatRoom.setRepoName(repoName);
+        chatRoom.setFavorite(false);
+        databaseWrapper.updateChatRoom(chatRoom);
+        assertFalse(databaseWrapper.getChatRoom(repoName).isFavorite());
+        chatRoom.setFavorite(true);
+        databaseWrapper.updateChatRoom(chatRoom);
+        assertTrue(databaseWrapper.getChatRoom(repoName).isFavorite());
     }
+
 }
