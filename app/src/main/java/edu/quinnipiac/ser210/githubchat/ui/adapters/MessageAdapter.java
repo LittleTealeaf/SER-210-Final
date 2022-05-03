@@ -71,17 +71,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
         notifyItemRangeRemoved(0, count);
     }
 
-    @Deprecated
-    public void setInitialData(DataSnapshot snapshot) {
-        int count = messages.size();
-        messages.clear();
-        notifyItemRangeRemoved(0, count);
-        for (DataSnapshot child : snapshot.getChildren()) {
-            messages.add(child.getValue(Message.class));
-            notifyItemInserted(messages.size() - 1);
-        }
-    }
-
     @Override
     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         messages.add(snapshot.getValue(Message.class));
