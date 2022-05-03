@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">GithubChat</string>
-    <string name="activity_login_text_button_login">Login with Github</string>
+    <string name="app_name">GitHub Chat App</string>
+    <string name="activity_login_text_button_login_old">Login with Github</string>
     <string name="title_activity_main">Github Chat</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -13,6 +13,8 @@
     <string name="share">Share</string>
     <string name="scroll_down">Scroll Down</string>
     <string name="enter_repo_empty">Enter Repo:</string>
+    <string name="login_author">Created for SER-210 by Thomas Kwashnak</string>
+    <string name="login_button_sign_in">Sign in with Github</string>
     <!--    &lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
     <!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
     <!--    <string name="login_github">Login with Github</string>-->

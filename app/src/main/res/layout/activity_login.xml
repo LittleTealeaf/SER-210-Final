@@ -7,11 +7,50 @@
         android:layout_height="match_parent"
         tools:context=".ui.activities.LoginActivity">
 
-    <Button
+
+    <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-        android:id="@+id/activity_login_button_login"
-            android:text="@string/activity_login_text_button_login"
+            android:textSize="70sp"
+            android:layout_marginTop="30dp"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:fontFamily="serif-monospace"
+            android:text="@string/app_name" />
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:fontFamily="serif-monospace"
+            android:paddingVertical="10dp"
+            android:text="@string/login_author" />
+    <Space
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+
+            />
+    <Button
+            android:id="@+id/activity_login_button_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#2ea043"
+            android:text="@string/login_button_sign_in"
+            android:drawableLeft="@drawable/ic_mark_github_16"
+            android:drawableTint="@color/white"
+            android:shadowRadius="@integer/material_motion_duration_medium_2"
+            android:textSize="15sp" />
+    <Space
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+
             />
 
 
