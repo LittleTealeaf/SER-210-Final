@@ -17,12 +17,11 @@ import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.ChatRoomAdapter;
-import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnChatRoomSelected;
 
 /**
  * @author Thomas Kwashnak
  */
-public class HomeFragment extends Fragment implements View.OnClickListener, OnChatRoomSelected {
+public class HomeFragment extends Fragment implements View.OnClickListener, ChatRoomAdapter.OnChatRoomSelected {
 
     private ChatRoomAdapter adapter;
 

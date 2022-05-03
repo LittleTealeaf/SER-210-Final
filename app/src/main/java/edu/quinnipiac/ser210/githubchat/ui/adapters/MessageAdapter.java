@@ -63,7 +63,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
     @Override
     public void onViewDetachedFromWindow(@NonNull MessageViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
-
     }
 
     public void clearEntries() {
@@ -121,7 +120,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
     }
 
     public void updateTimes() {
-        for(MessageViewHolder holder : holders) {
+        for (MessageViewHolder holder : holders) {
             holder.updateTime();
         }
     }

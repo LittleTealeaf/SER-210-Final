@@ -5,8 +5,6 @@ import static edu.quinnipiac.ser210.githubchat.util.JsonUtil.tryGetString;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.quinnipiac.ser210.githubchat.util.JsonUtil;
-
 /**
  * @author Thomas Kwashnak
  */
@@ -24,7 +22,6 @@ public class GithubUser {
         name = tryGetString(object, "name");
         url = object.getString("html_url");
         avatarUrl = object.getString("avatar_url");
-
     }
 
     public String getLogin() {

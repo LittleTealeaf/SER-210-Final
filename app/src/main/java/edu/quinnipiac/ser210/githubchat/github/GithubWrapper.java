@@ -27,14 +27,6 @@ import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubIssue;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubPull;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubAttachable;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubAttachbleList;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubIssue;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubPull;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubPulls;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepo;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepoList;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubUser;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 
 /**
@@ -75,8 +67,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public GithubUser fetchGithubUser(String username) {
         try {
-            return new GithubUser(new JSONObject(
-                    Objects.requireNonNull(fetchURL(username == null ? "https://api.github.com/user" : "https://api.github.com/users/" + username))));
+            return new GithubUser(new JSONObject(Objects.requireNonNull(fetchURL(username == null ? "https://api.github.com/user" : "https://api.github.com/users/" + username))));
         } catch (Exception e) {
             return null;
         }
@@ -228,8 +219,8 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         return ThreadManager.startThread(() -> fetchGithubRepoList(username), listener::onFetchGithubRepoList, channel);
     }
 
-    public int startFetchGithubPulls(String repoName, OnFetchGithubPulls listener) {
-        return ThreadManager.startThread(() -> fetchGithubPulls(repoName), listener::onFetchGithubPulls);
+    public int startFetchGithubPulls(String repoName, OnFetchGithubPullList listener) {
+        return ThreadManager.startThread(() -> fetchGithubPulls(repoName), listener::onFetchGithubPullList);
     }
 
     public List<GithubPull> fetchGithubPulls(String repoName) {
@@ -246,16 +237,16 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         return pulls;
     }
 
-    public int startFetchGithubPulls(String repoName, OnFetchGithubPulls listener, int channel) {
-        return ThreadManager.startThread(() -> fetchGithubPulls(repoName), listener::onFetchGithubPulls, channel);
+    public int startFetchGithubPulls(String repoName, OnFetchGithubPullList listener, int channel) {
+        return ThreadManager.startThread(() -> fetchGithubPulls(repoName), listener::onFetchGithubPullList, channel);
     }
 
-    public int startFetchGithubAttachableList(String repoName, OnFetchGithubAttachbleList listener) {
-        return ThreadManager.startThread(() -> fetchGithubAttachableList(repoName), listener::onFetchMessageAttachableList);
+    public int startFetchGithubAttachableList(String repoName, OnFetchGithubAttachmentList listener) {
+        return ThreadManager.startThread(() -> fetchGithubAttachableList(repoName), listener::onFetchGithubAttachmentList);
     }
 
-    public int startFetchGithubAttachableList(String repoName, OnFetchGithubAttachbleList listener, int channel) {
-        return ThreadManager.startThread(() -> fetchGithubAttachableList(repoName), listener::onFetchMessageAttachableList, channel);
+    public int startFetchGithubAttachableList(String repoName, OnFetchGithubAttachmentList listener, int channel) {
+        return ThreadManager.startThread(() -> fetchGithubAttachableList(repoName), listener::onFetchGithubAttachmentList, channel);
     }
 
     public int startFetchGithubPull(String repoName, int number, OnFetchGithubPull listener) {
@@ -284,8 +275,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public GithubIssue fetchGithubIssue(String repoName, int number) {
         try {
-            return new GithubIssue(
-                    new JSONObject(Objects.requireNonNull(fetchURL("https://api.github.com/repos/" + repoName + "/issues/" + number))));
+            return new GithubIssue(new JSONObject(Objects.requireNonNull(fetchURL("https://api.github.com/repos/" + repoName + "/issues/" + number))));
         } catch (Exception e) {
             return null;
         }
@@ -300,11 +290,56 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         }
     }
 
-    public int startFetchGithubAttachable(String repoName, int number, OnFetchGithubAttachable listener) {
-        return ThreadManager.startThread(() -> fetchGithubAttachable(repoName, number), listener::onFetchGithubAttachable);
+    public int startFetchGithubAttachable(String repoName, int number, OnFetchGithubAttachment listener) {
+        return ThreadManager.startThread(() -> fetchGithubAttachable(repoName, number), listener::onFetchGithubAttachment);
     }
 
-    public int startFetchGithubAttachable(String repoName, int number, OnFetchGithubAttachable listener, int channel) {
-        return ThreadManager.startThread(() -> fetchGithubAttachable(repoName, number), listener::onFetchGithubAttachable, channel);
+    public int startFetchGithubAttachable(String repoName, int number, OnFetchGithubAttachment listener, int channel) {
+        return ThreadManager.startThread(() -> fetchGithubAttachable(repoName, number), listener::onFetchGithubAttachment, channel);
+    }
+
+    public interface OnFetchGithubAttachment {
+
+        void onFetchGithubAttachment(GithubAttachment githubAttachment, int channel);
+    }
+
+    public interface OnFetchGithubAttachmentList {
+
+        void onFetchGithubAttachmentList(List<GithubAttachment> attachments, int channel);
+    }
+
+    public interface OnFetchGithubIssue {
+
+        void onFetchGithubIssue(GithubIssue issue, int channel);
+    }
+
+    public interface OnFetchGithubIssueList {
+
+        void onFetchGithubIssueList(List<GithubIssue> issues, int channel);
+    }
+
+    public interface OnFetchGithubPull {
+
+        void onFetchGithubPull(GithubPull pull, int channel);
+    }
+
+    public interface OnFetchGithubPullList {
+
+        void onFetchGithubPullList(List<GithubPull> pulls, int channel);
+    }
+
+    public interface OnFetchGithubRepo {
+
+        void onFetchGithubRepo(GithubRepo repo, int channel);
+    }
+
+    public interface OnFetchGithubRepoList {
+
+        void onFetchGithubRepoList(List<GithubRepo> repos, int channel);
+    }
+
+    public interface OnFetchGithubUser {
+
+        void onFetchGithubUser(GithubUser user, int channel);
     }
 }

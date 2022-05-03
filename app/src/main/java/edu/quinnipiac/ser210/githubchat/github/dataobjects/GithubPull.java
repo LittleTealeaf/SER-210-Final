@@ -22,12 +22,12 @@ public class GithubPull implements GithubAttachment {
 
     public GithubPull(JSONObject jsonObject) throws JSONException {
         number = jsonObject.getInt("number");
-        title = tryOrDefault(() -> jsonObject.getString("title"),"");
+        title = tryOrDefault(() -> jsonObject.getString("title"), "");
         url = jsonObject.getString("html_url");
-        state = tryOrDefault(() -> jsonObject.getString("state"),"open");
+        state = tryOrDefault(() -> jsonObject.getString("state"), "open");
         isMerged = jsonObject.getBoolean("merged");
         isDraft = jsonObject.getBoolean("draft");
-        githubUser = tryOrDefault(() -> new GithubUser(jsonObject.getJSONObject("user")),null);
+        githubUser = tryOrDefault(() -> new GithubUser(jsonObject.getJSONObject("user")), null);
     }
 
     @Override
@@ -45,7 +45,6 @@ public class GithubPull implements GithubAttachment {
         return url;
     }
 
-
     @Override
     public GithubUser getGithubUser() {
         return githubUser;
@@ -53,14 +52,14 @@ public class GithubPull implements GithubAttachment {
 
     @Override
     public int getStatusDrawable() {
-        if(state.equals("open")) {
-            if(isDraft) {
+        if (state.equals("open")) {
+            if (isDraft) {
                 return R.drawable.ic_git_pull_request_draft_24;
             } else {
                 return R.drawable.ic_git_pull_request_24;
             }
         } else {
-            if(isMerged) {
+            if (isMerged) {
                 return R.drawable.ic_git_merge_24;
             } else {
                 return R.drawable.ic_git_pull_request_closed_24;

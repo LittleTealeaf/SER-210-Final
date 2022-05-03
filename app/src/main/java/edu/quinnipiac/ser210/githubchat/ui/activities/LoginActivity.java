@@ -54,9 +54,6 @@ public class LoginActivity extends AppCompatActivity implements OnSuccessListene
 
     @Override
     public void onClick(View view) {
-        FirebaseAuth
-                .getInstance()
-                .startActivityForSignInWithProvider(this, OAuthProvider.newBuilder(GithubAuthProvider.PROVIDER_ID).build())
-                .addOnSuccessListener(this);
+        FirebaseAuth.getInstance().startActivityForSignInWithProvider(this, OAuthProvider.newBuilder(GithubAuthProvider.PROVIDER_ID).build()).addOnSuccessListener(this);
     }
 }

@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
-import edu.quinnipiac.ser210.githubchat.database.listeners.OnUpdateChatRoom;
-import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnChatRoomSelected;
+import edu.quinnipiac.ser210.githubchat.ui.adapters.ChatRoomAdapter;
 
 /**
  * @author Thomas Kwashnak
@@ -21,15 +20,17 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnChatRoomSelecte
 public class ChatRoomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private final Context context;
-    private final IListener listener;
+    private final ChatRoomAdapter adapter;
+    @Deprecated
+    private final IListener listener = null;
     private final TextView textView;
     private final Button favoriteButton;
     private ChatRoom chatRoom;
 
-    public ChatRoomViewHolder(Context context, IListener listener, @NonNull View itemView) {
+    public ChatRoomViewHolder(Context context, ChatRoomAdapter adapter, @NonNull View itemView) {
         super(itemView);
         this.context = context;
-        this.listener = listener;
+        this.adapter = adapter;
 
         itemView.setOnClickListener(this);
 
@@ -45,12 +46,10 @@ public class ChatRoomViewHolder extends RecyclerView.ViewHolder implements View.
             if (chatRoom.isFavorite()) {
                 favoriteButton.setBackground(ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_24, context.getTheme()));
             } else {
-                favoriteButton.setBackground(
-                        ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_border_24, context.getTheme()));
+                favoriteButton.setBackground(ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_border_24, context.getTheme()));
             }
         } else {
-            favoriteButton.setBackground(
-                    ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_border_24, context.getTheme()));
+            favoriteButton.setBackground(ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_border_24, context.getTheme()));
         }
     }
 
@@ -58,11 +57,18 @@ public class ChatRoomViewHolder extends RecyclerView.ViewHolder implements View.
     public void onClick(View view) {
         if (view.getId() == R.id.list_chat_room_button_favorite) {
             chatRoom.setFavorite(!chatRoom.isFavorite());
-            DatabaseWrapper.from(context).startUpdateChatRoom(chatRoom, listener);
+            DatabaseWrapper.from(context).startUpdateChatRoom(chatRoom, adapter);
         } else {
-            listener.onChatRoomSelected(chatRoom);
+            adapter.selectChatRoom(chatRoom);
         }
     }
 
-    public interface IListener extends OnChatRoomSelected, OnUpdateChatRoom {}
+    @Deprecated
+    public interface OnChatRoomSelected extends ChatRoomAdapter.OnChatRoomSelected {
+
+        void onChatRoomSelected(ChatRoom chatRoom);
+    }
+
+    @Deprecated
+    public interface IListener extends OnChatRoomSelected, DatabaseWrapper.OnUpdateChatRoom {}
 }
