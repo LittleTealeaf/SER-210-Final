@@ -42,10 +42,8 @@ import edu.quinnipiac.ser210.githubchat.ui.interfaces.ToolbarHolder;
 /**
  * @author Thomas Kwashnak
  */
-public class ChatFragment extends Fragment implements View.OnClickListener, OnFetchChatRoom, OnFetchGithubRepo, TextWatcher {
+public class ChatFragment extends Fragment implements View.OnClickListener, DatabaseWrapper.OnFetchChatRoom, OnFetchGithubRepo, TextWatcher {
 
-
-    private final List<GithubAttachment> attachableList = new ArrayList<>();
     private int channelChatRoom;
     private int channelGithubRepo;
     private ChatRoom chatRoom;

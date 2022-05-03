@@ -82,7 +82,7 @@ public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements
     }
 
     @Override
-    public synchronized void onFetchGithubAttachable(GithubAttachment attachable, int channel) {
+    public synchronized void onFetchGithubAttachment(GithubAttachment attachable, int channel) {
         if(channel == channelGithubAttachable) {
             githubAttachments.add(attachable);
             notifyDataSetChanged();

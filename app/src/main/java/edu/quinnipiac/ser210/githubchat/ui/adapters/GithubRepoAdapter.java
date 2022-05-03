@@ -26,7 +26,7 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.GithubRepoViewHo
  * @author Thomas Kwashnak
  */
 public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder>
-        implements OnFetchGithubRepoList, OnGithubRepoSelected, OnFetchChatRoomList {
+        implements OnFetchGithubRepoList, OnGithubRepoSelected, DatabaseWrapper.OnFetchChatRoomList {
 
     @Deprecated
     private final int CHANNEL_FETCH = 1;

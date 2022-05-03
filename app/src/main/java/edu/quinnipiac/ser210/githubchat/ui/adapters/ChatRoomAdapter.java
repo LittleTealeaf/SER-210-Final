@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.quinnipiac.ser210.githubchat.R;
+import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoomList;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnUpdateChatRoom;
@@ -21,7 +22,7 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.ChatRoomViewHold
  * @author Thomas Kwashnak
  */
 public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder>
-        implements OnFetchChatRoomList, OnUpdateChatRoom, ChatRoomViewHolder.IListener {
+        implements OnFetchChatRoomList, ChatRoomViewHolder.IListener, DatabaseWrapper.OnFetchChatRoomList {
 
     private final Context context;
     private final OnChatRoomSelected listener;

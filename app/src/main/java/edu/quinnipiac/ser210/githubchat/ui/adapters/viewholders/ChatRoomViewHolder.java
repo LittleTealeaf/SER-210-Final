@@ -64,5 +64,5 @@ public class ChatRoomViewHolder extends RecyclerView.ViewHolder implements View.
         }
     }
 
-    public interface IListener extends OnChatRoomSelected, OnUpdateChatRoom {}
+    public interface IListener extends OnChatRoomSelected, DatabaseWrapper.OnUpdateChatRoom {}
 }

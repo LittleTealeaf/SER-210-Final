@@ -27,7 +27,7 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnGithubRepoSelec
  * @author Thomas Kwashnak
  */
 public class CreateChatFragment extends Fragment
-        implements OnGithubRepoSelected, SearchView.OnQueryTextListener, View.OnClickListener, OnUpdateChatRoom {
+        implements OnGithubRepoSelected, SearchView.OnQueryTextListener, View.OnClickListener, DatabaseWrapper.OnUpdateChatRoom {
 
     private GithubRepoAdapter adapter;
 
