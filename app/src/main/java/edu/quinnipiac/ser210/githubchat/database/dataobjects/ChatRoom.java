@@ -38,7 +38,7 @@ public class ChatRoom {
      * @param repoName The repository name as on Github. Must be in the format "owner/name", such as "LittleTealeaf/SER-210-Final"
      */
     public void setRepoName(String repoName) {
-        assert repoName.contains(",");
+        assert repoName.contains("/");
         this.repoName = repoName;
     }
 

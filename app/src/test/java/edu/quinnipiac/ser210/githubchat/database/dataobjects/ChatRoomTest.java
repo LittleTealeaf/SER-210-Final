@@ -21,15 +21,15 @@ public class ChatRoomTest {
 
     @Test
     public void getRepoName() {
-        chatRoom.setRepoName("Testing");
-        assertEquals("Testing",chatRoom.getRepoName());
+        chatRoom.setRepoName("Testing/Testing");
+        assertEquals("Testing/Testing",chatRoom.getRepoName());
     }
 
     @Test
     public void setRepoName() {
         assertNull(chatRoom.getRepoName());
-        chatRoom.setRepoName("test");
-        assertEquals("test",chatRoom.getRepoName());
+        chatRoom.setRepoName("Testing/Testing");
+        assertEquals("Testing/Testing",chatRoom.getRepoName());
     }
 
     @Test
