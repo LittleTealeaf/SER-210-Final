@@ -103,7 +103,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
 
         inputText = view.findViewById(R.id.frag_chat_edittext_insert);
         inputText.addTextChangedListener(this);
+
 //        inputText.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
+
 
         sendButton = view.findViewById(R.id.frag_chat_button_send);
         sendButton.setOnClickListener(this);

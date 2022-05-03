@@ -35,7 +35,8 @@
                     android:visibility="invisible"
                     android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
 
-                    android:id="@+id/frag_chat_fab_scroll"/>
+                    android:id="@+id/frag_chat_fab_scroll"
+                    android:contentDescription="@string/scroll_down" />
         </FrameLayout>
 
         <com.google.android.material.card.MaterialCardView
