@@ -10,8 +10,8 @@ import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 
 public class ImageLoader {
 
-    public static int loadImage(String url, OnImageLoaded listener) {
-        return ThreadManager.startThread(() -> loadBitmap(url), listener::onImageLoaded);
+    public static int loadImage(String url, OnLoadBitmap listener) {
+        return ThreadManager.startThread(() -> loadBitmap(url), listener::onLoadBitmap);
     }
 
     public static Bitmap loadBitmap(String url) {
@@ -28,7 +28,11 @@ public class ImageLoader {
         return bitmap;
     }
 
-    public static int loadImage(String url, OnImageLoaded listener, int channel) {
-        return ThreadManager.startThread(() -> loadBitmap(url), listener::onImageLoaded, channel);
+    public static int loadImage(String url, OnLoadBitmap listener, int channel) {
+        return ThreadManager.startThread(() -> loadBitmap(url), listener::onLoadBitmap, channel);
+    }
+
+    public interface OnLoadBitmap {
+        void onLoadBitmap(Bitmap bitmap, int channel);
     }
 }

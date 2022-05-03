@@ -42,7 +42,7 @@ import edu.quinnipiac.ser210.githubchat.ui.interfaces.ToolbarHolder;
 /**
  * @author Thomas Kwashnak
  */
-public class ChatFragment extends Fragment implements View.OnClickListener, DatabaseWrapper.OnFetchChatRoom, OnFetchGithubRepo, TextWatcher {
+public class ChatFragment extends Fragment implements View.OnClickListener, DatabaseWrapper.OnFetchChatRoom, GithubWrapper.OnFetchGithubRepo, TextWatcher {
 
     private int channelChatRoom;
     private int channelGithubRepo;

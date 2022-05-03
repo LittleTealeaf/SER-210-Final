@@ -3,7 +3,7 @@ package edu.quinnipiac.ser210.githubchat.ui.util;
 import android.graphics.Bitmap;
 
 @Deprecated
-public interface OnImageLoaded {
+public interface OnImageLoaded extends ImageLoader.OnLoadBitmap {
 
-    void onImageLoaded(Bitmap bitmap, int channel);
+    void onLoadBitmap(Bitmap bitmap, int channel);
 }

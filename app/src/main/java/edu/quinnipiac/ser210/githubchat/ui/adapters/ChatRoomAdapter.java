@@ -22,7 +22,7 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.ChatRoomViewHold
  * @author Thomas Kwashnak
  */
 public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder>
-        implements OnFetchChatRoomList, ChatRoomViewHolder.IListener, DatabaseWrapper.OnFetchChatRoomList {
+        implements DatabaseWrapper.OnFetchChatRoomList, DatabaseWrapper.OnUpdateChatRoom {
 
     private final Context context;
     private final OnChatRoomSelected listener;
@@ -117,8 +117,11 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder>
         }
     }
 
-    @Override
-    public void onChatRoomSelected(ChatRoom chatRoom) {
+    public void selectChatRoom(ChatRoom chatRoom) {
         listener.onChatRoomSelected(chatRoom);
+    }
+
+    public interface OnChatRoomSelected {
+        void onChatRoomSelected(ChatRoom chatRoom);
     }
 }

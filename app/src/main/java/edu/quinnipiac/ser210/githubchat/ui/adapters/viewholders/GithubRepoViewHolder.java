@@ -10,12 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.GithubRepoAdapter;
-import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.OnGithubRepoSelected;
 
 /**
  * @author Thomas Kwashnak
  */
-public class GithubRepoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, OnGithubRepoSelected {
+public class GithubRepoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private final GithubRepoAdapter adapter;
     private final TextView textView;
@@ -46,11 +45,15 @@ public class GithubRepoViewHolder extends RecyclerView.ViewHolder implements Vie
 
     @Override
     public void onClick(View view) {
-        adapter.onGithubRepoSelected(githubRepo);
+        adapter.selectGithubRepo(githubRepo);
     }
 
-    @Override
-    public void onGithubRepoSelected(GithubRepo githubRepo) {
+    public void updateSelectedGithubRepo(GithubRepo githubRepo) {
         textView.setTypeface(null, githubRepo == this.githubRepo ? Typeface.BOLD : Typeface.NORMAL);
+    }
+
+    @Deprecated
+    public interface oldOnGithubRepoSelected extends  GithubRepoAdapter.OnGithubRepoSelected {
+        void onGithubRepoSelected(GithubRepo githubRepo);
     }
 }

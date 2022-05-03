@@ -18,11 +18,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.quinnipiac.ser210.githubchat.R;
+import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachment;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubAttachable;
 import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
 
-public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements OnFetchGithubAttachable {
+public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements GithubWrapper.OnFetchGithubAttachment {
 
     private int channelGithubAttachable;
 

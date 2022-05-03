@@ -48,7 +48,7 @@ import edu.quinnipiac.ser210.githubchat.ui.util.OnImageLoaded;
  */
 public class MainActivity extends AppCompatActivity
         implements FirebaseAuth.AuthStateListener, PreferencesHolder, GithubHolder, DatabaseHolder, NavigationView.OnNavigationItemSelectedListener,
-                   ToolbarHolder, OnFetchGithubUser, OnImageLoaded {
+                   ToolbarHolder, GithubWrapper.OnFetchGithubUser, ImageLoader.OnLoadBitmap {
 
     private int channelGithubUser, channelUserAvatar;
 
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onImageLoaded(Bitmap bitmap, int channel) {
+    public void onLoadBitmap(Bitmap bitmap, int channel) {
         if (channel == channelUserAvatar) {
             (
                     (ImageView) navigationView.getHeaderView(navigationView.getHeaderCount() - 1).findViewById(R.id.drawer_header_imageview_account)
