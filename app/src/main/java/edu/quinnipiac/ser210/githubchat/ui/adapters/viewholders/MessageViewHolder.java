@@ -34,6 +34,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements OnFetc
     private final TextView timeView;
     private final ImageView avatarView;
     private final AttachmentAdapter attachmentAdapter;
+    private final ListView attachmentListView;
 
     private int channelFetchUser, channelLoadImage;
 
@@ -47,7 +48,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements OnFetc
         messageView = itemView.findViewById(R.id.list_message_text_message);
         avatarView = itemView.findViewById(R.id.list_message_imageview_avatar);
         timeView = itemView.findViewById(R.id.list_message_text_time);
-        ListView attachmentListView = itemView.findViewById(R.id.list_message_listview_attachments);
+        attachmentListView = itemView.findViewById(R.id.list_message_listview_attachments);
         attachmentAdapter = new AttachmentAdapter(messageAdapter.getContext());
         attachmentListView.setAdapter(attachmentAdapter);
 
@@ -60,6 +61,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements OnFetc
         userView.setText(message.getSender());
         messageView.setText(message.getMessage());
         avatarView.setVisibility(View.INVISIBLE);
+        attachmentListView.setVisibility(View.GONE);
 
         channelFetchUser = GithubWrapper.from(adapter.getContext()).startFetchGithubUser(message.getSender(), this);
 
@@ -72,6 +74,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements OnFetc
         Matcher matcher = Pattern.compile("(#[0-9]*)\\w+").matcher(message.getMessage());
         GithubWrapper githubWrapper = GithubWrapper.from(adapter.getContext());
         while (matcher.find()) {
+            attachmentListView.setVisibility(View.VISIBLE);
             int number = Integer.parseInt(matcher.group().substring(1));
             githubWrapper.startFetchGithubAttachable(adapter.getRepoName(), number, attachmentAdapter, channel);
         }
