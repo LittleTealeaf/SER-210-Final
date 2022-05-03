@@ -51,7 +51,6 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements OnFetc
         attachmentListView = itemView.findViewById(R.id.list_message_listview_attachments);
         attachmentAdapter = new AttachmentAdapter(messageAdapter.getContext());
         attachmentListView.setAdapter(attachmentAdapter);
-
         avatarView.setOnClickListener(this);
     }
 

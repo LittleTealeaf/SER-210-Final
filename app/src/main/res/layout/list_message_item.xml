@@ -62,11 +62,12 @@
                         android:id="@+id/list_message_text_message" />
             </LinearLayout>
         </LinearLayout>
-        <ListView
+
+        <edu.quinnipiac.ser210.githubchat.ui.components.DynamicListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-            android:layout_marginHorizontal="2dp"
-            android:id="@+id/list_message_listview_attachments" />
+                android:layout_marginHorizontal="2dp"
+                android:id="@+id/list_message_listview_attachments" />
     </LinearLayout>
 
 
