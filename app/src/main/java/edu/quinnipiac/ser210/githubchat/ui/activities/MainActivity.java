@@ -39,9 +39,13 @@ import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesHolder;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesWrapper;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
+import edu.quinnipiac.ser210.githubchat.ui.fragments.ChatFragment;
+import edu.quinnipiac.ser210.githubchat.ui.fragments.ChatInfoFragment;
+import edu.quinnipiac.ser210.githubchat.ui.fragments.CreateChatFragment;
+import edu.quinnipiac.ser210.githubchat.ui.fragments.HomeFragment;
 import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarAction;
-import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
 import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarHolder;
+import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
 import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
 
 /**
@@ -60,7 +64,6 @@ public class MainActivity extends AppCompatActivity
 
     private GithubUser githubUser;
 
-
     private FirebaseAuth firebaseAuth;
     private PreferencesWrapper preferencesWrapper;
     private DatabaseWrapper databaseWrapper;
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-                firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         setContentView(R.layout.activity_main);
 
@@ -147,6 +150,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        Fragment fragment = getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().getFragments().get(0);
+
+        if (item.getItemId() == R.id.menu_toolbar_share) {
+            ((ToolbarAction.Share) fragment).onShare();
+        } else if (item.getItemId() == R.id.menu_toolbar_info) {
+            ((ToolbarAction.Info) fragment).onInfo();
+        } else if (item.getItemId() == R.id.menu_toolbar_github) {
+            ((ToolbarAction.Github) fragment).onGithub();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -190,6 +209,17 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra(Intent.EXTRA_TEXT, "Look at this cool app! https://github.com/LittleTealeaf/SER-210-Final");
             intent.setType("text/plain");
             startActivity(Intent.createChooser(intent, null));
+        } else if (item.getItemId() == R.id.menu_drawer_info) {
+            Fragment fragment = getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().getFragments().get(0);
+            if(fragment instanceof HomeFragment) {
+                navController.navigate(R.id.action_homeFragment_to_settingsFragment);
+            } else if(fragment instanceof ChatFragment) {
+                navController.navigate(R.id.action_chatFragment_to_settingsFragment);
+            } else if(fragment instanceof ChatInfoFragment) {
+                navController.navigate(R.id.action_chatInfoFragment_to_settingsFragment);
+            } else if(fragment instanceof CreateChatFragment) {
+                navController.navigate(R.id.action_createChatFragment_to_settingsFragment);
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
@@ -226,31 +256,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        Fragment fragment = getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().getFragments().get(0);
-
-        if(item.getItemId() == R.id.menu_toolbar_share) {
-            ((ToolbarAction.Share) fragment).onShare();
-        } else if(item.getItemId() == R.id.menu_toolbar_info) {
-            ((ToolbarAction.Info) fragment).onInfo();
-        } else if(item.getItemId() == R.id.menu_toolbar_github) {
-            ((ToolbarAction.Github) fragment).onGithub();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onFragmentLoaded(Fragment fragment) {
         try {
             Menu menu = toolbar.getMenu();
             menu.findItem(R.id.menu_toolbar_share).setVisible(fragment instanceof ToolbarAction.Share);
             menu.findItem(R.id.menu_toolbar_info).setVisible(fragment instanceof ToolbarAction.Info);
             menu.findItem(R.id.menu_toolbar_github).setVisible(fragment instanceof ToolbarAction.Github);
-        } catch(Exception e) {
+        } catch (Exception e) {
             ThreadManager.run(() -> {
-                while(toolbar == null);
+                while (toolbar == null) ;
                 ThreadManager.schedule(() -> onFragmentLoaded(fragment));
             });
         }

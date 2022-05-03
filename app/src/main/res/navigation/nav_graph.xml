@@ -46,6 +46,9 @@
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
                 app:popUpToInclusive="true" />
+        <action
+                android:id="@+id/action_createChatFragment_to_settingsFragment"
+                app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
             android:id="@+id/chatFragment"
@@ -58,15 +61,22 @@
                 app:popExitAnim="@anim/slide_out_right"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"/>
+        <action
+                android:id="@+id/action_chatFragment_to_settingsFragment"
+                app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
             android:id="@+id/settingsFragment"
             android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.SettingsFragment"
-            android:label="fragment_settings"
+            android:label="About App"
             tools:layout="@layout/fragment_settings" />
     <fragment
             android:id="@+id/chatInfoFragment"
             android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.ChatInfoFragment"
-            android:label="fragment_chat_info"
-            tools:layout="@layout/fragment_chat_info" />
+            android:label="Information"
+            tools:layout="@layout/fragment_chat_info">
+        <action
+                android:id="@+id/action_chatInfoFragment_to_settingsFragment"
+                app:destination="@id/settingsFragment" />
+    </fragment>
 </navigation>

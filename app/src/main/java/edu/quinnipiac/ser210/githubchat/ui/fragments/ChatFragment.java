@@ -47,7 +47,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
 
     private int channelChatRoom;
     private int channelGithubRepo;
-    private ChatRoom chatRoom;
     private GithubRepo githubRepo;
     private MessageAdapter adapter;
     private DatabaseReference databaseReference;
@@ -169,9 +168,16 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(githubRepo != null) {
+            ToolbarHolder.from(requireContext()).setTitle(githubRepo.getName());
+        }
+    }
+
+    @Override
     public void onFetchChatRoom(ChatRoom chatRoom, int channel) {
         if (channel == channelChatRoom) {
-            this.chatRoom = chatRoom;
             channelGithubRepo = githubWrapper.startFetchGithubRepo(chatRoom.getRepoName(), this);
         }
     }
