@@ -38,7 +38,7 @@ import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesHolder;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesWrapper;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
-import edu.quinnipiac.ser210.githubchat.ui.interfaces.ToolbarHolder;
+import edu.quinnipiac.ser210.githubchat.ui.util.ToolbarHolder;
 import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
 
 /**

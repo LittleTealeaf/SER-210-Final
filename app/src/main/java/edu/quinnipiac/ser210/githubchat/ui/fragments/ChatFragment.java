@@ -32,7 +32,7 @@ import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
-import edu.quinnipiac.ser210.githubchat.ui.interfaces.ToolbarHolder;
+import edu.quinnipiac.ser210.githubchat.ui.util.ToolbarHolder;
 
 /**
  * @author Thomas Kwashnak
