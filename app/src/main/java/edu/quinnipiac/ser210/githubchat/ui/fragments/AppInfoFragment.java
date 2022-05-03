@@ -15,7 +15,7 @@ import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
 /**
  * @author Thomas Kwashnak
  */
-public class SettingsFragment extends Fragment {
+public class AppInfoFragment extends Fragment {
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -26,6 +26,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        return inflater.inflate(R.layout.fragment_app_info, container, false);
     }
 }

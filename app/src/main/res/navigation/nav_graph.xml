@@ -67,9 +67,9 @@
     </fragment>
     <fragment
             android:id="@+id/settingsFragment"
-            android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.SettingsFragment"
+            android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.AppInfoFragment"
             android:label="About App"
-            tools:layout="@layout/fragment_settings" />
+            tools:layout="@layout/fragment_app_info" />
     <fragment
             android:id="@+id/chatInfoFragment"
             android:name="edu.quinnipiac.ser210.githubchat.ui.fragments.ChatInfoFragment"
