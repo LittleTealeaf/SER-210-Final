@@ -8,5 +8,12 @@
         android:visible="false"
             android:id="@+id/menu_toolbar_share"
         />
+    <item
+        android:title="@string/info"
+            android:icon="@drawable/ic_baseline_info_24"
+            android:id="@+id/menu_toolbar_info"
+            app:showAsAction="ifRoom"
+            android:visible="false"
+        />
 
 </menu>

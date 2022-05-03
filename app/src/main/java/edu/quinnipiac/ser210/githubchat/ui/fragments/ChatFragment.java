@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,12 +33,15 @@ import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
-import edu.quinnipiac.ser210.githubchat.ui.util.ToolbarHolder;
+import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarAction;
+import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
+import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarHolder;
 
 /**
  * @author Thomas Kwashnak
  */
-public class ChatFragment extends Fragment implements View.OnClickListener, DatabaseWrapper.OnFetchChatRoom, GithubWrapper.OnFetchGithubRepo, TextWatcher {
+public class ChatFragment extends Fragment implements View.OnClickListener, DatabaseWrapper.OnFetchChatRoom, GithubWrapper.OnFetchGithubRepo, TextWatcher,
+                                                      ToolbarAction.Info, ToolbarAction.Share {
 
     private int channelChatRoom;
     private int channelGithubRepo;
@@ -109,6 +113,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
 
         sendButton = view.findViewById(R.id.frag_chat_button_send);
         sendButton.setOnClickListener(this);
+
+        FragmentChangedListener.notifyContext(requireContext(),this);
+
     }
 
     @Override
@@ -197,5 +204,15 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
             }
             ThreadManager.scheduleDelayed(this::runTimer, 1000 * 30);
         }
+    }
+
+    @Override
+    public void onInfo() {
+        Navigation.findNavController(requireView()).navigate(R.id.action_chatFragment_to_chatInfoFragment);
+    }
+
+    @Override
+    public void onShare() {
+
     }
 }
