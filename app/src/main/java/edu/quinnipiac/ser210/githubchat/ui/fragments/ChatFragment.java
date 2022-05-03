@@ -104,12 +104,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
         manager.setStackFromEnd(true);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter = new MessageAdapter(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME), requireContext(), recyclerView));
-//        databaseReference.get().addOnSuccessListener(adapter::setInitialData);
 
         inputText = view.findViewById(R.id.frag_chat_edittext_insert);
         inputText.addTextChangedListener(this);
-
-//        inputText.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
 
 
         sendButton = view.findViewById(R.id.frag_chat_button_send);
