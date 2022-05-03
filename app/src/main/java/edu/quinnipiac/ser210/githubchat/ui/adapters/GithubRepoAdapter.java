@@ -28,9 +28,6 @@ import edu.quinnipiac.ser210.githubchat.ui.util.FilterableList;
 public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder>
         implements FilterableList.ChangeListener<GithubRepo> {
 
-    @Deprecated
-    private final int CHANNEL_FETCH = 1;
-
 
     private final Context context;
     private final LayoutInflater inflater;
@@ -48,7 +45,6 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
         this.inflater = LayoutInflater.from(context);
         this.listener = listener;
         filterableList = new FilterableList<>(this::filterRepo, this);
-//        channelRepoList = GithubWrapper.from(context).startFetchGithubRepoList(null, this);
 
         final DatabaseWrapper databaseWrapper = DatabaseWrapper.from(context);
         ThreadManager.startThread(() -> GithubWrapper.from(context).fetchGithubRepoList(null)
@@ -56,7 +52,6 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
                 .filter((repo) -> databaseWrapper.getChatRoom(repo.getFullName()) == null)
                 .collect(Collectors.toList()), (items,index) -> items.forEach(filterableList::addItem));
 
-//        channelChatRoomList = DatabaseWrapper.from(context).startGetChatRoomList(this);
     }
 
     private boolean filterRepo(GithubRepo repo, String filterString) {
@@ -101,31 +96,10 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
     }
 
 
-
-//    private synchronized void filterOpenedChats() {
-//        List<GithubRepo> tmp = githubRepos.stream().filter((repo) -> {
-//            for (ChatRoom chatRoom : openRooms) {
-//                if (chatRoom.getRepoName().equals(repo.getFullName())) {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        }).collect(Collectors.toList());
-//        githubRepos.clear();
-//        githubRepos.addAll(tmp);
-//        filterItems("");
-//    }
-
     public void filterItems(String filterText) {
         filterableList.setFilter(filterText);
         this.filter = filterText;
         notifyItemChanged(0);
-//        String[] filters = filterText.split(" ");
-//        displayRepos = filterText.equals("") ? githubRepos : githubRepos.stream().filter(githubRepo -> {
-
-//        }).collect(Collectors.toList());
-//        this.filter = filterText;
-//        notifyDataSetChanged();
     }
 
     public void selectGithubRepo(GithubRepo githubRepo) {

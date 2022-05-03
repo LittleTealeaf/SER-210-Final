@@ -8,16 +8,9 @@ import java.util.Map;
 
 public class FilterableList<T> {
 
-    /*
-    TODO: add list of currently filtered items
-    TODO: implement required methods (
-     */
-
     private final ChangeListener<T> changeListener;
     private final Filter<T> filter;
     private final Map<T,Boolean> items = new HashMap<>();
-
-//    private final List<FilteredItem<T>> items = new LinkedList<>();
 
     private String filterString = "";
 
