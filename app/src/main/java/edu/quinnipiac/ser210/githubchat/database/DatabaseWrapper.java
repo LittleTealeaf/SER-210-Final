@@ -224,7 +224,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         return ThreadManager.startThread(() -> updateGithubCache(githubCache), listener::onUpdateGithubCache, channel);
     }
 
-    interface DatabaseOperation {
+    private interface DatabaseOperation {
 
         void execute(SQLiteDatabase database);
     }
