@@ -46,7 +46,7 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
         ThreadManager.startThread(() -> GithubWrapper
                 .from(context)//get from context
                 .fetchGithubRepoList(null) //fetch all github repos of the current user
-                .stream() //Convert to stream
+                .stream().parallel() //Convert to stream
                 .filter((repo) -> databaseWrapper.getChatRoom(repo.getFullName()) == null) //Filter out repos that already have a chat room
                 .collect(Collectors.toList()), (items, index) -> items.forEach(filterableList::addItem)); //put into FilterableList
     }
