@@ -53,7 +53,8 @@ public class GithubRepoViewHolder extends RecyclerView.ViewHolder implements Vie
     }
 
     @Deprecated
-    public interface oldOnGithubRepoSelected extends  GithubRepoAdapter.OnGithubRepoSelected {
+    public interface oldOnGithubRepoSelected extends GithubRepoAdapter.OnGithubRepoSelected {
+
         void onGithubRepoSelected(GithubRepo githubRepo);
     }
 }

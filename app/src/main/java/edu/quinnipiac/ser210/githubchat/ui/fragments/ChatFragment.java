@@ -22,19 +22,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
-import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoom;
 import edu.quinnipiac.ser210.githubchat.firebase.dataobjects.Message;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
-import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachment;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepo;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.interfaces.ToolbarHolder;
@@ -54,13 +49,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
     private Button sendButton;
     private RecyclerView recyclerView;
     private GithubWrapper githubWrapper;
-
-
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -110,8 +98,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
         LinearLayoutManager manager = new LinearLayoutManager(requireContext());
         manager.setStackFromEnd(true);
         recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(
-                adapter = new MessageAdapter(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME), requireContext(), recyclerView));
+        recyclerView.setAdapter(adapter = new MessageAdapter(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME), requireContext(), recyclerView));
 //        databaseReference.get().addOnSuccessListener(adapter::setInitialData);
 
         inputText = view.findViewById(R.id.frag_chat_edittext_insert);
@@ -144,6 +131,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
         super.onStop();
         channelChatRoom = ThreadManager.NULL_CHANNEL;
         channelGithubRepo = ThreadManager.NULL_CHANNEL;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     @Override
@@ -196,11 +188,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
     }
 
     private void runTimer() {
-        if(!isDetached()) {
-            if(adapter != null) {
+        if (!isDetached()) {
+            if (adapter != null) {
                 adapter.updateTimes();
             }
-            ThreadManager.scheduleDelayed(this::runTimer,1000 * 30);
+            ThreadManager.scheduleDelayed(this::runTimer, 1000 * 30);
         }
     }
 }

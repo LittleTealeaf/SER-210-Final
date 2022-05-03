@@ -21,11 +21,11 @@ public class GithubIssue implements GithubAttachment {
 
     public GithubIssue(JSONObject jsonObject) throws JSONException {
         number = jsonObject.getInt("number");
-        title = tryOrDefault(() -> jsonObject.getString("title"),"");
+        title = tryOrDefault(() -> jsonObject.getString("title"), "");
         url = jsonObject.getString("html_url");
-        state = tryOrDefault(() -> jsonObject.getString("state"),"closed");
-        githubUser = tryOrDefault(() -> new GithubUser(jsonObject.getJSONObject("user")),null);
-        draft = tryOrDefault(() -> jsonObject.getBoolean("draft"),false);
+        state = tryOrDefault(() -> jsonObject.getString("state"), "closed");
+        githubUser = tryOrDefault(() -> new GithubUser(jsonObject.getJSONObject("user")), null);
+        draft = tryOrDefault(() -> jsonObject.getBoolean("draft"), false);
     }
 
     @Override
@@ -43,8 +43,6 @@ public class GithubIssue implements GithubAttachment {
         return url;
     }
 
-
-
     @Override
     public GithubUser getGithubUser() {
         return githubUser;
@@ -52,8 +50,8 @@ public class GithubIssue implements GithubAttachment {
 
     @Override
     public int getStatusDrawable() {
-        if(state.equals("open")) {
-            if(draft) {
+        if (state.equals("open")) {
+            if (draft) {
                 return R.drawable.ic_issue_draft_24;
             } else {
                 return R.drawable.ic_issue_opened_24;

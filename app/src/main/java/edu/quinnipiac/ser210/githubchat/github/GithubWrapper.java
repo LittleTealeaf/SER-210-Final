@@ -67,8 +67,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public GithubUser fetchGithubUser(String username) {
         try {
-            return new GithubUser(new JSONObject(
-                    Objects.requireNonNull(fetchURL(username == null ? "https://api.github.com/user" : "https://api.github.com/users/" + username))));
+            return new GithubUser(new JSONObject(Objects.requireNonNull(fetchURL(username == null ? "https://api.github.com/user" : "https://api.github.com/users/" + username))));
         } catch (Exception e) {
             return null;
         }
@@ -276,8 +275,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public GithubIssue fetchGithubIssue(String repoName, int number) {
         try {
-            return new GithubIssue(
-                    new JSONObject(Objects.requireNonNull(fetchURL("https://api.github.com/repos/" + repoName + "/issues/" + number))));
+            return new GithubIssue(new JSONObject(Objects.requireNonNull(fetchURL("https://api.github.com/repos/" + repoName + "/issues/" + number))));
         } catch (Exception e) {
             return null;
         }
@@ -301,38 +299,47 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
     }
 
     public interface OnFetchGithubAttachment {
+
         void onFetchGithubAttachment(GithubAttachment githubAttachment, int channel);
     }
 
     public interface OnFetchGithubAttachmentList {
+
         void onFetchGithubAttachmentList(List<GithubAttachment> attachments, int channel);
     }
 
     public interface OnFetchGithubIssue {
+
         void onFetchGithubIssue(GithubIssue issue, int channel);
     }
 
     public interface OnFetchGithubIssueList {
+
         void onFetchGithubIssueList(List<GithubIssue> issues, int channel);
     }
 
     public interface OnFetchGithubPull {
+
         void onFetchGithubPull(GithubPull pull, int channel);
     }
 
     public interface OnFetchGithubPullList {
+
         void onFetchGithubPullList(List<GithubPull> pulls, int channel);
     }
 
     public interface OnFetchGithubRepo {
+
         void onFetchGithubRepo(GithubRepo repo, int channel);
     }
 
     public interface OnFetchGithubRepoList {
+
         void onFetchGithubRepoList(List<GithubRepo> repos, int channel);
     }
 
     public interface OnFetchGithubUser {
+
         void onFetchGithubUser(GithubUser user, int channel);
     }
 }

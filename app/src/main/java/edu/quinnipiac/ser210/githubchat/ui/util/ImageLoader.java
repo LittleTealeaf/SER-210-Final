@@ -33,6 +33,7 @@ public class ImageLoader {
     }
 
     public interface OnLoadBitmap {
+
         void onLoadBitmap(Bitmap bitmap, int channel);
     }
 }

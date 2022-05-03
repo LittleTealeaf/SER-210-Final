@@ -35,20 +35,18 @@ import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.github.GithubHolder;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubUser;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesHolder;
 import edu.quinnipiac.ser210.githubchat.preferences.PreferencesWrapper;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.interfaces.ToolbarHolder;
 import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
-import edu.quinnipiac.ser210.githubchat.ui.util.OnImageLoaded;
 
 /**
  * @author Thomas Kwashnak
  */
 public class MainActivity extends AppCompatActivity
-        implements FirebaseAuth.AuthStateListener, PreferencesHolder, GithubHolder, DatabaseHolder, NavigationView.OnNavigationItemSelectedListener,
-                   ToolbarHolder, GithubWrapper.OnFetchGithubUser, ImageLoader.OnLoadBitmap {
+        implements FirebaseAuth.AuthStateListener, PreferencesHolder, GithubHolder, DatabaseHolder, NavigationView.OnNavigationItemSelectedListener, ToolbarHolder, GithubWrapper.OnFetchGithubUser,
+                   ImageLoader.OnLoadBitmap {
 
     private int channelGithubUser, channelUserAvatar;
 
@@ -105,8 +103,6 @@ public class MainActivity extends AppCompatActivity
         firebaseAuth.removeAuthStateListener(this);
         channelGithubUser = ThreadManager.NULL_CHANNEL;
         channelUserAvatar = ThreadManager.NULL_CHANNEL;
-
-
     }
 
     @Override
@@ -187,8 +183,7 @@ public class MainActivity extends AppCompatActivity
                     .setMessage("Are you sure you want to log out of Github App?")
                     .setIcon(R.drawable.ic_material_logout_48)
                     .setCancelable(true)
-                    .setPositiveButton(
-                            "Logout", (dialog, id) -> FirebaseAuth.getInstance().signOut())
+                    .setPositiveButton("Logout", (dialog, id) -> FirebaseAuth.getInstance().signOut())
                     .setNegativeButton("Cancel", (dialog, id) -> {})
                     .create()
                     .show();
@@ -235,6 +230,4 @@ public class MainActivity extends AppCompatActivity
             ).setImageBitmap(bitmap);
         }
     }
-
-
 }

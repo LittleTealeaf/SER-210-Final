@@ -46,12 +46,10 @@ public class ChatRoomViewHolder extends RecyclerView.ViewHolder implements View.
             if (chatRoom.isFavorite()) {
                 favoriteButton.setBackground(ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_24, context.getTheme()));
             } else {
-                favoriteButton.setBackground(
-                        ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_border_24, context.getTheme()));
+                favoriteButton.setBackground(ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_border_24, context.getTheme()));
             }
         } else {
-            favoriteButton.setBackground(
-                    ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_border_24, context.getTheme()));
+            favoriteButton.setBackground(ResourcesCompat.getDrawable(context.getResources(), R.drawable.ic_baseline_star_border_24, context.getTheme()));
         }
     }
 
@@ -66,7 +64,8 @@ public class ChatRoomViewHolder extends RecyclerView.ViewHolder implements View.
     }
 
     @Deprecated
-    public interface OnChatRoomSelected extends ChatRoomAdapter.OnChatRoomSelected{
+    public interface OnChatRoomSelected extends ChatRoomAdapter.OnChatRoomSelected {
+
         void onChatRoomSelected(ChatRoom chatRoom);
     }
 

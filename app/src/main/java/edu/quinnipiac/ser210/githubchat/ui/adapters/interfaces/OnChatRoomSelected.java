@@ -2,7 +2,6 @@ package edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces;
 
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.ChatRoomAdapter;
-import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.ChatRoomViewHolder;
 
 /**
  * @author Thomas Kwashnak

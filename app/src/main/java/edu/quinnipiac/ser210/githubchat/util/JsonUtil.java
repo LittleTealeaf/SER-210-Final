@@ -3,8 +3,6 @@ package edu.quinnipiac.ser210.githubchat.util;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.quinnipiac.ser210.githubchat.threads.Task;
-
 public class JsonUtil {
 
     public static String tryGetString(JSONObject object, String key) {
@@ -26,12 +24,13 @@ public class JsonUtil {
     public static <T> T tryOrDefault(JsonTask<T> method, T defaultValue) {
         try {
             return method.run();
-        } catch(Exception e) {
+        } catch (Exception e) {
             return defaultValue;
         }
     }
 
     public interface JsonTask<T> {
+
         T run() throws Exception;
     }
 }

@@ -19,8 +19,8 @@ public class GithubRepo {
     public GithubRepo(JSONObject object) throws JSONException {
         name = object.getString("name");
         fullName = object.getString("full_name");
-        owner = tryOrDefault(() -> new GithubUser(object.getJSONObject("owner")),null);
-        description = tryOrDefault(() -> object.getString("description"),"");
+        owner = tryOrDefault(() -> new GithubUser(object.getJSONObject("owner")), null);
+        description = tryOrDefault(() -> object.getString("description"), "");
         url = object.getString("html_url");
     }
 

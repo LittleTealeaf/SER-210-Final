@@ -17,15 +17,12 @@ import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepoList;
-import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.oldOnGithubRepoSelected;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.GithubRepoViewHolder;
 
 /**
  * @author Thomas Kwashnak
  */
-public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder>
-        implements GithubWrapper.OnFetchGithubRepoList, DatabaseWrapper.OnFetchChatRoomList {
+public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder> implements GithubWrapper.OnFetchGithubRepoList, DatabaseWrapper.OnFetchChatRoomList {
 
     @Deprecated
     private final int CHANNEL_FETCH = 1;
@@ -131,7 +128,7 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
     }
 
     public interface OnGithubRepoSelected {
+
         void onGithubRepoSelected(GithubRepo githubRepo);
     }
-
 }

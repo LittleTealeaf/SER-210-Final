@@ -19,12 +19,10 @@ import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.firebase.dataobjects.Message;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubUser;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.AttachmentAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
-import edu.quinnipiac.ser210.githubchat.ui.util.OnImageLoaded;
 
 public class MessageViewHolder extends RecyclerView.ViewHolder implements GithubWrapper.OnFetchGithubUser, ImageLoader.OnLoadBitmap, View.OnClickListener {
 

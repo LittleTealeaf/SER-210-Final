@@ -72,11 +72,8 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int old, int cur) {
         if (old < 1) {
-            sqLiteDatabase.execSQL(
-                    "CREATE TABLE " + TABLE_GITHUB_CACHE + " (" + COL_URL + " TEXT PRIMARY KEY, " + COL_FETCH_TIME + " LONG, " + COL_CONTENT + " " +
-                    "TEXT);");
-            sqLiteDatabase.execSQL(
-                    "CREATE TABLE " + TABLE_CHAT_ROOM + "(" + COL_REPO_NAME + " TEXT PRIMARY KEY NOT NULL, " + COL_FAVORITE + " INTEGER)");
+            sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_GITHUB_CACHE + " (" + COL_URL + " TEXT PRIMARY KEY, " + COL_FETCH_TIME + " LONG, " + COL_CONTENT + " " + "TEXT);");
+            sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_CHAT_ROOM + "(" + COL_REPO_NAME + " TEXT PRIMARY KEY NOT NULL, " + COL_FAVORITE + " INTEGER)");
         }
     }
 
@@ -232,26 +229,32 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     }
 
     public interface OnFetchChatRoom {
+
         void onFetchChatRoom(ChatRoom chatRoom, int channel);
     }
 
     public interface OnFetchChatRoomList {
+
         void onFetchChatRoomList(List<ChatRoom> chatRoomList, int channel);
     }
 
     public interface OnFetchGithubCache {
+
         void onFetchGithubCache(GithubCache githubCache, int channel);
     }
 
     public interface OnRemoveChatRoom {
+
         void onRemoveChatRoom(String repoName, int channel);
     }
 
     public interface OnUpdateChatRoom {
+
         void onUpdateChatRoom(ChatRoom chatRoom, int channel);
     }
 
     public interface OnUpdateGithubCache {
+
         void onUpdateGithubCache(GithubCache githubCache, int channel);
     }
 }

@@ -20,14 +20,11 @@ import java.util.List;
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachment;
-import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubAttachable;
-import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
 
 public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements GithubWrapper.OnFetchGithubAttachment {
 
-    private int channelGithubAttachable;
-
     private final List<GithubAttachment> githubAttachments;
+    private int channelGithubAttachable;
 
     public AttachmentAdapter(Context context) {
         this(context, R.layout.list_attachment_item, new LinkedList<>());
@@ -45,20 +42,18 @@ public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements
         ViewHolder viewHolder = null;
         final GithubAttachment attachment = githubAttachments.get(position);
 
-
-        if(convertView == null) {
+        if (convertView == null) {
 
             viewHolder = new ViewHolder();
 
             LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.list_attachment_item,parent,false);
+            convertView = layoutInflater.inflate(R.layout.list_attachment_item, parent, false);
             viewHolder.iconView = convertView.findViewById(R.id.list_attachment_imageview_icon);
             viewHolder.numberView = convertView.findViewById(R.id.list_attachment_textview_number);
             viewHolder.titleView = convertView.findViewById(R.id.list_attachment_textview_title);
             convertView.setOnClickListener((v) -> onAttachmentClicked(attachment));
 
             convertView.setTag(viewHolder);
-
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
@@ -68,7 +63,10 @@ public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements
         viewHolder.titleView.setText(attachment.getTitle());
 
         return convertView;
+    }
 
+    private void onAttachmentClicked(GithubAttachment attachment) {
+        getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(attachment.getURL())));
     }
 
     public void resetListView(int channel) {
@@ -78,13 +76,9 @@ public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements
         notifyDataSetChanged();
     }
 
-    private void onAttachmentClicked(GithubAttachment attachment) {
-        getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(attachment.getURL())));
-    }
-
     @Override
     public synchronized void onFetchGithubAttachment(GithubAttachment attachable, int channel) {
-        if(channel == channelGithubAttachable) {
+        if (channel == channelGithubAttachable) {
             githubAttachments.add(attachable);
             notifyDataSetChanged();
         }
@@ -92,10 +86,8 @@ public class AttachmentAdapter extends ArrayAdapter<GithubAttachment> implements
 
     private static class ViewHolder {
 
-
         private ImageView iconView;
         private TextView numberView;
         private TextView titleView;
-
     }
 }

@@ -20,13 +20,11 @@ import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.GithubRepoAdapter;
-import edu.quinnipiac.ser210.githubchat.ui.adapters.interfaces.oldOnGithubRepoSelected;
 
 /**
  * @author Thomas Kwashnak
  */
-public class CreateChatFragment extends Fragment
-        implements GithubRepoAdapter.OnGithubRepoSelected, SearchView.OnQueryTextListener, View.OnClickListener, DatabaseWrapper.OnUpdateChatRoom {
+public class CreateChatFragment extends Fragment implements GithubRepoAdapter.OnGithubRepoSelected, SearchView.OnQueryTextListener, View.OnClickListener, DatabaseWrapper.OnUpdateChatRoom {
 
     private GithubRepoAdapter adapter;
 
@@ -62,7 +60,6 @@ public class CreateChatFragment extends Fragment
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     @Override
