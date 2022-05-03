@@ -1,6 +1,8 @@
 package edu.quinnipiac.ser210.githubchat.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -41,7 +43,7 @@ import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarHolder;
  * @author Thomas Kwashnak
  */
 public class ChatFragment extends Fragment implements View.OnClickListener, DatabaseWrapper.OnFetchChatRoom, GithubWrapper.OnFetchGithubRepo, TextWatcher,
-                                                      ToolbarAction.Info, ToolbarAction.Share {
+                                                      ToolbarAction.Info, ToolbarAction.Share, ToolbarAction.Github {
 
     private int channelChatRoom;
     private int channelGithubRepo;
@@ -214,5 +216,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
     @Override
     public void onShare() {
 
+    }
+
+    @Override
+    public void onGithub() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubRepo.getUrl()));
+        startActivity(intent);
     }
 }

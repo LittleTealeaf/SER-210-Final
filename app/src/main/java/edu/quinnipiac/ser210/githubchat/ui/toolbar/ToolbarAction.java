@@ -9,4 +9,8 @@ public class ToolbarAction {
     public interface Info {
         void onInfo();
     }
+
+    public interface Github {
+        void onGithub();
+    }
 }

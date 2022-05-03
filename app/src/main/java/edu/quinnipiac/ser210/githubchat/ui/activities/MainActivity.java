@@ -234,6 +234,8 @@ public class MainActivity extends AppCompatActivity
             ((ToolbarAction.Share) fragment).onShare();
         } else if(item.getItemId() == R.id.menu_toolbar_info) {
             ((ToolbarAction.Info) fragment).onInfo();
+        } else if(item.getItemId() == R.id.menu_toolbar_github) {
+            ((ToolbarAction.Github) fragment).onGithub();
         }
 
         return super.onOptionsItemSelected(item);
@@ -245,6 +247,7 @@ public class MainActivity extends AppCompatActivity
             Menu menu = toolbar.getMenu();
             menu.findItem(R.id.menu_toolbar_share).setVisible(fragment instanceof ToolbarAction.Share);
             menu.findItem(R.id.menu_toolbar_info).setVisible(fragment instanceof ToolbarAction.Info);
+            menu.findItem(R.id.menu_toolbar_github).setVisible(fragment instanceof ToolbarAction.Github);
         } catch(Exception e) {
             ThreadManager.run(() -> {
                 while(toolbar == null);
