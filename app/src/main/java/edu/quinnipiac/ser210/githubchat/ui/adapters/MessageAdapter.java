@@ -1,6 +1,8 @@
 package edu.quinnipiac.ser210.githubchat.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Toast;
