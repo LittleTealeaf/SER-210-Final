@@ -32,7 +32,7 @@ import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.database.listeners.OnFetchChatRoom;
 import edu.quinnipiac.ser210.githubchat.firebase.dataobjects.Message;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
-import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachable;
+import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubAttachment;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.github.listeners.OnFetchGithubRepo;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
@@ -45,7 +45,7 @@ import edu.quinnipiac.ser210.githubchat.ui.interfaces.ToolbarHolder;
 public class ChatFragment extends Fragment implements View.OnClickListener, OnFetchChatRoom, OnFetchGithubRepo, TextWatcher {
 
 
-    private final List<GithubAttachable> attachableList = new ArrayList<>();
+    private final List<GithubAttachment> attachableList = new ArrayList<>();
     private int channelChatRoom;
     private int channelGithubRepo;
     private ChatRoom chatRoom;
