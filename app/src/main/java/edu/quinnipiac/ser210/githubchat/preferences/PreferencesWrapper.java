@@ -24,7 +24,8 @@ public class PreferencesWrapper implements SharedPreferences, PreferencesHolder 
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_NAME, 0);
         try {
             prefs = EncryptedSharedPreferences.create(ENCRYPTED_PREFERENCES_NAME, MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC), context,
-                                                      EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                                                      EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                                                      EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
                                                      );
         } catch (Exception e) {
             e.printStackTrace();

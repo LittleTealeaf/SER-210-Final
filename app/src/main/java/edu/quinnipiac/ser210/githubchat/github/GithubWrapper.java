@@ -67,7 +67,8 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public GithubUser fetchGithubUser(String username) {
         try {
-            return new GithubUser(new JSONObject(Objects.requireNonNull(fetchURL(username == null ? "https://api.github.com/user" : "https://api.github.com/users/" + username))));
+            return new GithubUser(
+                    new JSONObject(Objects.requireNonNull(fetchURL(username == null ? "https://api.github.com/user" : "https://api.github.com/users/" + username))));
         } catch (Exception e) {
             return null;
         }

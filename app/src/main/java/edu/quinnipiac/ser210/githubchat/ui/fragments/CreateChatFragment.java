@@ -24,7 +24,8 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.GithubRepoAdapter;
 /**
  * @author Thomas Kwashnak
  */
-public class CreateChatFragment extends Fragment implements GithubRepoAdapter.OnGithubRepoSelected, SearchView.OnQueryTextListener, View.OnClickListener, DatabaseWrapper.OnUpdateChatRoom {
+public class CreateChatFragment extends Fragment
+        implements GithubRepoAdapter.OnGithubRepoSelected, SearchView.OnQueryTextListener, View.OnClickListener, DatabaseWrapper.OnUpdateChatRoom {
 
     private GithubRepoAdapter adapter;
 

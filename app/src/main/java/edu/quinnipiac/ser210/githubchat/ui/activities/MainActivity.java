@@ -45,8 +45,8 @@ import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
  * @author Thomas Kwashnak
  */
 public class MainActivity extends AppCompatActivity
-        implements FirebaseAuth.AuthStateListener, PreferencesHolder, GithubHolder, DatabaseHolder, NavigationView.OnNavigationItemSelectedListener, ToolbarHolder, GithubWrapper.OnFetchGithubUser,
-                   ImageLoader.OnLoadBitmap {
+        implements FirebaseAuth.AuthStateListener, PreferencesHolder, GithubHolder, DatabaseHolder, NavigationView.OnNavigationItemSelectedListener, ToolbarHolder,
+                   GithubWrapper.OnFetchGithubUser, ImageLoader.OnLoadBitmap {
 
     private int channelGithubUser, channelUserAvatar;
 
