@@ -78,6 +78,12 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         }
     }
 
+    /**
+     * Starts the {@link #getGithubCache(String)} method in an alternate thread, notifying the listener on completion
+     * @param url URL of the cache to get
+     * @param listener Listener to notify once the value has been retrieved
+     * @return The channel that the listener will be notified on
+     */
     public int startGetGithubCache(String url, OnFetchGithubCache listener) {
         return ThreadManager.startThread(() -> getGithubCache(url), listener::onFetchGithubCache);
     }
