@@ -145,7 +145,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         return issues;
     }
 
-    public List<GithubAttachment> fetchGithubAttachableList(String repoName) {
+    public List<GithubAttachment> fetchGithubAttachmentList(String repoName) {
         List<GithubAttachment> attachableList = new LinkedList<>();
         attachableList.addAll(fetchGithubPulls(repoName));
         attachableList.addAll(fetchGithubIssues(repoName));
@@ -241,12 +241,12 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         return ThreadManager.startThread(() -> fetchGithubPulls(repoName), listener::onFetchGithubPullList, channel);
     }
 
-    public int startFetchGithubAttachableList(String repoName, OnFetchGithubAttachmentList listener) {
-        return ThreadManager.startThread(() -> fetchGithubAttachableList(repoName), listener::onFetchGithubAttachmentList);
+    public int startFetchGithubAttachmentList(String repoName, OnFetchGithubAttachmentList listener) {
+        return ThreadManager.startThread(() -> fetchGithubAttachmentList(repoName), listener::onFetchGithubAttachmentList);
     }
 
-    public int startFetchGithubAttachableList(String repoName, OnFetchGithubAttachmentList listener, int channel) {
-        return ThreadManager.startThread(() -> fetchGithubAttachableList(repoName), listener::onFetchGithubAttachmentList, channel);
+    public int startFetchGithubAttachmentList(String repoName, OnFetchGithubAttachmentList listener, int channel) {
+        return ThreadManager.startThread(() -> fetchGithubAttachmentList(repoName), listener::onFetchGithubAttachmentList, channel);
     }
 
     public int startFetchGithubPull(String repoName, int number, OnFetchGithubPull listener) {
@@ -281,7 +281,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         }
     }
 
-    public GithubAttachment fetchGithubAttachable(String repoName, int number) {
+    public GithubAttachment fetchGithubAttachment(String repoName, int number) {
         GithubPull issue = fetchGithubPull(repoName, number);
         if (issue != null) {
             return issue;
@@ -290,12 +290,12 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         }
     }
 
-    public int startFetchGithubAttachable(String repoName, int number, OnFetchGithubAttachment listener) {
-        return ThreadManager.startThread(() -> fetchGithubAttachable(repoName, number), listener::onFetchGithubAttachment);
+    public int startFetchGithubAttachment(String repoName, int number, OnFetchGithubAttachment listener) {
+        return ThreadManager.startThread(() -> fetchGithubAttachment(repoName, number), listener::onFetchGithubAttachment);
     }
 
-    public int startFetchGithubAttachable(String repoName, int number, OnFetchGithubAttachment listener, int channel) {
-        return ThreadManager.startThread(() -> fetchGithubAttachable(repoName, number), listener::onFetchGithubAttachment, channel);
+    public int startFetchGithubAttachment(String repoName, int number, OnFetchGithubAttachment listener, int channel) {
+        return ThreadManager.startThread(() -> fetchGithubAttachment(repoName, number), listener::onFetchGithubAttachment, channel);
     }
 
     public interface OnFetchGithubAttachment {

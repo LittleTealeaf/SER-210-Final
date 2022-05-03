@@ -73,7 +73,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements Github
         while (matcher.find()) {
             attachmentListView.setVisibility(View.VISIBLE);
             int number = Integer.parseInt(matcher.group().substring(1));
-            githubWrapper.startFetchGithubAttachable(adapter.getRepoName(), number, attachmentAdapter, channel);
+            githubWrapper.startFetchGithubAttachment(adapter.getRepoName(), number, attachmentAdapter, channel);
         }
     }
 
