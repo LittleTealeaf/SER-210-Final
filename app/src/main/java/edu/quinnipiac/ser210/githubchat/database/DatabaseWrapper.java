@@ -45,7 +45,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     @Deprecated
     private final Handler handler = new Handler(Looper.getMainLooper());
-
+    @Deprecated
     private SQLiteDatabase database;
 
     public DatabaseWrapper(Context context) {
@@ -104,9 +104,16 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         return cache.get();
     }
 
+    /**
+     * Wraps opening and closing a writable database to ensure that asynchronous tasks do not overlap with database executions
+     * @param operation The operation that needs to be executed
+     */
     public synchronized void executeDatabaseOperation(DatabaseOperation operation) {
+        //Opens the database
         SQLiteDatabase database = getWritableDatabase();
+        //Runs the operation
         operation.execute(database);
+        //Closes the database
         database.close();
     }
 
@@ -168,12 +175,16 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     }
 
     public ChatRoom updateChatRoom(ChatRoom chatRoom) {
+        //Create content values
         ContentValues values = new ContentValues();
         values.put(COL_REPO_NAME, chatRoom.getRepoName());
         values.put(COL_FAVORITE, chatRoom.isFavorite() ? 1 : 0);
 
         executeDatabaseOperation((db) -> {
+            //Updates the table with the values
             if (db.update(TABLE_CHAT_ROOM, values, COL_REPO_NAME + " = ?", new String[]{chatRoom.getRepoName()}) == 0) {
+
+                //If no rows were updated, then insert a new row
                 db.insert(TABLE_CHAT_ROOM, null, values);
             }
         });
