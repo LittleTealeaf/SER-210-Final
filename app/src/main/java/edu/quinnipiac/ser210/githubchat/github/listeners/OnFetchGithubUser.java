@@ -5,6 +5,7 @@ import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 /**
  * @author Thomas Kwashnak
  */
+@Deprecated
 public interface OnFetchGithubUser {
 
     void onFetchGithubUser(GithubUser githubUser, int channel);
