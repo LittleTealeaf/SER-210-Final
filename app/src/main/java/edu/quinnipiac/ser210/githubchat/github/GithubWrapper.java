@@ -302,45 +302,63 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
     public interface OnFetchGithubAttachment {
 
         void onFetchGithubAttachment(GithubAttachment githubAttachment, int channel);
+
+        OnFetchGithubAttachment NONE = (a,b) -> {};
     }
 
     public interface OnFetchGithubAttachmentList {
 
         void onFetchGithubAttachmentList(List<GithubAttachment> attachments, int channel);
+
+        OnFetchGithubAttachmentList NONE = (a,b) -> {};
     }
 
     public interface OnFetchGithubIssue {
 
         void onFetchGithubIssue(GithubIssue issue, int channel);
+
+        OnFetchGithubIssue NONE = (a,b) -> {};
     }
 
     public interface OnFetchGithubIssueList {
 
         void onFetchGithubIssueList(List<GithubIssue> issues, int channel);
+
+        OnFetchGithubIssueList NONE = (a,b) -> {};
     }
 
     public interface OnFetchGithubPull {
 
         void onFetchGithubPull(GithubPull pull, int channel);
+
+        OnFetchGithubPull NONE = (a,b) -> {};
     }
 
     public interface OnFetchGithubPullList {
 
         void onFetchGithubPullList(List<GithubPull> pulls, int channel);
+
+        OnFetchGithubPullList NONE = (a,b) -> {};
     }
 
     public interface OnFetchGithubRepo {
 
         void onFetchGithubRepo(GithubRepo repo, int channel);
+
+        OnFetchGithubPull NONE = (a,b) -> {};
     }
 
     public interface OnFetchGithubRepoList {
 
         void onFetchGithubRepoList(List<GithubRepo> repos, int channel);
+
+        OnFetchGithubRepoList NONE = (a,b) -> {};
     }
 
     public interface OnFetchGithubUser {
 
         void onFetchGithubUser(GithubUser user, int channel);
+
+        OnFetchGithubUser NONE = (a,b) -> {};
     }
 }

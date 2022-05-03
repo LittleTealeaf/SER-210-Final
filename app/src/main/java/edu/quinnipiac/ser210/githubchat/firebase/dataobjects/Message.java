@@ -1,12 +1,17 @@
 package edu.quinnipiac.ser210.githubchat.firebase.dataobjects;
 
+import java.util.UUID;
+
 public class Message {
 
     private String message;
     private String sender;
     private long sendTime;
+    private String uuid;
 
-    public Message() {}
+    public Message() {
+        uuid = UUID.randomUUID().toString();
+    }
 
     @Override
     public int hashCode() {
@@ -20,10 +25,7 @@ public class Message {
         if (this == o) return true;
         if (!(o instanceof Message)) return false;
 
-        Message message1 = (Message) o;
-
-        if (getMessage() != null ? !getMessage().equals(message1.getMessage()) : message1.getMessage() != null) return false;
-        return getSender() != null ? getSender().equals(message1.getSender()) : message1.getSender() == null;
+       return ((Message) o).getUuid().equals(uuid);
     }
 
     public String getMessage() {
@@ -48,5 +50,13 @@ public class Message {
 
     public void setSendTime(long sendTime) {
         this.sendTime = sendTime;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

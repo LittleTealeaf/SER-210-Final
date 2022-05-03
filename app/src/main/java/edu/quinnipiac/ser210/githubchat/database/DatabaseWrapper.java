@@ -249,30 +249,42 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     public interface OnFetchChatRoom {
 
         void onFetchChatRoom(ChatRoom chatRoom, int channel);
+
+        OnFetchChatRoom NONE = (a,b) -> {};
     }
 
     public interface OnFetchChatRoomList {
 
         void onFetchChatRoomList(List<ChatRoom> chatRoomList, int channel);
+
+        OnFetchChatRoomList NONE = (a,b) -> {};
     }
 
     public interface OnFetchGithubCache {
 
         void onFetchGithubCache(GithubCache githubCache, int channel);
+
+        OnFetchGithubCache NONE = (a,b) -> {};
     }
 
     public interface OnRemoveChatRoom {
 
         void onRemoveChatRoom(String repoName, int channel);
+
+        OnRemoveChatRoom NONE = (a,b) -> {};
     }
 
     public interface OnUpdateChatRoom {
 
         void onUpdateChatRoom(ChatRoom chatRoom, int channel);
+
+        OnUpdateChatRoom NONE = (a,b) -> {};
     }
 
     public interface OnUpdateGithubCache {
 
         void onUpdateGithubCache(GithubCache githubCache, int channel);
+
+        OnUpdateChatRoom NONE = (a,b) -> {};
     }
 }

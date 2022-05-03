@@ -65,7 +65,7 @@ public class CreateChatFragment extends Fragment
 
     @Override
     public void onGithubRepoSelected(GithubRepo githubRepo) {
-        confirmButton.setEnabled(true);
+        confirmButton.setEnabled(githubRepo != null || searchView.getQuery().toString().contains("/"));
     }
 
     @Override
@@ -76,6 +76,11 @@ public class CreateChatFragment extends Fragment
     @Override
     public boolean onQueryTextChange(String newText) {
         adapter.filterItems(newText);
+
+        if(adapter.getSelected() == null) {
+            confirmButton.setEnabled(newText.contains("/"));
+        }
+
         return false;
     }
 

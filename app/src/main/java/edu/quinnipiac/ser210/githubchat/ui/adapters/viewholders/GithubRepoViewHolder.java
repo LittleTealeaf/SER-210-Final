@@ -29,7 +29,7 @@ public class GithubRepoViewHolder extends RecyclerView.ViewHolder implements Vie
 
     public void bindToCustom(String name) {
         if (name == null || name.equals("")) {
-            textView.setText("");
+            textView.setText(R.string.enter_repo_empty);
         } else {
             textView.setText(String.format("Use Repo: %s", name));
         }

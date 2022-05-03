@@ -1,8 +1,11 @@
 package edu.quinnipiac.ser210.githubchat.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,15 +25,10 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.MessageViewHolde
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> implements ChildEventListener {
 
     private final Context context;
-
     private final String repoName;
-
     private final LayoutInflater inflater;
-
     private final RecyclerView recyclerView;
-
     private final List<Message> messages;
-
     private final List<MessageViewHolder> holders;
 
     public MessageAdapter(String repoName, Context context, RecyclerView recyclerView) {
@@ -71,27 +69,34 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
         notifyItemRangeRemoved(0, count);
     }
 
-    @Deprecated
-    public void setInitialData(DataSnapshot snapshot) {
-        int count = messages.size();
-        messages.clear();
-        notifyItemRangeRemoved(0, count);
-        for (DataSnapshot child : snapshot.getChildren()) {
-            messages.add(child.getValue(Message.class));
-            notifyItemInserted(messages.size() - 1);
+    @Override
+    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+        Message message = snapshot.getValue(Message.class);
+        assert message != null;
+        for(int i = 0; i < messages.size(); i++) {
+            if(messages.get(i).getSendTime() > message.getSendTime()) {
+                messages.add(i,message);
+                notifyItemInserted(i);
+                recyclerView.scrollToPosition(messages.size() - 1);
+                return;
+            }
+        }
+        messages.add(message);
+        notifyItemInserted(messages.size() - 1);
+        if(!recyclerView.canScrollVertically(1)) {
+            recyclerView.scrollToPosition(messages.size() - 1);
         }
     }
 
-    @Override
-    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-        messages.add(snapshot.getValue(Message.class));
-        notifyItemInserted(messages.size() - 1);
-        recyclerView.smoothScrollToPosition(messages.size() - 1);
-    }
 
     @Override
     public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-        setData(snapshot);
+        Message message = snapshot.getValue(Message.class);
+        if(message != null) {
+            int index = messages.indexOf(message);
+            messages.set(index,message);
+            notifyItemChanged(index);
+        }
     }
 
     private void setData(DataSnapshot snapshot) {
@@ -110,13 +115,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
 
     @Override
     public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-        setData(snapshot);
-        notifyDataSetChanged();
+        //Do nothing here
     }
 
     @Override
     public void onCancelled(@NonNull DatabaseError error) {
-
+        Toast.makeText(getContext(),"Connection Error: " + error,Toast.LENGTH_SHORT).show();
     }
 
     public void updateTimes() {
@@ -124,6 +128,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
             holder.updateTime();
         }
     }
+
 
     public Context getContext() {
         return context;

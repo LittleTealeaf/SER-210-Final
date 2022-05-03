@@ -8,44 +8,61 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
-import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
+import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.viewholders.GithubRepoViewHolder;
+import edu.quinnipiac.ser210.githubchat.ui.util.FilterableList;
 
 /**
  * @author Thomas Kwashnak
  */
-public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder> implements GithubWrapper.OnFetchGithubRepoList, DatabaseWrapper.OnFetchChatRoomList {
-
-    @Deprecated
-    private final int CHANNEL_FETCH = 1;
-
-    private final int channelRepoList;
-    private final int channelChatRoomList;
+public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder> implements FilterableList.ChangeListener<GithubRepo> {
 
     private final LayoutInflater inflater;
-
     private final OnGithubRepoSelected listener;
+    private final FilterableList<GithubRepo> filterableList;
 
-    private final List<ChatRoom> openRooms = new ArrayList<>();
-    private final List<GithubRepo> githubRepos = new ArrayList<>();
+    private final List<GithubRepo> githubRepos = new LinkedList<>();
+
     private final List<GithubRepoViewHolder> holderList = new ArrayList<>();
-    private List<GithubRepo> displayRepos = new ArrayList<>();
     private String filter;
     private GithubRepo selected;
 
     public GithubRepoAdapter(Context context, OnGithubRepoSelected listener) {
         this.inflater = LayoutInflater.from(context);
         this.listener = listener;
-        channelRepoList = GithubWrapper.from(context).startFetchGithubRepoList(null, this);
-        channelChatRoomList = DatabaseWrapper.from(context).startGetChatRoomList(this);
+        filterableList = new FilterableList<>(this::filterRepo, this);
+
+        final DatabaseWrapper databaseWrapper = DatabaseWrapper.from(context);
+
+        ThreadManager.startThread(() -> GithubWrapper
+                .from(context)//get from context
+                .fetchGithubRepoList(null) //fetch all github repos of the current user
+                .stream().parallel() //Convert to stream
+                .filter((repo) -> databaseWrapper.getChatRoom(repo.getFullName()) == null) //Filter out repos that already have a chat room
+                .collect(Collectors.toList()), (items, index) -> items.forEach(filterableList::addItem)); //put into FilterableList
+    }
+
+    private boolean filterRepo(GithubRepo repo, String filterString) {
+
+        if (!filterString.equals("")) {
+            String[] filters = filterString.toLowerCase(Locale.ROOT).split(" ");
+
+            for (String filter : filters) {
+                if (!repo.getFullName().toLowerCase().contains(filter)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @NonNull
@@ -61,54 +78,24 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
         if (position == 0) {
             holder.bindToCustom(filter);
         } else {
-            holder.bindToGithubRepo(displayRepos.get(position - 1));
+            holder.bindToGithubRepo(githubRepos.get(position - 1));
         }
         holder.updateSelectedGithubRepo(selected);
     }
 
     @Override
     public int getItemCount() {
-        return displayRepos.size() + 1;
+        return githubRepos.size() + 1;
     }
 
     public GithubRepo getSelected() {
         return selected;
     }
 
-    @Override
-    public void onFetchGithubRepoList(List<GithubRepo> githubRepos, int channel) {
-        if (channel == channelRepoList) {
-            this.githubRepos.addAll(githubRepos);
-            filterOpenedChats();
-        }
-    }
-
-    private synchronized void filterOpenedChats() {
-        List<GithubRepo> tmp = githubRepos.stream().filter((repo) -> {
-            for (ChatRoom chatRoom : openRooms) {
-                if (chatRoom.getRepoName().equals(repo.getFullName())) {
-                    return false;
-                }
-            }
-            return true;
-        }).collect(Collectors.toList());
-        githubRepos.clear();
-        githubRepos.addAll(tmp);
-        filterItems("");
-    }
-
     public void filterItems(String filterText) {
-        String[] filters = filterText.split(" ");
-        displayRepos = filterText.equals("") ? githubRepos : githubRepos.stream().filter(githubRepo -> {
-            for (String filter : filters) {
-                if (!githubRepo.getFullName().toLowerCase().contains(filter.toLowerCase(Locale.ROOT))) {
-                    return false;
-                }
-            }
-            return true;
-        }).collect(Collectors.toList());
+        filterableList.setFilter(filterText);
         this.filter = filterText;
-        notifyDataSetChanged();
+        notifyItemChanged(0);
     }
 
     public void selectGithubRepo(GithubRepo githubRepo) {
@@ -120,10 +107,25 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
     }
 
     @Override
-    public void onFetchChatRoomList(List<ChatRoom> chatRooms, int channel) {
-        if (channel == channelChatRoomList) {
-            openRooms.addAll(chatRooms);
-            filterOpenedChats();
+    public void onItemAdded(GithubRepo item) {
+        for (int i = 0; i < githubRepos.size(); i++) {
+            GithubRepo item2 = githubRepos.get(i);
+            if (item2.getFullName().toLowerCase().charAt(0) > item.getFullName().toLowerCase().charAt(0) && item2.getFullName().charAt(0) > item.getFullName().charAt(0)) {
+                githubRepos.add(i, item);
+                notifyItemInserted(i + 1);
+                return;
+            }
+        }
+        githubRepos.add(item);
+        notifyItemInserted(githubRepos.size());
+    }
+
+    @Override
+    public void onItemRemoved(GithubRepo item) {
+        int index = githubRepos.indexOf(item);
+        if (index != -1) {
+            githubRepos.remove(item);
+            notifyItemRemoved(index + 1);
         }
     }
 
