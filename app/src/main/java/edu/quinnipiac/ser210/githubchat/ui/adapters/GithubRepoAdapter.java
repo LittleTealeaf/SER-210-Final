@@ -26,7 +26,6 @@ import edu.quinnipiac.ser210.githubchat.ui.util.FilterableList;
  */
 public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder> implements FilterableList.ChangeListener<GithubRepo> {
 
-    private final Context context;
     private final LayoutInflater inflater;
     private final OnGithubRepoSelected listener;
     private final FilterableList<GithubRepo> filterableList;
@@ -38,18 +37,18 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
     private GithubRepo selected;
 
     public GithubRepoAdapter(Context context, OnGithubRepoSelected listener) {
-        this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.listener = listener;
         filterableList = new FilterableList<>(this::filterRepo, this);
 
         final DatabaseWrapper databaseWrapper = DatabaseWrapper.from(context);
+
         ThreadManager.startThread(() -> GithubWrapper
-                .from(context)
-                .fetchGithubRepoList(null)
-                .stream()
-                .filter((repo) -> databaseWrapper.getChatRoom(repo.getFullName()) == null)
-                .collect(Collectors.toList()), (items, index) -> items.forEach(filterableList::addItem));
+                .from(context)//get from context
+                .fetchGithubRepoList(null) //fetch all github repos of the current user
+                .stream() //Conver to stream
+                .filter((repo) -> databaseWrapper.getChatRoom(repo.getFullName()) == null) //Filter out repos that already have a chat room
+                .collect(Collectors.toList()), (items, index) -> items.forEach(filterableList::addItem)); //put into FilterableList
     }
 
     private boolean filterRepo(GithubRepo repo, String filterString) {
