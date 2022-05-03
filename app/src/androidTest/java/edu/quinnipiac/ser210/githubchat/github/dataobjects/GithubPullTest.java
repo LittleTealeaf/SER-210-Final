@@ -204,10 +204,7 @@ public class GithubPullTest {
         assertEquals("https://github.com/LittleTealeaf/SER-210-Final/pull/87", githubPull.getURL());
     }
 
-    @Test
-    public void isClosed() {
-        assertFalse(githubPull.isClosed());
-    }
+
 
     @Test
     public void getGithubUser() {
