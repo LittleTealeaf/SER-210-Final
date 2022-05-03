@@ -12,6 +12,7 @@
     <string name="view_profile">View Github Profile</string>
     <string name="share">Share</string>
     <string name="scroll_down">Scroll Down</string>
+    <string name="enter_repo_empty">Enter Repo:</string>
     <!--    &lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
     <!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
     <!--    <string name="login_github">Login with Github</string>-->
