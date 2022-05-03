@@ -151,6 +151,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
             inputText.setText("");
 
             databaseReference.push().setValue(message);
+
         } else if (view.getId() == R.id.frag_chat_fab_scroll) {
             recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
         }
