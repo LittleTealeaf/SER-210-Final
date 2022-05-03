@@ -38,6 +38,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     private static final String COL_FETCH_TIME = "FETCH_TIME";
     private static final String COL_REPO_NAME = "REPO_NAME";
     private static final String COL_FAVORITE = "FAVORITE";
+    @Deprecated
     private static final String COL_ID = "ID";
 
     @Deprecated
