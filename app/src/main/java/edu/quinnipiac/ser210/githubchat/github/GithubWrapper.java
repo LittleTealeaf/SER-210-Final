@@ -11,8 +11,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,9 +39,6 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public static final String AUTH_TOKEN = "Github Token";
     private static final int PER_PAGE = 100;
-
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private final Handler handler = new Handler(Looper.getMainLooper());
 
     private final DatabaseWrapper databaseWrapper;
     private String token;
@@ -286,6 +286,30 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         }
     }
 
+    public int startFetchGithubLanguages(String repoName, OnFetchGithubLanguages listener, int channel) {
+        return ThreadManager.startThread(() -> fetchGithubLanguages(repoName), listener::onFetchGithubLanguages, channel);
+    }
+
+    public Map<String, Integer> fetchGithubLanguages(String repoName) {
+
+        Map<String, Integer> values = new HashMap<>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(fetchURL("https://api.github.com/repos/" + repoName + "/languages"));
+            for (Iterator<String> it = jsonObject.keys(); it.hasNext(); ) {
+                String key = it.next();
+                values.put(key, jsonObject.getInt(key));
+            }
+        } catch (Exception ignored) {
+            return null;
+        }
+        return values;
+    }
+
+    public int startFetchGithubLanguages(String repoName, OnFetchGithubLanguages listener) {
+        return ThreadManager.startThread(() -> fetchGithubLanguages(repoName), listener::onFetchGithubLanguages);
+    }
+
     public int startFetchGithubAttachment(String repoName, int number, OnFetchGithubAttachment listener) {
         return ThreadManager.startThread(() -> fetchGithubAttachment(repoName, number), listener::onFetchGithubAttachment);
     }
@@ -296,64 +320,71 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
     public interface OnFetchGithubAttachment {
 
-        void onFetchGithubAttachment(GithubAttachment githubAttachment, int channel);
+        OnFetchGithubAttachment NONE = (a, b) -> {};
 
-        OnFetchGithubAttachment NONE = (a,b) -> {};
+        void onFetchGithubAttachment(GithubAttachment githubAttachment, int channel);
     }
 
     public interface OnFetchGithubAttachmentList {
 
-        void onFetchGithubAttachmentList(List<GithubAttachment> attachments, int channel);
+        OnFetchGithubAttachmentList NONE = (a, b) -> {};
 
-        OnFetchGithubAttachmentList NONE = (a,b) -> {};
+        void onFetchGithubAttachmentList(List<GithubAttachment> attachments, int channel);
     }
 
     public interface OnFetchGithubIssue {
 
-        void onFetchGithubIssue(GithubIssue issue, int channel);
+        OnFetchGithubIssue NONE = (a, b) -> {};
 
-        OnFetchGithubIssue NONE = (a,b) -> {};
+        void onFetchGithubIssue(GithubIssue issue, int channel);
     }
 
     public interface OnFetchGithubIssueList {
 
-        void onFetchGithubIssueList(List<GithubIssue> issues, int channel);
+        OnFetchGithubIssueList NONE = (a, b) -> {};
 
-        OnFetchGithubIssueList NONE = (a,b) -> {};
+        void onFetchGithubIssueList(List<GithubIssue> issues, int channel);
     }
 
     public interface OnFetchGithubPull {
 
-        void onFetchGithubPull(GithubPull pull, int channel);
+        OnFetchGithubPull NONE = (a, b) -> {};
 
-        OnFetchGithubPull NONE = (a,b) -> {};
+        void onFetchGithubPull(GithubPull pull, int channel);
     }
 
     public interface OnFetchGithubPullList {
 
-        void onFetchGithubPullList(List<GithubPull> pulls, int channel);
+        OnFetchGithubPullList NONE = (a, b) -> {};
 
-        OnFetchGithubPullList NONE = (a,b) -> {};
+        void onFetchGithubPullList(List<GithubPull> pulls, int channel);
     }
 
     public interface OnFetchGithubRepo {
 
-        void onFetchGithubRepo(GithubRepo repo, int channel);
+        OnFetchGithubPull NONE = (a, b) -> {};
 
-        OnFetchGithubPull NONE = (a,b) -> {};
+        void onFetchGithubRepo(GithubRepo repo, int channel);
     }
 
     public interface OnFetchGithubRepoList {
 
-        void onFetchGithubRepoList(List<GithubRepo> repos, int channel);
+        OnFetchGithubRepoList NONE = (a, b) -> {};
 
-        OnFetchGithubRepoList NONE = (a,b) -> {};
+        void onFetchGithubRepoList(List<GithubRepo> repos, int channel);
     }
 
     public interface OnFetchGithubUser {
 
-        void onFetchGithubUser(GithubUser user, int channel);
+        OnFetchGithubUser NONE = (a, b) -> {};
 
-        OnFetchGithubUser NONE = (a,b) -> {};
+        void onFetchGithubUser(GithubUser user, int channel);
+    }
+
+    public interface OnFetchGithubLanguages {
+
+        OnFetchGithubLanguages NONE = (a, b) -> {};
+
+        void onFetchGithubLanguages(Map<String, Integer> languages, int channel);
     }
 }

@@ -6,13 +6,68 @@
         android:orientation="vertical"
         tools:context=".ui.fragments.ChatInfoFragment">
 
+    <androidx.legacy.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="5" />
 
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LittleTealeaf/SER-210-Final"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textColor="@color/black"
+            android:layout_marginVertical="30dp"
+            android:fontFamily="sans-serif-light"
+            android:id="@+id/frag_chat_info_text_name" />
+
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/black"
+            android:text="A Test Description for a Test App"
+            android:id="@+id/frag_chat_info_text_description" />
+
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/frag_chat_info_text_languages"
+            android:text="Written in Java, C#"
+            android:textAlignment="center" />
+
+    <androidx.legacy.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="View on Github"
+            android:drawableLeft="@drawable/ic_mark_github_16"
+            android:drawableTint="@color/white"
+            android:id="@+id/frag_chat_info_button_github" />
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:id="@+id/frag_chat_info_button_website"
+            android:text="Open Website" />
 
     <androidx.legacy.widget.Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-        android:layout_weight="1"
-        />
+            android:layout_weight="5" />
+
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,6 +75,5 @@
             android:text="@string/leave_chat"
             android:backgroundTint="@color/red"
             android:layout_margin="20dp"
-            android:id="@+id/frag_chat_info_button_leave"
-        />
+            android:id="@+id/frag_chat_info_button_leave" />
 </LinearLayout>
