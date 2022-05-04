@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         if (firebaseAuth.getCurrentUser() == null) {
+            navController.popBackStack(R.id.homeFragment,false);
             loginLauncher.launch(new Intent(this, LoginActivity.class));
         } else {
             getGithubWrapper().setToken(getPreferencesWrapper().getString(GithubWrapper.AUTH_TOKEN, null));

@@ -19,6 +19,10 @@
     <string name="github">Github</string>
     <string name="about">About</string>
     <string name="leave_chat">Leave Chat Room</string>
+    <string name="version">v0.3.0</string>
+    <string name="view_on_github">View on Github</string>
+    <string name="app_authors">Written by Thomas Kwashnak</string>
+    <string name="app_info_creation">Created for the SER-210 Final Project</string>
     <!--    &lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
     <!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
     <!--    <string name="login_github">Login with Github</string>-->
