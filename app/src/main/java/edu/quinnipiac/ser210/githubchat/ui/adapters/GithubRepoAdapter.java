@@ -44,16 +44,15 @@ public class GithubRepoAdapter extends RecyclerView.Adapter<GithubRepoViewHolder
         final DatabaseWrapper databaseWrapper = DatabaseWrapper.from(context);
 
         /*
-        Starts a thread that does the following:
-        "Fetch all of the repositories that the user has, put it in a stream, parallelize that stream (to improve efficiency), filter out the repositories we already have
-        chat rooms for, and then compile it into a list. Once we're done, go back to the main thread and add each item individually to the filterableList
+        Basically, take all of the github repositories, filter out the ones that aren't currently chat rooms, and then filter out the ones that are not currently in the
+        database
          */
-        ThreadManager.startThread(() -> GithubWrapper.from(context)
-                                                     .fetchGithubRepoList(null)
-                                                     .stream().parallel()
-                                                     .filter((repo) -> databaseWrapper.getChatRoom(repo.getFullName()) ==
-                                                                       null)
-                                                     .collect(Collectors.toList()), (items, index) -> items.forEach(filterableList::addItem));
+        ThreadManager.run(() -> GithubWrapper.from(context).fetchGithubRepoList(null).forEach((item) -> ThreadManager.run(() -> {
+            if(databaseWrapper.getChatRoom(item.getFullName()) == null) {
+                ThreadManager.schedule(() -> filterableList.addItem(item));
+            }
+        })));
+
     }
 
     private boolean filterRepo(GithubRepo repo, String filterString) {
