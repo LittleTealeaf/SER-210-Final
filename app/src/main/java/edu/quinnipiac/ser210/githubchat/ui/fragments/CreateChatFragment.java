@@ -22,6 +22,7 @@ import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.GithubRepoAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
+import edu.quinnipiac.ser210.githubchat.ui.util.Keys;
 
 /**
  * @author Thomas Kwashnak
@@ -102,7 +103,7 @@ public class CreateChatFragment extends Fragment
     public void onUpdateChatRoom(ChatRoom chatRoom, int channel) {
         if (channel == channelUpdateChatRoom) {
             Bundle bundle = new Bundle();
-            bundle.putString(DatabaseWrapper.KEY_REPO_NAME, chatRoom.getRepoName());
+            bundle.putString(Keys.REPO_NAME, chatRoom.getRepoName());
             Navigation.findNavController(requireView()).navigate(R.id.action_createChatFragment_to_chatFragment, bundle);
         }
     }

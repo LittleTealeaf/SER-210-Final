@@ -20,6 +20,7 @@ import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.ChatRoomAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarAction;
 import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
+import edu.quinnipiac.ser210.githubchat.ui.util.Keys;
 
 /**
  * @author Thomas Kwashnak
@@ -58,7 +59,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Chat
     @Override
     public void onChatRoomSelected(ChatRoom chatRoom) {
         Bundle bundle = new Bundle();
-        bundle.putString(DatabaseWrapper.KEY_REPO_NAME, chatRoom.getRepoName());
+        bundle.putString(Keys.REPO_NAME, chatRoom.getRepoName());
         Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_chatFragment, bundle);
     }
 
