@@ -1,14 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.fragments.AppInfoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <Space
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
     <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/app_name"
+            android:fontFamily="serif-monospace"
+            android:textStyle="bold"
+            android:textSize="40sp" />
 
-</FrameLayout>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/version"
+            android:textAlignment="center"
+            android:fontFamily="serif-monospace"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_authors"
+            android:fontFamily="serif-monospace"
+            android:textStyle="bold"
+            android:textAlignment="center" />
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_info_creation"
+            android:fontFamily="serif-monospace"
+            android:textStyle="bold"
+            android:textAlignment="center" />
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/view_on_github"
+            android:drawableLeft="@drawable/ic_mark_github_16"
+            android:drawableTint="@color/white"
+            android:layout_marginTop="10dp"
+            android:id="@+id/frag_app_info_button_github" />
+
+    <Space
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/red"
+            android:text="@string/logout"
+            android:id="@+id/frag_app_info_button_logout" />
+
+
+</LinearLayout>
