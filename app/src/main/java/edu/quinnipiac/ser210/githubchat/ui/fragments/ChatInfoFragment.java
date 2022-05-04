@@ -1,6 +1,8 @@
 package edu.quinnipiac.ser210.githubchat.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
+import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarAction;
 import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarHolder;
 import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
 import edu.quinnipiac.ser210.githubchat.ui.util.Keys;
@@ -24,7 +27,7 @@ import edu.quinnipiac.ser210.githubchat.ui.util.Keys;
 /**
  * @author Thomas Kwashnak
  */
-public class ChatInfoFragment extends Fragment implements GithubWrapper.OnFetchGithubRepo, View.OnClickListener, DatabaseWrapper.OnRemoveChatRoom {
+public class ChatInfoFragment extends Fragment implements GithubWrapper.OnFetchGithubRepo, View.OnClickListener, DatabaseWrapper.OnRemoveChatRoom, ToolbarAction.Github {
 
     private int channelGithubRepo, channelRemoveChatRoom;
 
@@ -85,6 +88,14 @@ public class ChatInfoFragment extends Fragment implements GithubWrapper.OnFetchG
     public void onRemoveChatRoom(String repoName, int channel) {
         if(channel == channelRemoveChatRoom) {
             Navigation.findNavController(requireView()).popBackStack(R.id.homeFragment,false);
+        }
+    }
+
+    @Override
+    public void onGithub() {
+        if(githubRepo != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubRepo.getUrl()));
+            startActivity(intent);
         }
     }
 }
