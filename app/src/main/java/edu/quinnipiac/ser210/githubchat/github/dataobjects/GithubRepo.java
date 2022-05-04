@@ -5,6 +5,8 @@ import static edu.quinnipiac.ser210.githubchat.util.JsonUtil.tryOrDefault;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.quinnipiac.ser210.githubchat.util.JsonUtil;
+
 /**
  * @author Thomas Kwashnak
  */
@@ -15,6 +17,7 @@ public class GithubRepo {
     private final String description;
     private final GithubUser owner;
     private final String url;
+    private final String website;
 
     public GithubRepo(JSONObject object) throws JSONException {
         name = object.getString("name");
@@ -22,14 +25,7 @@ public class GithubRepo {
         owner = tryOrDefault(() -> new GithubUser(object.getJSONObject("owner")), null);
         description = tryOrDefault(() -> object.getString("description"), "");
         url = object.getString("html_url");
-    }
-
-    public GithubRepo(String name, String fullName, GithubUser owner, String url) {
-        this.name = name;
-        this.fullName = fullName;
-        this.owner = owner;
-        this.description = "";
-        this.url = url;
+        website = tryOrDefault(() -> JsonUtil.tryGetString(object,"homepage"), null);
     }
 
     public String getName() {
@@ -51,4 +47,9 @@ public class GithubRepo {
     public String getDescription() {
         return description;
     }
+
+    public String getWebsite() {
+        return website;
+    }
+
 }

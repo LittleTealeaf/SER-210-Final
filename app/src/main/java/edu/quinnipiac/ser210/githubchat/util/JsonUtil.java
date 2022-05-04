@@ -14,7 +14,7 @@ public class JsonUtil {
     }
 
     public static String checkStringNull(String string) {
-        if (string == null || string.equals("null")) {
+        if (string == null || string.equals("null") || string.equals("")) {
             return null;
         } else {
             return string;

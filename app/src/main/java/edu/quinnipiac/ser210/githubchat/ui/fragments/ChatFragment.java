@@ -38,6 +38,7 @@ import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarAction;
 import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
 import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarHolder;
+import edu.quinnipiac.ser210.githubchat.ui.util.Keys;
 
 /**
  * @author Thomas Kwashnak
@@ -61,13 +62,13 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
 
         ThreadManager.schedule(this::runTimer);
         githubWrapper = GithubWrapper.from(context);
-        channelChatRoom = DatabaseWrapper.from(context).startGetChatRoom(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME), this);
+        channelChatRoom = DatabaseWrapper.from(context).startGetChatRoom(requireArguments().getString(Keys.REPO_NAME), this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        String ref = requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME);
+        String ref = requireArguments().getString(Keys.REPO_NAME);
 
         for (char c : ".#$[]".toCharArray()) {
             ref = ref.replace(c, '_');
@@ -103,7 +104,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
         LinearLayoutManager manager = new LinearLayoutManager(requireContext());
         manager.setStackFromEnd(true);
         recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(adapter = new MessageAdapter(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME), requireContext(), recyclerView));
+        recyclerView.setAdapter(adapter = new MessageAdapter(requireArguments().getString(Keys.REPO_NAME), requireContext(), recyclerView));
 
         inputText = view.findViewById(R.id.frag_chat_edittext_insert);
         inputText.addTextChangedListener(this);
@@ -119,11 +120,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
     @Override
     public void onStart() {
         super.onStart();
-
         databaseReference.addChildEventListener(adapter);
-
-        Toolbar toolbar = ToolbarHolder.from(requireContext());
-        toolbar.getMenu().findItem(R.id.menu_toolbar_share).setVisible(true);
     }
 
     @Override
@@ -131,7 +128,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
         super.onPause();
         databaseReference.removeEventListener(adapter);
         adapter.clearEntries();
-        System.out.println("hey");
     }
 
     @Override
@@ -214,7 +210,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
 
     @Override
     public void onInfo() {
-        Navigation.findNavController(requireView()).navigate(R.id.action_chatFragment_to_chatInfoFragment);
+        Navigation.findNavController(requireView()).navigate(R.id.action_chatFragment_to_chatInfoFragment,requireArguments());
     }
 
     @Override
