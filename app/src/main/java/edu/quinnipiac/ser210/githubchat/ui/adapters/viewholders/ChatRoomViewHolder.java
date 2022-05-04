@@ -21,8 +21,6 @@ public class ChatRoomViewHolder extends RecyclerView.ViewHolder implements View.
 
     private final Context context;
     private final ChatRoomAdapter adapter;
-    @Deprecated
-    private final IListener listener = null;
     private final TextView textView;
     private final Button favoriteButton;
     private ChatRoom chatRoom;
@@ -62,13 +60,4 @@ public class ChatRoomViewHolder extends RecyclerView.ViewHolder implements View.
             adapter.selectChatRoom(chatRoom);
         }
     }
-
-    @Deprecated
-    public interface OnChatRoomSelected extends ChatRoomAdapter.OnChatRoomSelected {
-
-        void onChatRoomSelected(ChatRoom chatRoom);
-    }
-
-    @Deprecated
-    public interface IListener extends OnChatRoomSelected, DatabaseWrapper.OnUpdateChatRoom {}
 }

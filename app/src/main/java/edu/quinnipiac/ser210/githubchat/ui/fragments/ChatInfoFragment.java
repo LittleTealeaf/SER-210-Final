@@ -46,27 +46,13 @@ public class ChatInfoFragment extends Fragment
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         channelGithubRepo = GithubWrapper.from(context).startFetchGithubRepo(requireArguments().getString(Keys.REPO_NAME), this);
-        channelGithubLanguages = GithubWrapper.from(context).startFetchGithubLanguages(requireArguments().getString(Keys.REPO_NAME),this);
+        channelGithubLanguages = GithubWrapper.from(context).startFetchGithubLanguages(requireArguments().getString(Keys.REPO_NAME), this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_chat_info, container, false);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (githubRepo != null) {
-            ToolbarHolder.from(requireContext()).setTitle("About " + githubRepo.getName());
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        channelGithubLanguages = channelRemoveChatRoom = channelGithubRepo = ThreadManager.NULL_CHANNEL;
     }
 
     @Override
@@ -84,6 +70,20 @@ public class ChatInfoFragment extends Fragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (githubRepo != null) {
+            ToolbarHolder.from(requireContext()).setTitle("About " + githubRepo.getName());
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        channelGithubLanguages = channelRemoveChatRoom = channelGithubRepo = ThreadManager.NULL_CHANNEL;
+    }
+
+    @Override
     public void onFetchGithubRepo(GithubRepo repo, int channel) {
         if (channel == channelGithubRepo) {
             this.githubRepo = repo;
@@ -93,7 +93,7 @@ public class ChatInfoFragment extends Fragment
             titleView.setText(repo.getFullName());
             descriptionView.setText(repo.getDescription());
 
-            if(repo.getWebsite() != null) {
+            if (repo.getWebsite() != null) {
                 websiteButton.setVisibility(View.VISIBLE);
             } else {
                 websiteButton.setVisibility(View.GONE);
@@ -107,37 +107,37 @@ public class ChatInfoFragment extends Fragment
             new AlertDialog.Builder(requireContext()).setTitle("Leave Room").setMessage("Are you sure you want to leave this chat room?").setIcon(
                     R.drawable.ic_material_logout_48).setCancelable(true).setPositiveButton("Leave", (dialog, id) -> channelRemoveChatRoom = DatabaseWrapper.from(
                     requireContext()).startRemoveChatRoom(githubRepo.getFullName(), this)).setNegativeButton("Cancel", (dialog, id) -> {}).create().show();
-        } else if(v.getId() == R.id.frag_chat_info_button_github) {
+        } else if (v.getId() == R.id.frag_chat_info_button_github) {
             onGithub();
-        } else if(v.getId() == R.id.frag_chat_info_button_website) {
-            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(githubRepo.getWebsite())));
-        }
-    }
-
-    @Override
-    public void onRemoveChatRoom(String repoName, int channel) {
-        if(channel == channelRemoveChatRoom) {
-            Navigation.findNavController(requireView()).popBackStack(R.id.homeFragment,false);
+        } else if (v.getId() == R.id.frag_chat_info_button_website) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(githubRepo.getWebsite())));
         }
     }
 
     @Override
     public void onGithub() {
-        if(githubRepo != null) {
+        if (githubRepo != null) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubRepo.getUrl()));
             startActivity(intent);
         }
     }
 
     @Override
+    public void onRemoveChatRoom(String repoName, int channel) {
+        if (channel == channelRemoveChatRoom) {
+            Navigation.findNavController(requireView()).popBackStack(R.id.homeFragment, false);
+        }
+    }
+
+    @Override
     public void onFetchGithubLanguages(Map<String, Integer> languages, int channel) {
-        if(channel == channelGithubLanguages) {
+        if (channel == channelGithubLanguages) {
             StringBuilder builder = new StringBuilder("Written in ");
-            for(String key : languages.keySet()) {
+            for (String key : languages.keySet()) {
                 builder.append(key).append(", ");
             }
 
-            languagesView.setText(builder.append("\n").toString().replace(", \n",""));
+            languagesView.setText(builder.append("\n").toString().replace(", \n", ""));
         }
     }
 }

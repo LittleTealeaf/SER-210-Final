@@ -5,13 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Handler;
-import android.os.Looper;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
@@ -23,11 +19,6 @@ import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
  */
 public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder {
 
-    @Deprecated
-    public static final int CHANNEL_DEFAULT = -1;
-
-    public static final String KEY_REPO_NAME = "RepoName";
-
     private static final int VERSION = 1;
 
     private static final String TABLE_GITHUB_CACHE = "GITHUB_CACHE";
@@ -38,15 +29,6 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     private static final String COL_FETCH_TIME = "FETCH_TIME";
     private static final String COL_REPO_NAME = "REPO_NAME";
     private static final String COL_FAVORITE = "FAVORITE";
-    @Deprecated
-    private static final String COL_ID = "ID";
-
-    @Deprecated
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-    @Deprecated
-    private final Handler handler = new Handler(Looper.getMainLooper());
-    @Deprecated
-    private SQLiteDatabase database;
 
     public DatabaseWrapper(Context context) {
         super(context, "GithubChatDatabase", null, VERSION);
@@ -80,8 +62,10 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
 
     /**
      * Starts the {@link #getGithubCache(String)} method in an alternate thread, notifying the listener on completion
-     * @param url URL of the cache to get
+     *
+     * @param url      URL of the cache to get
      * @param listener Listener to notify once the value has been retrieved
+     *
      * @return The channel that the listener will be notified on
      */
     public int startGetGithubCache(String url, OnFetchGithubCache listener) {
@@ -106,6 +90,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
 
     /**
      * Wraps opening and closing a writable database to ensure that asynchronous tasks do not overlap with database executions
+     *
      * @param operation The operation that needs to be executed
      */
     public synchronized void executeDatabaseOperation(DatabaseOperation operation) {
@@ -248,43 +233,43 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
 
     public interface OnFetchChatRoom {
 
-        void onFetchChatRoom(ChatRoom chatRoom, int channel);
+        OnFetchChatRoom NONE = (a, b) -> {};
 
-        OnFetchChatRoom NONE = (a,b) -> {};
+        void onFetchChatRoom(ChatRoom chatRoom, int channel);
     }
 
     public interface OnFetchChatRoomList {
 
-        void onFetchChatRoomList(List<ChatRoom> chatRoomList, int channel);
+        OnFetchChatRoomList NONE = (a, b) -> {};
 
-        OnFetchChatRoomList NONE = (a,b) -> {};
+        void onFetchChatRoomList(List<ChatRoom> chatRoomList, int channel);
     }
 
     public interface OnFetchGithubCache {
 
-        void onFetchGithubCache(GithubCache githubCache, int channel);
+        OnFetchGithubCache NONE = (a, b) -> {};
 
-        OnFetchGithubCache NONE = (a,b) -> {};
+        void onFetchGithubCache(GithubCache githubCache, int channel);
     }
 
     public interface OnRemoveChatRoom {
 
-        void onRemoveChatRoom(String repoName, int channel);
+        OnRemoveChatRoom NONE = (a, b) -> {};
 
-        OnRemoveChatRoom NONE = (a,b) -> {};
+        void onRemoveChatRoom(String repoName, int channel);
     }
 
     public interface OnUpdateChatRoom {
 
-        void onUpdateChatRoom(ChatRoom chatRoom, int channel);
+        OnUpdateChatRoom NONE = (a, b) -> {};
 
-        OnUpdateChatRoom NONE = (a,b) -> {};
+        void onUpdateChatRoom(ChatRoom chatRoom, int channel);
     }
 
     public interface OnUpdateGithubCache {
 
-        void onUpdateGithubCache(GithubCache githubCache, int channel);
+        OnUpdateChatRoom NONE = (a, b) -> {};
 
-        OnUpdateChatRoom NONE = (a,b) -> {};
+        void onUpdateGithubCache(GithubCache githubCache, int channel);
     }
 }

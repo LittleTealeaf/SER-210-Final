@@ -1,8 +1,5 @@
 package edu.quinnipiac.ser210.githubchat.github;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,8 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.net.ssl.HttpsURLConnection;
 

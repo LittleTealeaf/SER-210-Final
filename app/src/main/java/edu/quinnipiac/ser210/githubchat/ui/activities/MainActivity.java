@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         if (firebaseAuth.getCurrentUser() == null) {
-            navController.popBackStack(R.id.homeFragment,false);
+            navController.popBackStack(R.id.homeFragment, false);
             loginLauncher.launch(new Intent(this, LoginActivity.class));
         } else {
             getGithubWrapper().setToken(getPreferencesWrapper().getString(GithubWrapper.AUTH_TOKEN, null));
@@ -212,13 +212,13 @@ public class MainActivity extends AppCompatActivity
             startActivity(Intent.createChooser(intent, null));
         } else if (item.getItemId() == R.id.menu_drawer_info) {
             Fragment fragment = getSupportFragmentManager().getFragments().get(0).getChildFragmentManager().getFragments().get(0);
-            if(fragment instanceof HomeFragment) {
+            if (fragment instanceof HomeFragment) {
                 navController.navigate(R.id.action_homeFragment_to_settingsFragment);
-            } else if(fragment instanceof ChatFragment) {
+            } else if (fragment instanceof ChatFragment) {
                 navController.navigate(R.id.action_chatFragment_to_settingsFragment);
-            } else if(fragment instanceof ChatInfoFragment) {
+            } else if (fragment instanceof ChatInfoFragment) {
                 navController.navigate(R.id.action_chatInfoFragment_to_settingsFragment);
-            } else if(fragment instanceof CreateChatFragment) {
+            } else if (fragment instanceof CreateChatFragment) {
                 navController.navigate(R.id.action_createChatFragment_to_settingsFragment);
             }
         }
@@ -234,18 +234,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFetchGithubUser(GithubUser githubUser, int channel) {
         if (channel == channelGithubUser) {
-           if(githubUser != null) {
-               this.githubUser = githubUser;
-               View header = navigationView.getHeaderView(navigationView.getHeaderCount() - 1);
-               if (githubUser.getName() != null) {
-                   ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getName());
-                   ((TextView) header.findViewById(R.id.drawer_header_text_username)).setText(githubUser.getLogin());
-               } else {
-                   ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getLogin());
-               }
+            if (githubUser != null) {
+                this.githubUser = githubUser;
+                View header = navigationView.getHeaderView(navigationView.getHeaderCount() - 1);
+                if (githubUser.getName() != null) {
+                    ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getName());
+                    ((TextView) header.findViewById(R.id.drawer_header_text_username)).setText(githubUser.getLogin());
+                } else {
+                    ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getLogin());
+                }
 
-               channelUserAvatar = ImageLoader.loadImage(githubUser.getAvatarUrl(), this);
-           }
+                channelUserAvatar = ImageLoader.loadImage(githubUser.getAvatarUrl(), this);
+            }
         }
     }
 

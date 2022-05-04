@@ -14,7 +14,6 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,15 +35,16 @@ import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
 import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarAction;
-import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
 import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarHolder;
+import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
 import edu.quinnipiac.ser210.githubchat.ui.util.Keys;
 
 /**
  * @author Thomas Kwashnak
  */
-public class ChatFragment extends Fragment implements View.OnClickListener, DatabaseWrapper.OnFetchChatRoom, GithubWrapper.OnFetchGithubRepo, TextWatcher,
-                                                      ToolbarAction.Info, ToolbarAction.Share, ToolbarAction.Github {
+public class ChatFragment extends Fragment
+        implements View.OnClickListener, DatabaseWrapper.OnFetchChatRoom, GithubWrapper.OnFetchGithubRepo, TextWatcher, ToolbarAction.Info, ToolbarAction.Share,
+                   ToolbarAction.Github {
 
     private int channelChatRoom;
     private int channelGithubRepo;
@@ -109,18 +109,24 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
         inputText = view.findViewById(R.id.frag_chat_edittext_insert);
         inputText.addTextChangedListener(this);
 
-
         sendButton = view.findViewById(R.id.frag_chat_button_send);
         sendButton.setOnClickListener(this);
 
-        FragmentChangedListener.notifyContext(requireContext(),this);
-
+        FragmentChangedListener.notifyContext(requireContext(), this);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         databaseReference.addChildEventListener(adapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (githubRepo != null) {
+            ToolbarHolder.from(requireContext()).setTitle(githubRepo.getName());
+        }
     }
 
     @Override
@@ -155,17 +161,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
             inputText.setText("");
 
             databaseReference.push().setValue(message);
-
         } else if (view.getId() == R.id.frag_chat_fab_scroll) {
             recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(githubRepo != null) {
-            ToolbarHolder.from(requireContext()).setTitle(githubRepo.getName());
         }
     }
 
@@ -210,7 +207,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
 
     @Override
     public void onInfo() {
-        Navigation.findNavController(requireView()).navigate(R.id.action_chatFragment_to_chatInfoFragment,requireArguments());
+        Navigation.findNavController(requireView()).navigate(R.id.action_chatFragment_to_chatInfoFragment, requireArguments());
     }
 
     @Override

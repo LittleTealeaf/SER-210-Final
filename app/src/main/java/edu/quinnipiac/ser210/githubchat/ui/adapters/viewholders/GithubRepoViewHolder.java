@@ -51,10 +51,4 @@ public class GithubRepoViewHolder extends RecyclerView.ViewHolder implements Vie
     public void updateSelectedGithubRepo(GithubRepo githubRepo) {
         textView.setTypeface(null, githubRepo == this.githubRepo ? Typeface.BOLD : Typeface.NORMAL);
     }
-
-    @Deprecated
-    public interface oldOnGithubRepoSelected extends GithubRepoAdapter.OnGithubRepoSelected {
-
-        void onGithubRepoSelected(GithubRepo githubRepo);
-    }
 }

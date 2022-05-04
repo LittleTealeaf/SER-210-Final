@@ -25,8 +25,6 @@ public class ChatRoomAdapter extends RecyclerView.Adapter<ChatRoomViewHolder> im
     private final LayoutInflater inflater;
     private final List<ChatRoom> favorites = new LinkedList<>();
     private final List<ChatRoom> rooms = new LinkedList<>();
-    @Deprecated
-    private final List<ChatRoom> chatRooms = new LinkedList<>();
     private int fetchChatRoomChannel;
 
     public ChatRoomAdapter(Context context, OnChatRoomSelected listener) {

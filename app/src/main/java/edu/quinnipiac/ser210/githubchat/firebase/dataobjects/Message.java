@@ -25,7 +25,15 @@ public class Message {
         if (this == o) return true;
         if (!(o instanceof Message)) return false;
 
-       return ((Message) o).getUuid().equals(uuid);
+        return ((Message) o).getUuid().equals(uuid);
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getMessage() {
@@ -50,13 +58,5 @@ public class Message {
 
     public void setSendTime(long sendTime) {
         this.sendTime = sendTime;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 }
