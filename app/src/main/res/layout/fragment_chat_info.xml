@@ -14,7 +14,6 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LittleTealeaf/SER-210-Final"
             android:textAlignment="center"
             android:textSize="30sp"
             android:textColor="@color/black"
@@ -30,7 +29,6 @@
             android:textSize="15sp"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/black"
-            android:text="A Test Description for a Test App"
             android:id="@+id/frag_chat_info_text_description" />
 
 
@@ -38,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/frag_chat_info_text_languages"
-            android:text="Written in Java, C#"
+            android:layout_marginHorizontal="10dp"
             android:textAlignment="center" />
 
     <androidx.legacy.widget.Space
@@ -50,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="View on Github"
+            android:text="@string/view_on_github"
             android:drawableLeft="@drawable/ic_mark_github_16"
             android:drawableTint="@color/white"
             android:id="@+id/frag_chat_info_button_github" />
@@ -61,7 +59,7 @@
             android:layout_gravity="center"
             android:visibility="gone"
             android:id="@+id/frag_chat_info_button_website"
-            android:text="Open Website" />
+            android:text="@string/open_website" />
 
     <androidx.legacy.widget.Space
             android:layout_width="match_parent"
