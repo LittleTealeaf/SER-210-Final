@@ -23,7 +23,7 @@ public class GithubRepo {
         name = object.getString("name");
         fullName = object.getString("full_name");
         owner = tryOrDefault(() -> new GithubUser(object.getJSONObject("owner")), null);
-        description = tryOrDefault(() -> object.getString("description"), "");
+        description = tryOrDefault(() -> JsonUtil.tryGetString(object,"description"), "");
         url = object.getString("html_url");
         website = tryOrDefault(() -> JsonUtil.tryGetString(object,"homepage"), null);
     }
