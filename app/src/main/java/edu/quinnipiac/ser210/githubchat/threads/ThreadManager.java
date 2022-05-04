@@ -104,6 +104,13 @@ public class ThreadManager {
         return channel;
     }
 
+    public static void startThread(Runnable task, Runnable post) {
+        run(() -> {
+            task.run();
+            schedule(post);
+        });
+    }
+
     /**
      * Schedules a runnable to execute on the main thread after a given time
      *
