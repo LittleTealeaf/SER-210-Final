@@ -23,6 +23,7 @@ public class GithubCache {
 
     /**
      * The URL that the content is fetched from
+     *
      * @return The URL key
      */
     public String getUrl() {
@@ -31,6 +32,7 @@ public class GithubCache {
 
     /**
      * Sets the URL key that the content is fetched from
+     *
      * @param url The url that the data is fetched from
      */
     public void setUrl(String url) {
@@ -39,6 +41,7 @@ public class GithubCache {
 
     /**
      * The content cached from the url endpoint
+     *
      * @return Complete content as a string
      */
     public String getContent() {
@@ -47,6 +50,7 @@ public class GithubCache {
 
     /**
      * Sets the cached content from the url
+     *
      * @param content Cached Content
      */
     public void setContent(String content) {
@@ -55,6 +59,7 @@ public class GithubCache {
 
     /**
      * Returns the birth-date of the cached content
+     *
      * @return The time, in epoch seconds, when the content was cached
      */
     public long getFetchTime() {

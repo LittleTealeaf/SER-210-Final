@@ -1,8 +1,6 @@
 package edu.quinnipiac.ser210.githubchat.ui.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -73,9 +71,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         Message message = snapshot.getValue(Message.class);
         assert message != null;
-        for(int i = 0; i < messages.size(); i++) {
-            if(messages.get(i).getSendTime() > message.getSendTime()) {
-                messages.add(i,message);
+        for (int i = 0; i < messages.size(); i++) {
+            if (messages.get(i).getSendTime() > message.getSendTime()) {
+                messages.add(i, message);
                 notifyItemInserted(i);
                 recyclerView.scrollToPosition(messages.size() - 1);
                 return;
@@ -83,26 +81,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
         }
         messages.add(message);
         notifyItemInserted(messages.size() - 1);
-        if(!recyclerView.canScrollVertically(1)) {
+        if (!recyclerView.canScrollVertically(1)) {
             recyclerView.scrollToPosition(messages.size() - 1);
         }
     }
 
-
     @Override
     public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         Message message = snapshot.getValue(Message.class);
-        if(message != null) {
+        if (message != null) {
             int index = messages.indexOf(message);
-            messages.set(index,message);
+            messages.set(index, message);
             notifyItemChanged(index);
-        }
-    }
-
-    private void setData(DataSnapshot snapshot) {
-        messages.clear();
-        for (DataSnapshot child : snapshot.getChildren()) {
-            messages.add(child.getValue(Message.class));
         }
     }
 
@@ -120,18 +110,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> impl
 
     @Override
     public void onCancelled(@NonNull DatabaseError error) {
-        Toast.makeText(getContext(),"Connection Error: " + error,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Connection Error: " + error, Toast.LENGTH_SHORT).show();
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    private void setData(DataSnapshot snapshot) {
+        messages.clear();
+        for (DataSnapshot child : snapshot.getChildren()) {
+            messages.add(child.getValue(Message.class));
+        }
     }
 
     public void updateTimes() {
         for (MessageViewHolder holder : holders) {
             holder.updateTime();
         }
-    }
-
-
-    public Context getContext() {
-        return context;
     }
 
     public String getRepoName() {

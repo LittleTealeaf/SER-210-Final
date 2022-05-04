@@ -11,10 +11,10 @@ import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 
 public class ImageLoader {
 
-    private static final LruCache<String,Bitmap> cache;
+    private static final LruCache<String, Bitmap> cache;
 
     static {
-        cache = new LruCache<String,Bitmap>((int) (Runtime.getRuntime().maxMemory() / 1024) / 8) {
+        cache = new LruCache<String, Bitmap>((int) (Runtime.getRuntime().maxMemory() / 1024) / 8) {
             @Override
             protected int sizeOf(String key, Bitmap value) {
                 return value.getByteCount() / 1024;
@@ -28,9 +28,8 @@ public class ImageLoader {
 
     public static Bitmap loadBitmap(String url) {
 
-
         Bitmap bitmap = cache.get(url);
-        if(bitmap != null) {
+        if (bitmap != null) {
             return bitmap;
         }
 
@@ -42,7 +41,7 @@ public class ImageLoader {
             e.printStackTrace();
         }
 
-        cache.put(url,bitmap);
+        cache.put(url, bitmap);
 
         return bitmap;
     }

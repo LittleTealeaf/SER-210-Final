@@ -1,6 +1,5 @@
 package edu.quinnipiac.ser210.githubchat.ui.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +59,7 @@ public class CreateChatFragment extends Fragment
         confirmButton = view.findViewById(R.id.frag_create_fab_confirm);
         confirmButton.setOnClickListener(this);
 
-        FragmentChangedListener.notifyContext(requireContext(),this);
+        FragmentChangedListener.notifyContext(requireContext(), this);
     }
 
     @Override
@@ -82,7 +81,7 @@ public class CreateChatFragment extends Fragment
     public boolean onQueryTextChange(String newText) {
         adapter.filterItems(newText);
 
-        if(adapter.getSelected() == null) {
+        if (adapter.getSelected() == null) {
             confirmButton.setEnabled(newText.contains("/"));
         }
 

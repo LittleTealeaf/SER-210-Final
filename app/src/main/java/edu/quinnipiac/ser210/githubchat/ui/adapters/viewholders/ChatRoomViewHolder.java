@@ -60,13 +60,4 @@ public class ChatRoomViewHolder extends RecyclerView.ViewHolder implements View.
             adapter.selectChatRoom(chatRoom);
         }
     }
-
-    @Deprecated
-    public interface OnChatRoomSelected extends ChatRoomAdapter.OnChatRoomSelected {
-
-        void onChatRoomSelected(ChatRoom chatRoom);
-    }
-
-    @Deprecated
-    public interface IListener extends OnChatRoomSelected, DatabaseWrapper.OnUpdateChatRoom {}
 }

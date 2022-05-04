@@ -1,6 +1,5 @@
 package edu.quinnipiac.ser210.githubchat.ui.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,9 +26,6 @@ import edu.quinnipiac.ser210.githubchat.ui.util.Keys;
  */
 public class HomeFragment extends Fragment implements View.OnClickListener, ChatRoomAdapter.OnChatRoomSelected, ToolbarAction.Info, ToolbarAction.Share {
 
-    private ChatRoomAdapter adapter;
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -42,11 +38,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Chat
 
         RecyclerView recyclerView = view.findViewById(R.id.frag_home_recycler_rooms);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        ChatRoomAdapter adapter;
         recyclerView.setAdapter(adapter = new ChatRoomAdapter(requireContext(), this));
         view.findViewById(R.id.frag_home_fab_create).setOnClickListener(this);
         adapter.setFetchChatRoomChannel(DatabaseWrapper.from(requireContext()).startGetChatRoomList(adapter));
 
-        FragmentChangedListener.notifyContext(requireContext(),this);
+        FragmentChangedListener.notifyContext(requireContext(), this);
     }
 
     @Override

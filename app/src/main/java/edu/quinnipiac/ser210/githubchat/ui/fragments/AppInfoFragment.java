@@ -45,18 +45,12 @@ public class AppInfoFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.frag_app_info_button_github) {
+        if (v.getId() == R.id.frag_app_info_button_github) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/LittleTealeaf/SER-210-Final")));
-        } else if(v.getId() == R.id.frag_app_info_button_logout) {
-            new AlertDialog.Builder(requireContext())
-                    .setTitle("Log Out")
-                    .setMessage("Are you sure you want to log out of Github App?")
-                    .setIcon(R.drawable.ic_material_logout_48)
-                    .setCancelable(true)
-                    .setPositiveButton("Logout", (dialog, id) -> FirebaseAuth.getInstance().signOut())
-                    .setNegativeButton("Cancel", (dialog, id) -> {})
-                    .create()
-                    .show();
+        } else if (v.getId() == R.id.frag_app_info_button_logout) {
+            new AlertDialog.Builder(requireContext()).setTitle("Log Out").setMessage("Are you sure you want to log out of Github App?").setIcon(
+                    R.drawable.ic_material_logout_48).setCancelable(true).setPositiveButton("Logout", (dialog, id) -> FirebaseAuth.getInstance().signOut()).setNegativeButton(
+                    "Cancel", (dialog, id) -> {}).create().show();
         }
     }
 }
