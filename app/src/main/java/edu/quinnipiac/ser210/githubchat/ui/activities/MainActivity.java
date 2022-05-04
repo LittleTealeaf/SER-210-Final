@@ -28,11 +28,13 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseHolder;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
+import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.github.GithubHolder;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
@@ -47,6 +49,7 @@ import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarAction;
 import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarHolder;
 import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
 import edu.quinnipiac.ser210.githubchat.ui.util.ImageLoader;
+import edu.quinnipiac.ser210.githubchat.ui.util.Keys;
 
 /**
  * @author Thomas Kwashnak
@@ -94,6 +97,29 @@ public class MainActivity extends AppCompatActivity
         loginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onLoginActivityResult);
     }
 
+    private void checkLaunchData() {
+        try {
+            Intent intent = getIntent();
+            setIntent(new Intent());
+
+            Uri uri = intent.getData();
+            String repoName = uri.toString().replace("https://www.githubchatapp.com/room/","");
+            ThreadManager.startThread(() -> {
+                ChatRoom chatRoom = getDatabaseWrapper().getChatRoom(repoName);
+                if(chatRoom == null) {
+                    chatRoom = new ChatRoom();
+                    chatRoom.setRepoName(repoName);
+                    chatRoom.setFavorite(false);
+                }
+                getDatabaseWrapper().updateChatRoom(chatRoom);
+            }, () -> {
+                Bundle bundle = new Bundle();
+                bundle.putString(Keys.REPO_NAME,repoName);
+                navController.navigate(R.id.action_homeFragment_to_chatFragment,bundle);
+            });
+        } catch(Exception ignored) {}
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -132,6 +158,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             getGithubWrapper().setToken(getPreferencesWrapper().getString(GithubWrapper.AUTH_TOKEN, null));
             channelGithubUser = getGithubWrapper().startFetchGithubUser(null, this);
+            checkLaunchData();
         }
     }
 

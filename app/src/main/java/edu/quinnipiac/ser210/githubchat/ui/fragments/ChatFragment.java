@@ -212,7 +212,10 @@ public class ChatFragment extends Fragment
 
     @Override
     public void onShare() {
-
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT,"https://www.githubchatapp.com/room/" + githubRepo.getFullName());
+        intent.setType("text/plain");
+        startActivity(Intent.createChooser(intent,"Share Chat"));
     }
 
     @Override
