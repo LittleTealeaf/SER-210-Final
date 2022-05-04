@@ -119,7 +119,6 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
     @Override
     public void onStart() {
         super.onStart();
-        adapter.clearEntries();
 
         databaseReference.addChildEventListener(adapter);
 
@@ -131,6 +130,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
     public void onPause() {
         super.onPause();
         databaseReference.removeEventListener(adapter);
+        adapter.clearEntries();
+        System.out.println("hey");
     }
 
     @Override
