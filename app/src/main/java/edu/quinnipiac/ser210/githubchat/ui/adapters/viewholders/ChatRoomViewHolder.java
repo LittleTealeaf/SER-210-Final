@@ -21,8 +21,6 @@ public class ChatRoomViewHolder extends RecyclerView.ViewHolder implements View.
 
     private final Context context;
     private final ChatRoomAdapter adapter;
-    @Deprecated
-    private final IListener listener = null;
     private final TextView textView;
     private final Button favoriteButton;
     private ChatRoom chatRoom;
