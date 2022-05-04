@@ -1,5 +1,6 @@
 package edu.quinnipiac.ser210.githubchat.ui.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.GithubRepoAdapter;
+import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
 
 /**
  * @author Thomas Kwashnak
@@ -56,6 +58,8 @@ public class CreateChatFragment extends Fragment
 
         confirmButton = view.findViewById(R.id.frag_create_fab_confirm);
         confirmButton.setOnClickListener(this);
+
+        FragmentChangedListener.notifyContext(requireContext(),this);
     }
 
     @Override

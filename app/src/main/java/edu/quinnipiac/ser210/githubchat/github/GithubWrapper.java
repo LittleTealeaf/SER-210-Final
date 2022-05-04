@@ -114,7 +114,6 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
             }
             reader.close();
         } catch (Exception e) {
-            e.printStackTrace();
             return json.toString();
         }
 
@@ -140,7 +139,6 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
             try {
                 issues.add(new GithubIssue(array.getJSONObject(i)));
             } catch (Exception e) {
-                e.printStackTrace();
             }
         }
         return issues;
@@ -187,8 +185,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         for (int i = 0; i < array.length(); i++) {
             try {
                 repos.add(new GithubRepo(array.getJSONObject(i)));
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
         }
 
@@ -209,8 +206,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
 
                 page++;
             } while (tmp.length() == PER_PAGE);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
 
         return jsonArray;
@@ -230,8 +226,7 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         for (int i = 0; i < array.length(); i++) {
             try {
                 pulls.add(new GithubPull(array.getJSONObject(i)));
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
         }
 

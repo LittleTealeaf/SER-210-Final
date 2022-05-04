@@ -1,6 +1,8 @@
 package edu.quinnipiac.ser210.githubchat.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,16 +35,18 @@ import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 import edu.quinnipiac.ser210.githubchat.ui.adapters.MessageAdapter;
-import edu.quinnipiac.ser210.githubchat.ui.util.ToolbarHolder;
+import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarAction;
+import edu.quinnipiac.ser210.githubchat.ui.util.FragmentChangedListener;
+import edu.quinnipiac.ser210.githubchat.ui.toolbar.ToolbarHolder;
 
 /**
  * @author Thomas Kwashnak
  */
-public class ChatFragment extends Fragment implements View.OnClickListener, DatabaseWrapper.OnFetchChatRoom, GithubWrapper.OnFetchGithubRepo, TextWatcher {
+public class ChatFragment extends Fragment implements View.OnClickListener, DatabaseWrapper.OnFetchChatRoom, GithubWrapper.OnFetchGithubRepo, TextWatcher,
+                                                      ToolbarAction.Info, ToolbarAction.Share, ToolbarAction.Github {
 
     private int channelChatRoom;
     private int channelGithubRepo;
-    private ChatRoom chatRoom;
     private GithubRepo githubRepo;
     private MessageAdapter adapter;
     private DatabaseReference databaseReference;
@@ -99,22 +104,21 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
         manager.setStackFromEnd(true);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter = new MessageAdapter(requireArguments().getString(DatabaseWrapper.KEY_REPO_NAME), requireContext(), recyclerView));
-//        databaseReference.get().addOnSuccessListener(adapter::setInitialData);
 
         inputText = view.findViewById(R.id.frag_chat_edittext_insert);
         inputText.addTextChangedListener(this);
 
-//        inputText.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
-
 
         sendButton = view.findViewById(R.id.frag_chat_button_send);
         sendButton.setOnClickListener(this);
+
+        FragmentChangedListener.notifyContext(requireContext(),this);
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        adapter.clearEntries();
 
         databaseReference.addChildEventListener(adapter);
 
@@ -126,6 +130,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
     public void onPause() {
         super.onPause();
         databaseReference.removeEventListener(adapter);
+        adapter.clearEntries();
+        System.out.println("hey");
     }
 
     @Override
@@ -160,9 +166,16 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(githubRepo != null) {
+            ToolbarHolder.from(requireContext()).setTitle(githubRepo.getName());
+        }
+    }
+
+    @Override
     public void onFetchChatRoom(ChatRoom chatRoom, int channel) {
         if (channel == channelChatRoom) {
-            this.chatRoom = chatRoom;
             channelGithubRepo = githubWrapper.startFetchGithubRepo(chatRoom.getRepoName(), this);
         }
     }
@@ -197,5 +210,21 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Data
             }
             ThreadManager.scheduleDelayed(this::runTimer, 1000 * 30);
         }
+    }
+
+    @Override
+    public void onInfo() {
+        Navigation.findNavController(requireView()).navigate(R.id.action_chatFragment_to_chatInfoFragment);
+    }
+
+    @Override
+    public void onShare() {
+
+    }
+
+    @Override
+    public void onGithub() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubRepo.getUrl()));
+        startActivity(intent);
     }
 }
