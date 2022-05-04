@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity
             Uri uri = intent.getData();
             String repoName = uri.toString().replace("https://www.githubchatapp.com/room/","");
             ThreadManager.startThread(() -> {
+
+                //Checks if the there is a chat room, if not, then it creates one and updates the database
                 ChatRoom chatRoom = getDatabaseWrapper().getChatRoom(repoName);
                 if(chatRoom == null) {
                     chatRoom = new ChatRoom();
@@ -124,8 +126,8 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         firebaseAuth.removeAuthStateListener(this);
-        channelGithubUser = ThreadManager.NULL_CHANNEL;
-        channelUserAvatar = ThreadManager.NULL_CHANNEL;
+        //nulling out channels
+        channelUserAvatar = channelGithubUser = ThreadManager.NULL_CHANNEL;
     }
 
     @Override
@@ -293,10 +295,15 @@ public class MainActivity extends AppCompatActivity
             menu.findItem(R.id.menu_toolbar_info).setVisible(fragment instanceof ToolbarAction.Info);
             menu.findItem(R.id.menu_toolbar_github).setVisible(fragment instanceof ToolbarAction.Github);
         } catch (Exception e) {
-            ThreadManager.run(() -> {
-                while (toolbar == null) ;
-                ThreadManager.schedule(() -> onFragmentLoaded(fragment));
-            });
+            if(toolbar == null) {
+                ThreadManager.run(() -> {
+                    /*
+                    Exception is generated from the toolbar being null. If the toolbar is not null, then it will instead wait until the toolbar is not null and re-execute
+                     */
+                    while (toolbar == null) ;
+                    ThreadManager.schedule(() -> onFragmentLoaded(fragment));
+                });
+            }
         }
     }
 }

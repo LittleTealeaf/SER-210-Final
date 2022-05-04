@@ -6,6 +6,11 @@ import android.os.Looper;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Manages anything and everything with async tasks and threads. It exposes methods that allow the rest of the program to execute tasks in external threads, execute tasks
+ * on the main thread, and methods that perform similarly to how AsyncTasks work
+ * @author Thomas Kwashnak
+ */
 public class ThreadManager {
 
     /**
@@ -92,13 +97,13 @@ public class ThreadManager {
         handler.post(runnable);
     }
 
-    public static int startThread(SimpleTask task, SimpleCallback notifier) {
+    public static int startThread(Runnable task, SimpleCallback notifier) {
         return startThread(task, notifier, registerChannel());
     }
 
-    public static int startThread(SimpleTask task, SimpleCallback notifier, int channel) {
+    public static int startThread(Runnable task, SimpleCallback notifier, int channel) {
         run(() -> {
-            task.execute();
+            task.run();
             schedule(() -> notifier.notify(channel));
         });
         return channel;

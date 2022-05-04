@@ -2,6 +2,9 @@ package edu.quinnipiac.ser210.githubchat.firebase.dataobjects;
 
 import java.util.UUID;
 
+/**
+ * @author Thomas Kwashnak
+ */
 public class Message {
 
     private String message;

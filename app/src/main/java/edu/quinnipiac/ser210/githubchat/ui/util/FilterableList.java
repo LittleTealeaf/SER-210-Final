@@ -3,6 +3,10 @@ package edu.quinnipiac.ser210.githubchat.ui.util;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A filterable list that notifies a listener whenever items have been removed or added
+ * @param <T> The type of item to collect
+ */
 public class FilterableList<T> {
 
     private final ChangeListener<T> changeListener;
@@ -18,6 +22,8 @@ public class FilterableList<T> {
 
     public void setFilter(String filterString) {
         this.filterString = filterString;
+
+        //Update all items
         for (T item : items.keySet()) {
             Boolean current = items.get(item);
             assert current != null;

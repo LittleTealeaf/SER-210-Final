@@ -9,6 +9,10 @@ import java.net.URL;
 
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 
+/**
+ * @author Thomas Kwashnak
+ * Handles image loading, including caching images by url for future use
+ */
 public class ImageLoader {
 
     private static final LruCache<String, Bitmap> cache;
