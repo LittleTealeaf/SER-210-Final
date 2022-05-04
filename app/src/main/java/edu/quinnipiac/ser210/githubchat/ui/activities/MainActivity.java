@@ -233,16 +233,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFetchGithubUser(GithubUser githubUser, int channel) {
         if (channel == channelGithubUser) {
-            this.githubUser = githubUser;
-            View header = navigationView.getHeaderView(navigationView.getHeaderCount() - 1);
-            if (githubUser.getName() != null) {
-                ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getName());
-                ((TextView) header.findViewById(R.id.drawer_header_text_username)).setText(githubUser.getLogin());
-            } else {
-                ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getLogin());
-            }
+           if(githubUser != null) {
+               this.githubUser = githubUser;
+               View header = navigationView.getHeaderView(navigationView.getHeaderCount() - 1);
+               if (githubUser.getName() != null) {
+                   ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getName());
+                   ((TextView) header.findViewById(R.id.drawer_header_text_username)).setText(githubUser.getLogin());
+               } else {
+                   ((TextView) header.findViewById(R.id.drawer_header_text_name)).setText(githubUser.getLogin());
+               }
 
-            channelUserAvatar = ImageLoader.loadImage(githubUser.getAvatarUrl(), this);
+               channelUserAvatar = ImageLoader.loadImage(githubUser.getAvatarUrl(), this);
+           }
         }
     }
 
