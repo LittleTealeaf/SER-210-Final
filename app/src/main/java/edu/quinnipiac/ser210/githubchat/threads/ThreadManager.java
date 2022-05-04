@@ -12,9 +12,8 @@ public class ThreadManager {
      * The null channel, or the channel id that will never be registered by {@link #registerChannel()}
      */
     public static final int NULL_CHANNEL = 0;
-    @Deprecated
-    private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static final Handler handler = new Handler(Looper.getMainLooper());
+    private static final ExecutorService executorService = Executors.newCachedThreadPool();
     private static int lastRegisteredChannel;
 
     static {
@@ -75,7 +74,7 @@ public class ThreadManager {
      */
     public static void run(Runnable runnable) {
         //Executes the runnable on a new thread
-        new Thread(runnable).start();
+        executorService.execute(runnable);
     }
 
     /**
