@@ -32,7 +32,8 @@ import edu.quinnipiac.ser210.githubchat.ui.util.Keys;
  * @author Thomas Kwashnak
  */
 public class ChatInfoFragment extends Fragment
-        implements GithubWrapper.OnFetchGithubRepo, View.OnClickListener, DatabaseWrapper.OnRemoveChatRoom, ToolbarAction.Github, GithubWrapper.OnFetchGithubLanguages {
+        implements GithubWrapper.OnFetchGithubRepo, View.OnClickListener, DatabaseWrapper.OnRemoveChatRoom, ToolbarAction.Github, GithubWrapper.OnFetchGithubLanguages,
+                   ToolbarAction.Share {
 
     private int channelGithubRepo, channelRemoveChatRoom, channelGithubLanguages;
 
@@ -139,5 +140,13 @@ public class ChatInfoFragment extends Fragment
 
             languagesView.setText(builder.append("\n").toString().replace(", \n", ""));
         }
+    }
+
+    @Override
+    public void onShare() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT,"https://www.githubchatapp.com/room/" + githubRepo.getFullName());
+        intent.setType("text/plain");
+        startActivity(Intent.createChooser(intent,"Share Chat"));
     }
 }
