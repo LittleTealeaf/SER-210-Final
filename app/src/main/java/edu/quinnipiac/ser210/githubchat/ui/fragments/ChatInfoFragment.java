@@ -20,6 +20,7 @@ import java.util.Map;
 
 import edu.quinnipiac.ser210.githubchat.R;
 import edu.quinnipiac.ser210.githubchat.database.DatabaseWrapper;
+import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.github.GithubWrapper;
 import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubRepo;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
@@ -33,10 +34,11 @@ import edu.quinnipiac.ser210.githubchat.ui.util.Keys;
  */
 public class ChatInfoFragment extends Fragment
         implements GithubWrapper.OnFetchGithubRepo, View.OnClickListener, DatabaseWrapper.OnRemoveChatRoom, ToolbarAction.Github, GithubWrapper.OnFetchGithubLanguages,
-                   ToolbarAction.Share {
+                   ToolbarAction.Share, DatabaseWrapper.OnFetchChatRoom {
 
-    private int channelGithubRepo, channelRemoveChatRoom, channelGithubLanguages;
+    private int channelChatroom, channelGithubRepo, channelRemoveChatRoom, channelGithubLanguages;
 
+    private ChatRoom chatRoom;
     private GithubRepo githubRepo;
     private TextView languagesView;
     private TextView titleView;
@@ -46,6 +48,7 @@ public class ChatInfoFragment extends Fragment
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        channelChatroom = DatabaseWrapper.from(context).startGetChatRoom(requireArguments().getString(Keys.REPO_NAME),this);
         channelGithubRepo = GithubWrapper.from(context).startFetchGithubRepo(requireArguments().getString(Keys.REPO_NAME), this);
         channelGithubLanguages = GithubWrapper.from(context).startFetchGithubLanguages(requireArguments().getString(Keys.REPO_NAME), this);
     }
@@ -81,7 +84,7 @@ public class ChatInfoFragment extends Fragment
     @Override
     public void onStop() {
         super.onStop();
-        channelGithubLanguages = channelRemoveChatRoom = channelGithubRepo = ThreadManager.NULL_CHANNEL;
+        channelChatroom = channelGithubLanguages = channelRemoveChatRoom = channelGithubRepo = ThreadManager.NULL_CHANNEL;
     }
 
     @Override
@@ -89,15 +92,22 @@ public class ChatInfoFragment extends Fragment
         if (channel == channelGithubRepo) {
             this.githubRepo = repo;
 
-            ToolbarHolder.from(requireContext()).setTitle("About " + repo.getName());
+            if(githubRepo != null) {
 
-            titleView.setText(repo.getFullName());
-            descriptionView.setText(repo.getDescription());
 
-            if (repo.getWebsite() != null) {
-                websiteButton.setVisibility(View.VISIBLE);
+                titleView.setText(repo.getFullName());
+                descriptionView.setText(repo.getDescription());
+
+                if (repo.getWebsite() != null) {
+                    websiteButton.setVisibility(View.VISIBLE);
+                } else {
+                    websiteButton.setVisibility(View.GONE);
+                }
             } else {
+                titleView.setVisibility(View.GONE);
+                descriptionView.setVisibility(View.GONE);
                 websiteButton.setVisibility(View.GONE);
+
             }
         }
     }
@@ -107,7 +117,7 @@ public class ChatInfoFragment extends Fragment
         if (v.getId() == R.id.frag_chat_info_button_leave) {
             new AlertDialog.Builder(requireContext()).setTitle("Leave Room").setMessage("Are you sure you want to leave this chat room?").setIcon(
                     R.drawable.ic_material_logout_48).setCancelable(true).setPositiveButton("Leave", (dialog, id) -> channelRemoveChatRoom = DatabaseWrapper.from(
-                    requireContext()).startRemoveChatRoom(githubRepo.getFullName(), this)).setNegativeButton("Cancel", (dialog, id) -> {}).create().show();
+                    requireContext()).startRemoveChatRoom(chatRoom.getRepoName(), this)).setNegativeButton("Cancel", (dialog, id) -> {}).create().show();
         } else if (v.getId() == R.id.frag_chat_info_button_github) {
             onGithub();
         } else if (v.getId() == R.id.frag_chat_info_button_website) {
@@ -148,5 +158,13 @@ public class ChatInfoFragment extends Fragment
         intent.putExtra(Intent.EXTRA_TEXT,"https://www.githubchatapp.com/room/" + githubRepo.getFullName());
         intent.setType("text/plain");
         startActivity(Intent.createChooser(intent,"Share Chat"));
+    }
+
+    @Override
+    public void onFetchChatRoom(ChatRoom chatRoom, int channel) {
+        if(channel == channelChatroom) {
+            this.chatRoom = chatRoom;
+            ToolbarHolder.from(requireContext()).setTitle("About " + chatRoom.getRepoName());
+        }
     }
 }

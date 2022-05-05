@@ -51,17 +51,27 @@ public class ThreadManager {
         return channel;
     }
 
-    public static int startThread(SimpleTask task, SimpleCallback notifier) {
+    public static int startThread(Runnable task, SimpleCallback notifier) {
         return startThread(task,notifier,registerChannel());
     }
 
-    public static int startThread(SimpleTask task, SimpleCallback notifier, int channel) {
+    public static int startThread(Runnable task, SimpleCallback notifier, int channel) {
         run(() -> {
-            task.execute();
+            task.run();
             schedule(() -> notifier.notify(channel));
         });
         return channel;
     }
+
+    public static void startThread(Runnable task, Runnable post) {
+        run(() -> {
+            task.run();
+            schedule(post);
+        });
+    }
+
+
+
 
     /**
      * Increments and returns a unique channel id.
