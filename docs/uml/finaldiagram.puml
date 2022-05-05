@@ -1,0 +1,364 @@
+@startuml Class Diagram
+skinparam class {
+    BackgroundColor LightGrey
+    BorderColor Black
+    ArrowColor Black
+}
+
+class ChatRoom {
+    -repoName: String
+    -favorite: boolean
+    +getRepoName(): String
+    +setRepoName(String): void
+    +isFavorite(): boolean
+    +setFavorite(boolean): void
+}
+
+class GithubCache {
+    -url: String
+    -content: String
+    -fetchTime: long
+
+    +getUrl(): String
+    +setUrl(String): void
+    +getContent(): String
+    +setContent(String): void
+    +getFetchTime(): long
+    +setFetchTime(long): void
+}
+
+interface DatabaseHolder {
+    +getDatabaseWrapper(): DatabaseWrapper
+}
+
+class DatabaseWrapper {
+    +getGithubCache(String): GithubCache
+    +updateGithubCache(GithubCache): GithubCache
+    +getChatRoom(String): ChatRoom
+    +getChatRoomList(): List<ChatRoom>
+    +updateChatRoom(ChatRoom): ChatRoom
+    +removeChatRoom(ChatRoom): String
+    +removeChatRoom(String): String
+    ' +startGetGithubCache(String,OnFetchGithubCache): int
+    ' +startGetGithubCache(String,OnFetchGithubCache,int): int
+    ' +startUpdateGithubCache(GithubCache,OnUpdateGithubCache): int
+    ' +startUpdateGithubCache(GithubCache,OnUpdateGithubCache,int): int
+    ' +startGetChatRoom(String,OnFetchChatRoom): int
+    ' +startGetChatRoom(String,OnFetchChatRoom,int): int
+    ' +startUpdateChatRoom(ChatRoom,OnUpdateChatRoom): int
+    ' +startUpdateChatRoom(ChatRoom,OnUpdateChatRoom,int): int
+    ' +startRemoveChatRoom(ChatRoom,OnRemoveChatRoom): int
+    ' +startRemoveChatRoom(ChatRoom,OnRemoveChatRoom,int): int
+    ' +startRemoveChatRoom(String,OnRemoveChatRoom): int
+    ' +startRemoveChatRoom(String,OnRemoveChatRoom,int): int
+    ' +startGetChatRoomList(OnFetchChatRoomList): int
+    ' +startGetChatRoomList(OnFetchChatRoomList,int): int
+
+}
+DatabaseWrapper --|> SQLiteOpenHelper
+DatabaseWrapper ..|> DatabaseHolder
+DatabaseWrapper --> OnFetchChatRoom
+DatabaseWrapper --> OnFetchChatRoomList
+DatabaseWrapper --> OnRemoveChatRoom
+DatabaseWrapper --> OnUpdateChatRoom
+DatabaseWrapper --> ThreadManager
+DatabaseWrapper o-- GithubCache
+DatabaseWrapper o-- ChatRoom
+
+interface OnFetchChatRoom {
+    +onFetchChatRoom(ChatRoom,int): void
+}
+interface OnFetchChatRoomList {
+    +onFetchChatRoomList(List<ChatRoom>, int): void
+}
+
+interface OnRemoveChatRoom {
+    +onRemoveChatRoom(String,int): void
+}
+
+interface OnUpdateChatRoom {
+    +onUpdateChatRoom(ChatRoom,int): void
+}
+
+class FirebaseMessage {
+    -message: String
+    -sender: String
+    -sendTime: long
+    -uuid: String
+}
+
+interface GithubAttachment {
+    +getNumber(): int
+    +getTitle(): String
+    +getURL(): String
+    +getGithubUser(): GithubUser
+    +getStatusDrawable(): int
+}
+
+class GithubIssue {
+
+}
+GithubIssue ..|> GithubAttachment
+GithubIssue *-- GithubUser
+
+class GithubPull {
+
+}
+GithubPull ..|> GithubAttachment
+GithubPull *-- GithubUser
+
+class GithubRepo {
+    -name: String
+    -fullName: String
+    -description: String
+    -owner: GithubUser
+    -url: String
+    -website: String
+}
+GithubRepo *-- GithubUser
+
+class GithubUser {
+    -login: String
+    -name: String
+    -email: String
+    -avatarUrl: String
+    -url: String
+}
+
+interface GithubHolder {
+    +getGithubWrapper(): GithubWrapper
+}
+
+class GithubWrapper {
+    +setToken(String): void
+    +fetchGithubUser(String): GithubUser
+    +fetchGithubIssues(String): List<GithubIssue>
+    +getGithubUser(): GithubUser
+    +fetchGithubRepo(String): GithubRepo
+    +fetchGithubRepoList(String): List<GithubRepo>
+    +fetchGithubPulls(String): List<GithubPull>
+    +fetchGithubPull(String,int): GithubPull
+    +fetchGithubISsue(String,int): GithubIssue
+    +fetchGithubAttachment(String,int): GithubAttachment
+    +fetchGithubAttachmentList(String): List<GithubAttachment>
+    +fetchGithubLanguages(String): Map<String,Integer>
+}
+GithubWrapper ..|> GithubHolder
+GithubWrapper ..|> DatabaseHolder
+GithubWrapper --> OnFetchGithubAttachment
+GithubWrapper --> OnFetchGithubRepo
+GithubWrapper --> OnFetchGithubUser
+GithubWrapper --> OnFetchGithubLanguages
+GithubWrapper --> DatabaseWrapper
+GithubWrapper --> ThreadManager
+GithubWrapper --> GithubCache
+GithubWrapper o-- GithubIssue
+GithubWrapper o-- GithubPull
+GithubWrapper o-- GithubRepo
+GithubWrapper o-- GithubUser
+
+interface OnFetchGithubAttachment {
+    +onFetchGithubAttachment(GithubAttachment, int): void
+}
+
+interface OnFetchGithubRepo {
+    +onFetchGithubRepo(GithubRepo,int): void
+}
+
+interface OnFetchGithubUser {
+    +onFetchGithubUser(GithubUser, int): void
+}
+
+interface OnFetchGithubLanguages {
+    +onFetchGithubLanguages(Map<String,Integer>,int): void
+}
+
+interface PreferencesHolder {
+    +getPreferencesWrapper(): PreferencesWrapper
+}
+
+class PreferencesWrapper {
+
+}
+PreferencesWrapper ..|> SharedPreferences
+PreferencesWrapper ..|> PreferencesHolder
+
+interface SharedPreferences {}
+
+interface Callback<T> {
+    +notify(T,int): void
+}
+
+interface SimpleCallback {
+    +notify(int): void
+}
+
+interface Task<T> {
+    +execute(): T
+}
+
+class ThreadManager {
+    +startThread(Task,Callback): int
+    +startThread(Task,Callback,int): int
+    +startThread(SimpelTask,SimpleCallback): int
+    +startThread(SimpleTask,SimpleCallbac): int
+    +run(Runnable): void
+    +schedule(Runnable): void
+}
+ThreadManager --> Task
+ThreadManager --> SimpleCallback
+ThreadManager --> Callback
+
+class LoginActivity {
+
+}
+
+class MainActivity {
+
+}
+MainActivity --> LoginActivity
+MainActivity --> ToolbarActionGithub
+MainActivity --> ToolbarActionInfo
+MainActivity --> ToolbarActionShare
+MainActivity *-- PreferencesWrapper
+MainActivity *-- GithubWrapper
+MainActivity *-- DatabaseWrapper
+MainActivity ..|> PreferencesHolder
+MainActivity ..|> GithubHolder
+MainActivity ..|> DatabaseHolder
+MainActivity ..|> ToolbarHolder
+MainActivity ..|> OnFetchGithubUser
+MainActivity ..|> OnLoadBitmap
+
+class ChatRoomViewHolder {
+
+}
+ChatRoomViewHolder *-- ChatRoom
+ChatRoomViewHolder --|> RecyclerViewViewHolder
+ChatRoomViewHolder --> ChatRoomAdapter
+
+class GithubRepoViewHolder {
+
+}
+GithubRepoViewHolder *-- GithubRepo
+GithubRepoViewHolder --|> RecyclerViewViewHolder
+GithubRepoViewHolder --> GithubRepoAdapter
+
+
+class MessageViewHolder {
+
+}
+MessageViewHolder *-- FirebaseMessage
+MessageViewHolder --|> RecyclerViewViewHolder
+MessageViewHolder ..|> OnFetchGithubUser
+MessageViewHolder ..|> OnLoadBitmap
+MessageViewHolder --> MessageAdapter
+
+class AttachmentAdapter {
+
+}
+AttachmentAdapter --* MessageViewHolder
+AttachmentAdapter ..|> OnFetchGithubAttachment
+AttachmentAdapter *-- GithubAttachment
+
+class ChatRoomAdapter {
+
+}
+ChatRoomAdapter ..|> OnFetchChatRoomList
+ChatRoomAdapter ..|> OnUpdateChatRoom
+
+interface OnChatRoomSelected {
+    +onChatRoomSelected(ChatRoom): void
+}
+OnChatRoomSelected <-- ChatRoomAdapter
+
+class GithubRepoAdapter {
+
+}
+GithubRepoAdapter ..|> FilterableListChangeListener
+GithubRepoAdapter *-- GithubRepoViewHolder
+
+interface OnGithubRepoSelected {
+    +onGithubRepoSelected(GithubRepo): void
+}
+OnGithubRepoSelected <-- GithubRepoAdapter
+
+class MessageAdapter {
+
+}
+MessageAdapter ..|> ChildEventListener
+MessageAdapter *-- MessageViewHolder
+
+class DynamicListView {
+
+}
+DynamicListView --|> ListView
+DynamicListView --* MessageViewHolder
+
+class AppInfoFragment {
+
+}
+AppInfoFragment <-- MainActivity
+
+class ChatFragment {
+
+}
+ChatFragment <-- MainActivity
+ChatFragment <-- CreateChatFragment
+ChatFragment <-- HomeFragment
+ChatFragment ..|> OnFetchChatRoom
+ChatFragment ..|> OnFetchGithubRepo
+ChatFragment ..|> ToolbarActionInfo
+ChatFragment ..|> ToolbarActionShare
+ChatFragment ..|> ToolbarActionGithub
+ChatFragment --> DatabaseWrapper
+ChatFragment --> GithubWrapper
+ChatFragment *-- MessageAdapter
+ChatFragment --> ChatInfoFragmet
+
+class ChatInfoFragmet {
+
+}
+ChatInfoFragment <-- MainActivity
+ChatInfoFragment <-- ChatFragment
+ChatInfoFragment ..|> OnFetchGithubRepo
+ChatInfoFragment ..|> OnRemoveChatRoom
+ChatInfoFragment ..|> ToolbarActionGithub
+ChatInfoFragment ..|> OnFetchGithubLanguages
+ChatInfoFragment ..|> ToolbarActionShare
+
+class CreateChatFragment {
+
+}
+CreateChatFragment <-- MainActivity
+CreateChatFragment <-- HomeFragment
+CreateChatFragment ..|> OnGithubRepoSelected
+CreateChatFragment ..|> OnUpdateChatRoom
+CreateChatFragment *-- GithubRepoAdapter
+
+class HomeFragment {
+
+}
+HomeFragment <-- MainActivity
+HomeFragment ..|> ToolbarActionShare
+HomeFragment ..|> ToolbarActionInfo
+HomeFragment ..|> OnChatRoomSelected
+HomeFragment *-- ChatRoomAdapter
+
+interface ToolbarActionShare {
+    +onShare(): void
+}
+
+interface ToolbarActionInfo {
+    +onInfo(): void
+}
+
+interface ToolbarActionGithub {
+    +onGithub(): void
+}
+
+interface ToolbarHolder {
+    +getToolbar(): Toolbar
+}
+
+@enduml
