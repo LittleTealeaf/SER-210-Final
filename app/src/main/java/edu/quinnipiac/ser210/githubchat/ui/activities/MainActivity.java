@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity
                 Bundle bundle = new Bundle();
                 bundle.putString(Keys.REPO_NAME,repoName);
                 navController.navigate(R.id.action_homeFragment_to_chatFragment,bundle);
+
             });
         } catch(Exception ignored) {}
     }
