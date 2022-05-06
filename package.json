@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/LittleTealeaf/SER-210-Final#readme",
   "dependencies": {
-    "@primer/octicons": "^17.0.0"
+    "@primer/octicons": "^17.1.0"
   }
 }
