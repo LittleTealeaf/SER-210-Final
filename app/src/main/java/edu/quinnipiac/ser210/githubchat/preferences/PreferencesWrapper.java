@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Wraps methods related to Preferences in order to properly implement EncryptedPreferences
  * @author Thomas Kwashnak
  */
 public class PreferencesWrapper implements SharedPreferences, PreferencesHolder {

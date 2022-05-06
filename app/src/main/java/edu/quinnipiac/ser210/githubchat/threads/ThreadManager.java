@@ -6,6 +6,32 @@ import android.os.Looper;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * <p>Manages anything and everything threaddy! This class doesn't just launch threads, but also manages tasks, notifying listeners, and so on.</p>
+ * <p>Firstly, lets get over the thread part. There are two main types of tasks that this class can execute: async and scheduled. </p>
+ * <ul>
+ *     <li><b>Async Tasks</b> are tasks that need to be executed on a different thread. These are the tasks that are not connected to the UI in any way. The primary use
+ *     of async tasks is for fetching API results, or dealing with the Database</li>
+ *     <li><b>Scheduled Tasks</b> however are tasks that are required to be run on the main ui thread. The primary use of scheduled tasks is for notifying listeners that
+ *     a given task is complete, letting the attached objects update the ui with the provided item</li>
+ * </ul>
+ * <p>These two types can be directly used with the {@link #run(Runnable)} and {@link #schedule(Runnable)} methods. {@link #run(Runnable)} runs tasks an
+ * {@link ExecutorService} (with a cached thread pool, see {@link Executors#newCachedThreadPool()}), while {@link #schedule(Runnable)} uses a {@link Handler} in order to
+ * schedule tasks to execute on the main thread.</p>
+ * <p>Now, lets talk channels. In this app, a "channel" is basically a unique id for a given asynchronous task. Any class or object can request a new channel by using the
+ * {@link #registerChannel()} method. This returns a unique ID that can be used to prepare an object to properly deal with a return value from a task. Each listener for a
+ * particular task not only receives the returned object, but also the channel that the task was operated on. One benefit of this method is that it is possible to use the
+ * same listener for multiple tasks, while able to differentiate which task was executed. Additionally, if a task is currently running, but no longer needed, one simply
+ * needs to reset the compared channel value to {@link #NULL_CHANNEL}, essentially voiding that running task.
+ * </p>
+ * <p>
+ *     <b>TLDR:</b> Process goes like this: Task needs to be run, a task is created using {@link #startThread(Task, Callback)}. First, it creates the thread and then
+ *     returns the channel that the listener should listen to. On the alternate thread, it computes the task. Once the task is done and the value is retrieved, it switches
+ *     back to the main thread using {@link #schedule(Runnable)} and executes the listener, passing both the returned value and the channel. The listener then should check
+ *     if the channel matches what it received, and execute whatever tasks it needed to be run .
+ * </p>
+ * @author Thomas Kwashnak
+ */
 public class ThreadManager {
 
     /**

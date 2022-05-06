@@ -28,6 +28,29 @@ import edu.quinnipiac.ser210.githubchat.github.dataobjects.GithubUser;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 
 /**
+ * <p>Wraps all functionality with fetching data from the Github REST API.</p>
+ * <p>Similarly to {@link DatabaseWrapper}, this class contains two main types of methods: regular methods ({@link #fetchGithubUser(String)}) and start methods
+ * ({@link #startFetchGithubUser(String, OnFetchGithubUser)})</p>
+ * <ul>
+ *  <li>
+ *      {@link #fetchGithubUser(String)}will immediately retrieve the {@link GithubUser} from the database on whatever thread it's currently on. Once it's done, the method will
+ *      return the fetched value
+ *  </li>
+ *  <li>
+ *      {@link #startFetchGithubUser(String, OnFetchGithubUser)} instead starts {@link #fetchGithubUser(String)} on an asynchronous thread. It returns the "channel" that
+ *      the listener will be notified on (See {@link ThreadManager}). Once {@link #fetchGithubUser(String)} completes on the asynchronous thread, it will then return to the
+ *      main thread and send a notification to the provided listener.
+ *  </li>
+ * </ul>
+ * <p>
+ *     This class also stores the user's github token, which is used to access API requests (to take advantage of the higher number of requests per hour) if it's provided.
+ * </p>
+ * <p>
+ *     In order to keep from sending multiple requests to an API endpoint, the GithubWrapper will store any data it's fetched into the {@link DatabaseWrapper} as
+ *     {@link GithubCache GithubCaches}. Then, whenever the GithubWrapper needs to make a request, it first checks in with the DatabaseWrapper to see if a cached value of
+ *     that request has been made. If it has been, and it's not too old, then instead of making a new request, it will just return the cached value. This significantly
+ *     reduces the number of API calls made, especially if the user keeps opening and closing something such as a fragment, requesting new api calls every time.
+ * </p>
  * @author Thomas Kwashnak
  */
 public class GithubWrapper implements GithubHolder, DatabaseHolder {
@@ -74,6 +97,8 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
     }
 
     protected final String fetchURL(String url, int keepTime) {
+
+        //This checks the cached value. This is done on the same thread because it needs to wait for the execution to complete.
         GithubCache urlCache = databaseWrapper.getGithubCache(url);
         if (urlCache != null && urlCache.getFetchTime() > Instant.now().getEpochSecond() - keepTime) {
             System.out.println("Fetching from Cache: " + url);
@@ -187,6 +212,12 @@ public class GithubWrapper implements GithubHolder, DatabaseHolder {
         return repos;
     }
 
+    /**
+     * <p>Wraps fetching a JsonArray from a GithubAPI list.</p>
+     * <p>This method makes api requests for each page of api until it retrieves less than the number of items per page it requested.</p>
+     * @param baseURL The base url to request
+     * @return The JSONArray from that endpoint
+     */
     protected final JSONArray fetchList(String baseURL) {
         JSONArray jsonArray = new JSONArray();
         JSONArray tmp = null;

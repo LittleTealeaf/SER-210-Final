@@ -14,8 +14,25 @@ import edu.quinnipiac.ser210.githubchat.database.dataobjects.ChatRoom;
 import edu.quinnipiac.ser210.githubchat.database.dataobjects.GithubCache;
 import edu.quinnipiac.ser210.githubchat.threads.ThreadManager;
 
+/*
+If you're on Android Studio, you should be able to hover over the first /** line and click the icon that shows up to on the left to show the rendered javadoc
+ */
 /**
+ * <p>The DatabaseWrapper is a class that wraps the required functions into simple methods that the front-end can use. Using this method allows the organization of database
+ * operations, as well as easy implementations of asynchronous tasks.</p>
+ * <p>Firstly, let's make the distinction between the types of methods in this class. There are the regular methods {@link #getGithubCache(String)}, and the start methods
+ * {@link #startGetGithubCache(String, OnFetchGithubCache)}. These methods, in the end, perform the same action on the repository, but do it in different ways.</p>
+ * <ul>
+ *     <li>{@link #getGithubCache(String)} will immediately perform the action to get the {@link GithubCache} from the database on whatever thread it's currently on. Once
+ *     it's done, it will then return the value</li>
+ *     <li>{@link #startGetGithubCache(String, OnFetchGithubCache, int)} instead starts {@link #getGithubCache(String)} on an asynchronous thread. It returns the
+ *     "channel" that the listener will be notified on (See {@link ThreadManager}). Once {@link #getGithubCache(String)} completes on the other thread, it will return
+ *     back to the main thread and notify the provided listener</li>
+ * </ul>
+ * <p>This allows any action required to be taken either on the current thread (useful in cases where it's already being done on an async thread, such as
+ * {@link edu.quinnipiac.ser210.githubchat.github.GithubWrapper}, or on a new thread.</p>
  * @author Thomas Kwashnak
+ * @see #executeDatabaseOperation(DatabaseOperation) 
  */
 public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder {
 
@@ -34,6 +51,11 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         super(context, "GithubChatDatabase", null, VERSION);
     }
 
+    /**
+     * Attempts to get a DatabaseWrapper from a holder.
+     * @param object The object to attempt to get the DatabaseWrapper from
+     * @return The database wrapper, returns null if the object does not implement the {@link DatabaseHolder} interface.
+     */
     public static DatabaseWrapper from(Object object) {
         if (object instanceof DatabaseHolder) {
             return ((DatabaseHolder) object).getDatabaseWrapper();
@@ -60,14 +82,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         }
     }
 
-    /**
-     * Starts the {@link #getGithubCache(String)} method in an alternate thread, notifying the listener on completion
-     *
-     * @param url      URL of the cache to get
-     * @param listener Listener to notify once the value has been retrieved
-     *
-     * @return The channel that the listener will be notified on
-     */
+
     public int startGetGithubCache(String url, OnFetchGithubCache listener) {
         return ThreadManager.startThread(() -> getGithubCache(url), listener::onFetchGithubCache);
     }
@@ -89,9 +104,13 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
     }
 
     /**
-     * Wraps opening and closing a writable database to ensure that asynchronous tasks do not overlap with database executions
+     * <p>Because tasks are being computed on asynchronous threads, it's impossible to know when one will start and another will end. In order to ensure this structure is
+     * stable, this method is used whenever a database operation is required. Since this method is synchronized, there can only be one instance of this method running at a
+     * given time.</p>
      *
-     * @param operation The operation that needs to be executed
+     * <p>This method manages any database operations. First, it opens a new writable database using {@link #getWritableDatabase()}. Then, it executes the provided operation,
+     * passing in the opened database. Once the operation is completed, it closes the database and allowing the next operation to be completed.</p>
+     * @param operation The database operation that needs to be executed.
      */
     public synchronized void executeDatabaseOperation(DatabaseOperation operation) {
         //Opens the database
@@ -226,7 +245,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper implements DatabaseHolder 
         return ThreadManager.startThread(() -> updateGithubCache(githubCache), listener::onUpdateGithubCache, channel);
     }
 
-    private interface DatabaseOperation {
+    public interface DatabaseOperation {
 
         void execute(SQLiteDatabase database);
     }
