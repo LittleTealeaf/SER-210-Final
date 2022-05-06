@@ -6,6 +6,7 @@ import java.util.Map;
 /**
  * A filterable list that notifies a listener whenever items have been removed or added
  * @param <T> The type of item to collect
+ * @author Thomas Kwashnak
  */
 public class FilterableList<T> {
 
